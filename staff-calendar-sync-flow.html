@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Appointment Sync — Staff Calendar &amp; Patient Record Flags</title>
+  <style>
+    :root {
+      --ink: #1a2e2a;
+      --ink-muted: #3d524c;
+      --wire: #b8c9c3;
+      --wire-label: #6b7f78;
+      --white: #ffffff;
+      --surface: #fafbfb;
+      --gcp-blue: #1a3a52;
+      --gcp-fill: #f4f8fb;
+      --gcp-border: #2d5a7b;
+      --accent: #5da68a;
+      --athena: #2d5a7b;
+      --athena-bg: #eef4f8;
+      --zenoti: #4a6741;
+      --zenoti-bg: #eef4ef;
+      --ghl: #6b4c8a;
+      --ghl-bg: #f3eef8;
+      --hub: #264540;
+      --hub-bg: #edf6f2;
+      --skip: #8a6b4a;
+      --skip-bg: #f8f4ef;
+      --max-width: 980px;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--surface);
+      color: var(--ink);
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      line-height: 1.45;
+      margin: 0;
+      min-height: 100vh;
+      padding: 2.5rem 1.25rem 3rem;
+    }
+
+    .page {
+      margin: 0 auto;
+      max-width: var(--max-width);
+    }
+
+    header {
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0 0 0.4rem;
+    }
+
+    header p {
+      color: var(--ink-muted);
+      font-size: 0.875rem;
+      margin: 0 auto;
+      max-width: 66ch;
+    }
+
+    .flow {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .sources-row {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: 1fr 1fr;
+      max-width: 640px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .source-card {
+      background: var(--white);
+      border: 1px solid var(--wire);
+      border-radius: 10px;
+      border-top-width: 4px;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .source-card.athena { border-top-color: var(--athena); }
+    .source-card.zenoti { border-top-color: var(--zenoti); }
+
+    .source-card .label {
+      color: var(--wire-label);
+      display: block;
+      font-size: 0.625rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.35rem;
+      text-transform: uppercase;
+    }
+
+    .source-card .system {
+      font-size: 0.8125rem;
+      font-weight: 700;
+      margin: 0 0 0.5rem;
+    }
+
+    .source-card.athena .system { color: var(--athena); }
+    .source-card.zenoti .system { color: var(--zenoti); }
+
+    .source-card .action {
+      background: var(--surface);
+      border-radius: 6px;
+      color: var(--ink-muted);
+      font-size: 0.75rem;
+      margin: 0;
+      padding: 0.55rem 0.65rem;
+    }
+
+    .merge-connector {
+      align-items: center;
+      color: var(--wire-label);
+      display: flex;
+      flex-direction: column;
+      font-size: 0.625rem;
+      font-weight: 700;
+      gap: 0.15rem;
+      letter-spacing: 0.06em;
+      padding: 0.65rem 0;
+      text-transform: uppercase;
+    }
+
+    .merge-connector .arrow {
+      color: var(--accent);
+      font-size: 1.35rem;
+      line-height: 1;
+    }
+
+    .merge-connector .tag {
+      background: var(--white);
+      border: 1px solid #a8c4b8;
+      border-radius: 999px;
+      color: #3d6b58;
+      padding: 0.2rem 0.55rem;
+    }
+
+    .gcp-band {
+      background: var(--gcp-fill);
+      border: 3px solid var(--gcp-blue);
+      border-radius: 12px;
+      padding: 0.65rem 1rem 1rem;
+    }
+
+    .gcp-badge {
+      color: var(--gcp-blue);
+      font-size: 0.625rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      margin: 0 0 0.65rem;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .hub-box {
+      background: var(--hub-bg);
+      border: 2px solid var(--hub);
+      border-radius: 10px;
+      padding: 1.1rem 1.25rem 1rem;
+    }
+
+    .hub-title {
+      color: var(--hub);
+      font-size: 0.9375rem;
+      font-weight: 700;
+      margin: 0 0 0.85rem;
+      text-align: center;
+    }
+
+    .hub-steps {
+      display: grid;
+      gap: 0.55rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .hub-steps li {
+      align-items: flex-start;
+      background: var(--white);
+      border: 1px solid #c5ddd4;
+      border-radius: 8px;
+      display: flex;
+      gap: 0.65rem;
+      padding: 0.65rem 0.75rem;
+    }
+
+    .hub-steps li.highlight {
+      border-color: var(--gcp-border);
+      box-shadow: 0 0 0 1px rgba(45, 90, 123, 0.08);
+    }
+
+    .hub-steps li.decision {
+      border-color: var(--ghl);
+      border-width: 2px;
+    }
+
+    .step-num {
+      align-items: center;
+      background: var(--hub);
+      border-radius: 50%;
+      color: var(--white);
+      display: flex;
+      flex-shrink: 0;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      height: 1.35rem;
+      justify-content: center;
+      width: 1.35rem;
+    }
+
+    .hub-steps li.highlight .step-num {
+      background: var(--gcp-border);
+    }
+
+    .hub-steps li.decision .step-num {
+      background: var(--ghl);
+    }
+
+    .step-body strong {
+      color: var(--ink);
+      display: block;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      margin-bottom: 0.1rem;
+    }
+
+    .step-body span {
+      color: var(--ink-muted);
+      font-size: 0.75rem;
+    }
+
+    .registry-note {
+      background: var(--white);
+      border: 1px dashed var(--gcp-border);
+      border-radius: 8px;
+      color: var(--ink-muted);
+      font-size: 0.6875rem;
+      margin-top: 0.65rem;
+      padding: 0.55rem 0.75rem;
+      text-align: center;
+    }
+
+    .registry-note strong {
+      color: var(--gcp-blue);
+    }
+
+    .branch-row {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: 1fr 1fr;
+      margin-top: 0.75rem;
+      padding-top: 0.25rem;
+    }
+
+    .branch-connector {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .branch-connector .arrow {
+      color: var(--accent);
+      font-size: 1.25rem;
+      line-height: 1;
+    }
+
+    .branch-connector .tag {
+      border-radius: 999px;
+      font-size: 0.625rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding: 0.2rem 0.55rem;
+      text-transform: uppercase;
+    }
+
+    .branch-connector .tag.yes {
+      background: var(--ghl-bg);
+      border: 1px solid #c9b8dc;
+      color: var(--ghl);
+    }
+
+    .branch-connector .tag.no {
+      background: var(--skip-bg);
+      border: 1px solid #d4c4b0;
+      color: var(--skip);
+    }
+
+    .branch-card {
+      border-radius: 10px;
+      padding: 0.9rem 1rem;
+      text-align: center;
+    }
+
+    .branch-card.push {
+      background: var(--ghl-bg);
+      border: 2px solid var(--ghl);
+    }
+
+    .branch-card.skip {
+      background: var(--skip-bg);
+      border: 1px dashed var(--skip);
+    }
+
+    .branch-card .branch-label {
+      font-size: 0.625rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.35rem;
+      text-transform: uppercase;
+    }
+
+    .branch-card.push .branch-label { color: var(--ghl); }
+    .branch-card.skip .branch-label { color: var(--skip); }
+
+    .branch-card p {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .branch-card .note {
+      color: var(--ink-muted);
+      display: block;
+      font-size: 0.6875rem;
+      font-weight: 500;
+      margin-top: 0.35rem;
+    }
+
+    .track-divider {
+      align-items: center;
+      color: var(--wire-label);
+      display: flex;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      gap: 0.75rem;
+      letter-spacing: 0.06em;
+      margin: 1.5rem 0 0.85rem;
+      text-transform: uppercase;
+    }
+
+    .track-divider::before,
+    .track-divider::after {
+      background: var(--wire);
+      content: "";
+      flex: 1;
+      height: 1px;
+    }
+
+    .patient-track-row {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .patient-card {
+      border-radius: 10px;
+      padding: 0.9rem 1rem;
+      text-align: center;
+    }
+
+    .patient-card.ghl {
+      background: var(--ghl-bg);
+      border: 1px solid #c9b8dc;
+    }
+
+    .patient-card.zenoti {
+      background: var(--zenoti-bg);
+      border: 1px solid #b8cdb8;
+    }
+
+    .patient-card .system {
+      font-size: 0.625rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.35rem;
+      text-transform: uppercase;
+    }
+
+    .patient-card.ghl .system { color: var(--ghl); }
+    .patient-card.zenoti .system { color: var(--zenoti); }
+
+    .patient-card p {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .patient-card .note {
+      color: var(--ink-muted);
+      display: block;
+      font-size: 0.6875rem;
+      font-weight: 500;
+      margin-top: 0.35rem;
+    }
+
+    .patient-track-note {
+      color: var(--ink-muted);
+      font-size: 0.75rem;
+      margin: 0.75rem auto 0;
+      max-width: 58ch;
+      text-align: center;
+    }
+
+    .hub-steps li.patient-step {
+      border-color: #a8c4b8;
+    }
+
+    .hub-steps li.patient-step .step-num {
+      background: var(--zenoti);
+    }
+
+    .callout .patient-rule {
+      border-top: 1px solid #c9b8dc;
+      color: var(--ghl);
+      font-size: 0.9375rem;
+      font-weight: 600;
+      margin: 0.85rem 0 0;
+      padding-top: 0.85rem;
+    }
+
+    .callout {
+      background: var(--hub-bg);
+      border: 2px solid var(--hub);
+      border-radius: 12px;
+      color: var(--ink);
+      font-size: 1rem;
+      line-height: 1.55;
+      margin: 2.25rem auto 0;
+      max-width: 72ch;
+      padding: 1.25rem 1.5rem;
+      text-align: center;
+    }
+
+    .callout strong {
+      color: var(--hub);
+      display: block;
+      font-size: 1.0625rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .callout .sub-rule {
+      border-top: 1px solid #c5ddd4;
+      color: var(--ink-muted);
+      font-size: 0.9375rem;
+      font-weight: 600;
+      margin: 0.85rem 0 0;
+      padding-top: 0.85rem;
+    }
+
+    .callout .privacy-note {
+      border-top: 1px solid #b8cdd8;
+      color: var(--athena);
+      font-size: 0.9375rem;
+      font-weight: 600;
+      margin: 0.85rem 0 0;
+      padding-top: 0.85rem;
+    }
+
+    @media (max-width: 720px) {
+      .sources-row,
+      .branch-row,
+      .patient-track-row {
+        grid-template-columns: 1fr;
+        max-width: 360px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <h1>Appointment Sync — Staff Calendar &amp; Patient Record Flags</h1>
+      <p>
+        When an appointment is booked in AthenaNet or Zenoti, the hub runs <strong>two parallel
+        outbound tracks</strong>: staff GHL <em>calendars</em> (staff only) and patient
+        <em>record flags</em> in GHL and Zenoti — patients do not have calendars in those systems;
+        their profiles are updated so appointment history is kept.
+      </p>
+    </header>
+
+    <div class="flow" role="img" aria-label="Athena or Zenoti appointment webhooks flow to GCP Middleware Hub. Staff registry eligibility check determines whether to push to GHL staff calendar or skip.">
+
+      <div class="sources-row">
+        <div class="source-card athena">
+          <span class="label">Clinical scheduling</span>
+          <p class="system">AthenaNet</p>
+          <p class="action">Clinical appointment booked or updated for a provider</p>
+        </div>
+        <div class="source-card zenoti">
+          <span class="label">Wellness center scheduling</span>
+          <p class="system">Zenoti</p>
+          <p class="action">Wellness appointment booked or updated for a staff member</p>
+        </div>
+      </div>
+
+      <div class="merge-connector">
+        <span class="arrow">↓</span>
+        <span class="tag">Webhook</span>
+      </div>
+
+      <div class="gcp-band">
+        <p class="gcp-badge">Google Cloud Platform</p>
+        <div class="hub-box">
+          <p class="hub-title">GCP Middleware Hub</p>
+          <ol class="hub-steps">
+            <li>
+              <span class="step-num">1</span>
+              <div class="step-body">
+                <strong>Resolve staff member and patient</strong>
+                <span>Map appointment to provider / employee ID and patient via golden record (<code>ghl_contact_id</code>, <code>zenoti_guest_id</code>, <code>athena_patient_id</code>)</span>
+              </div>
+            </li>
+            <li class="highlight">
+              <span class="step-num">2</span>
+              <div class="step-body">
+                <strong>Look up Staff Registry + patient golden record</strong>
+                <span>Staff Registry links provider IDs to GHL user. Patient golden record links contact across systems.</span>
+              </div>
+            </li>
+            <li class="decision">
+              <span class="step-num">?</span>
+              <div class="step-body">
+                <strong>Staff eligibility (Track A)</strong>
+                <span>Does this staff member have active accounts in <strong>both</strong> Zenoti and GoHighLevel, with calendar sync enabled?</span>
+              </div>
+            </li>
+            <li class="patient-step">
+              <span class="step-num">3</span>
+              <div class="step-body">
+                <strong>Patient record flag (Track B — always evaluated)</strong>
+                <span>Flag linked patient profiles in GHL and/or Zenoti — activity, note, tag, or appointment history field. Not a calendar entry; records that the patient had an appointment and when. Skip source system and unlinked profiles.</span>
+              </div>
+            </li>
+            <li>
+              <span class="step-num">4</span>
+              <div class="step-body">
+                <strong>Execute outbound queue</strong>
+                <span>Track A: staff calendar block on GHL user if eligible. Track B: append appointment to patient record in GHL contact and/or Zenoti guest profile; persist copy in BigQuery golden record.</span>
+              </div>
+            </li>
+          </ol>
+          <p class="registry-note">
+            <strong>Staff Registry example:</strong> Dr. Chen → athena_provider_id · zenoti_employee_id · ghl_user_id · sync_calendar = true
+          </p>
+        </div>
+      </div>
+
+      <div class="branch-row">
+        <div>
+          <div class="branch-connector">
+            <span class="arrow">↓</span>
+            <span class="tag yes">Track A — staff eligible</span>
+          </div>
+          <div class="branch-card push">
+            <p class="branch-label">Staff GHL calendar</p>
+            <p>Update staff user calendar</p>
+            <span class="note">De-identified busy block — e.g. “Clinical — unavailable” (no patient PHI on staff calendar)</span>
+          </div>
+        </div>
+        <div>
+          <div class="branch-connector">
+            <span class="arrow">↓</span>
+            <span class="tag no">Track A — not eligible</span>
+          </div>
+          <div class="branch-card skip">
+            <p class="branch-label">Skip staff calendar</p>
+            <p>No GHL user calendar write</p>
+            <span class="note">Staff without both Zenoti + GHL accounts — schedule stays in source system only</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="track-divider">Track B — flag patient record (no patient calendar)</p>
+
+      <div class="patient-track-row">
+        <div class="patient-card ghl">
+          <p class="system">Go High Level</p>
+          <p>Flag patient contact record</p>
+          <span class="note">Activity, note, tag, or custom field — e.g. “Clinical visit scheduled · Apr 12”. History kept on contact; not placed on a calendar.</span>
+        </div>
+        <div class="patient-card zenoti">
+          <p class="system">Zenoti</p>
+          <p>Flag guest profile record</p>
+          <span class="note">Visit history / guest note / status flag on profile. Skip if appt was booked in Zenoti (already recorded there). Not a duplicate booking.</span>
+        </div>
+      </div>
+
+      <p class="patient-track-note">
+        Example: clinical appt in <strong>Athena</strong> → GHL contact flagged + Zenoti guest
+        profile flagged (when linked). Wellness appt in <strong>Zenoti</strong> → GHL contact flagged
+        only. BigQuery golden record always stores the appointment for cross-system history.
+      </p>
+    </div>
+
+    <div class="callout">
+      <strong>Two tracks, one webhook — calendars are for staff only</strong>
+      Patients do not have calendars in GHL or Zenoti. Track B updates their
+      <em>records</em> so staff can see appointment history: flags, notes, activities, and
+      a persistent log in BigQuery — not calendar slots.
+      <p class="patient-rule">
+        Every linked patient profile must show that an appointment occurred and retain that
+        history for marketing, front desk, and reporting — without re-booking in the destination
+        system and without overwriting Athena clinical data once populated.
+      </p>
+      <p class="sub-rule">
+        Track A (staff): GHL user calendar block — only when staff uses both Zenoti + GHL.<br />
+        Track B (patient): record flag on GHL contact and/or Zenoti guest — skip the system where the appt was booked.
+      </p>
+      <p class="privacy-note">
+        Calendar events should use busy blocks or de-identified labels unless GHL is confirmed
+        HIPAA-aligned for full clinical detail on staff calendars.
+      </p>
+    </div>
+  </div>
+</body>
+</html>

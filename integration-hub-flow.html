@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Integration Hub — Four-System Flow</title>
+  <style>
+    :root {
+      --ink: #1a2e2a;
+      --ink-muted: #3d524c;
+      --hub: #264540;
+      --hub-light: #edf6f2;
+      --accent: #5da68a;
+      --wire: #b8c9c3;
+      --wire-label: #6b7f78;
+      --athena: #2d5a7b;
+      --zenoti: #4a6741;
+      --ghl: #6b4c8a;
+      --woo: #9a7344;
+      --report: #3d6b8c;
+      --white: #ffffff;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #fafbfb;
+      color: var(--ink);
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      margin: 0;
+      min-height: 100vh;
+      padding: 2.5rem 1.5rem;
+    }
+
+    .page {
+      margin: 0 auto;
+      max-width: 920px;
+    }
+
+    header {
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0 0 0.35rem;
+    }
+
+    header p {
+      color: var(--ink-muted);
+      font-size: 0.875rem;
+      margin: 0 auto;
+      max-width: 58ch;
+    }
+
+    .hub-diagram {
+      aspect-ratio: 720 / 700;
+      margin: 0 auto;
+      max-width: 760px;
+      position: relative;
+      width: 100%;
+    }
+
+    .hub-diagram svg.connectors {
+      height: 100%;
+      left: 0;
+      pointer-events: none;
+      position: absolute;
+      top: 0;
+      width: 100%;
+      z-index: 1;
+    }
+
+    .hub-diagram svg line {
+      stroke: var(--accent);
+      stroke-width: 2.5;
+    }
+
+    .hub-diagram svg line.optional {
+      stroke-dasharray: 8 6;
+      stroke: var(--woo);
+    }
+
+    .hub-diagram svg line.query {
+      stroke: var(--report);
+      stroke-width: 2;
+    }
+
+    .hub-diagram svg line.internal {
+      stroke: var(--hub);
+      stroke-dasharray: none;
+      stroke-width: 2;
+    }
+
+    .hub-diagram svg polygon {
+      fill: var(--accent);
+    }
+
+    .hub-diagram svg polygon.optional {
+      fill: var(--woo);
+    }
+
+    .hub-diagram svg polygon.query {
+      fill: var(--report);
+    }
+
+    .hub-diagram svg text {
+      fill: var(--wire-label);
+      font-family: "Segoe UI", system-ui, sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .system-node {
+      align-items: center;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 72px;
+      padding: 0.75rem 1rem;
+      position: absolute;
+      text-align: center;
+      transform: translate(-50%, -50%);
+      width: 148px;
+      z-index: 2;
+    }
+
+    .system-node .name {
+      font-size: 0.9375rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .system-node .role {
+      color: var(--ink-muted);
+      font-size: 0.625rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      margin-top: 0.2rem;
+      text-transform: uppercase;
+    }
+
+    .system-node.athena {
+      background: #e8f0f6;
+      border: 2px solid var(--athena);
+      left: 18%;
+      top: 12%;
+    }
+
+    .system-node.athena .name { color: var(--athena); }
+
+    .system-node.zenoti {
+      background: #eef4ec;
+      border: 2px solid var(--zenoti);
+      left: 82%;
+      top: 12%;
+    }
+
+    .system-node.zenoti .name { color: var(--zenoti); }
+
+    .system-node.ghl {
+      background: #f2edf6;
+      border: 2px solid var(--ghl);
+      left: 18%;
+      top: 88%;
+    }
+
+    .system-node.ghl .name { color: var(--ghl); }
+
+    .system-node.woo {
+      background: #faf5ee;
+      border: 2px dashed var(--woo);
+      left: 82%;
+      top: 88%;
+    }
+
+    .system-node.woo .name { color: var(--woo); }
+
+    .system-node.woo .optional {
+      color: var(--woo);
+      font-size: 0.5625rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      margin-top: 0.15rem;
+      text-transform: uppercase;
+    }
+
+    .gcp-zone {
+      background: var(--hub-light);
+      border: 3px solid var(--hub);
+      border-radius: 14px;
+      box-shadow: 0 12px 40px rgba(38, 69, 64, 0.12);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      left: 50%;
+      padding: 1rem 1.15rem 1.15rem;
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: min(92%, 440px);
+      z-index: 3;
+    }
+
+    .gcp-badge {
+      color: var(--wire-label);
+      font-size: 0.625rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      margin: 0 0 0.15rem;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .layer-box {
+      background: var(--white);
+      border: 2px solid var(--hub);
+      border-radius: 10px;
+      padding: 0.75rem 0.85rem;
+      text-align: center;
+    }
+
+    .layer-box .layer-title {
+      color: var(--hub);
+      font-size: 0.875rem;
+      font-weight: 700;
+      line-height: 1.25;
+      margin: 0 0 0.25rem;
+    }
+
+    .layer-box .layer-desc {
+      color: var(--ink-muted);
+      font-size: 0.6875rem;
+      line-height: 1.4;
+      margin: 0;
+    }
+
+    .layer-box.middleware {
+      border-color: var(--accent);
+    }
+
+    .layer-box.bigquery {
+      border-color: var(--hub);
+      flex: 1;
+      min-width: 0;
+    }
+
+    .layer-box.reporting {
+      border-color: var(--report);
+      flex: 1;
+      min-width: 0;
+    }
+
+    .layer-box.reporting .layer-title {
+      color: var(--report);
+    }
+
+    .internal-flow {
+      color: var(--wire-label);
+      font-size: 0.625rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      line-height: 1;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .warehouse-row {
+      align-items: stretch;
+      display: flex;
+      gap: 0.45rem;
+    }
+
+    .query-bridge {
+      align-items: center;
+      color: var(--report);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      font-size: 0.625rem;
+      font-weight: 700;
+      justify-content: center;
+      letter-spacing: 0.04em;
+      line-height: 1.2;
+      text-transform: uppercase;
+      width: 2.75rem;
+    }
+
+    .query-bridge .arrow {
+      font-size: 1rem;
+      line-height: 1;
+    }
+
+    .hub-diagram svg line.peer-sync {
+      stroke: #7a9480;
+      stroke-dasharray: 6 5;
+      stroke-width: 2;
+    }
+
+    .hub-diagram svg polygon.peer-sync {
+      fill: #7a9480;
+    }
+
+    .caption {
+      color: var(--wire-label);
+      font-size: 0.75rem;
+      margin: 2rem auto 0;
+      max-width: 68ch;
+      text-align: center;
+    }
+
+    .caption strong {
+      color: var(--ink-muted);
+      font-weight: 600;
+    }
+
+    @media (max-width: 560px) {
+      .system-node {
+        min-height: 56px;
+        padding: 0.5rem 0.55rem;
+        width: 108px;
+      }
+
+      .system-node .name {
+        font-size: 0.75rem;
+      }
+
+      .gcp-zone {
+        padding: 0.85rem 0.75rem;
+        width: 94%;
+      }
+
+      .warehouse-row {
+        flex-direction: column;
+      }
+
+      .query-bridge {
+        flex-direction: row;
+        gap: 0.35rem;
+        width: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <h1>Four-System Integration Hub</h1>
+      <p>
+        External systems feed the Middleware Hub; data lands in BigQuery; your
+        Custom Reporting App queries the warehouse only. Inventory is managed in
+        Zenoti and already syncs to Woo — for analytics, treat Zenoti as the source
+        of truth; Woo into GCP is optional for web-only data.
+      </p>
+    </header>
+
+    <div class="hub-diagram" role="img" aria-label="Four external systems connect to GCP Middleware Hub. Data syncs to BigQuery. Custom Reporting App queries BigQuery for staff dashboards.">
+      <svg class="connectors" viewBox="0 0 720 700" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+        <defs>
+          <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+            <polygon points="0 0, 8 4, 0 8" />
+          </marker>
+          <marker id="arrow-woo" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+            <polygon points="0 0, 8 4, 0 8" />
+          </marker>
+          <marker id="arrow-query" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+            <polygon points="0 0, 8 4, 0 8" class="query" />
+          </marker>
+        </defs>
+        <!-- Zenoti ↔ Woo — existing inventory sync (outside GCP) -->
+        <line x1="648" y1="108" x2="648" y2="592" class="peer-sync" />
+        <text x="656" y="352" fill="#7a9480" font-size="11" font-family="system-ui, sans-serif">Inventory</text>
+        <text x="656" y="366" fill="#7a9480" font-size="11" font-family="system-ui, sans-serif">sync (API)</text>
+        <!-- External → Middleware Hub -->
+        <line x1="130" y1="84" x2="292" y2="248" marker-end="url(#arrow)" />
+        <line x1="590" y1="84" x2="428" y2="248" marker-end="url(#arrow)" />
+        <line x1="130" y1="616" x2="292" y2="308" marker-end="url(#arrow)" />
+        <line x1="590" y1="616" x2="428" y2="308" class="optional" marker-end="url(#arrow-woo)" />
+        <!-- Middleware → BigQuery (internal) -->
+        <line x1="360" y1="318" x2="360" y2="368" class="internal" marker-end="url(#arrow)" />
+        <text x="372" y="348">Sync</text>
+        <!-- BigQuery → Reporting App (query) -->
+        <line x1="430" y1="418" x2="498" y2="418" class="query" marker-end="url(#arrow-query)" />
+        <text x="438" y="408">SQL queries</text>
+      </svg>
+
+      <div class="system-node athena">
+        <span class="name">Athena</span>
+        <span class="role">EHR / clinical</span>
+      </div>
+
+      <div class="system-node zenoti">
+        <span class="name">Zenoti</span>
+        <span class="role">Wellness center · scheduling · inventory (source of truth)</span>
+      </div>
+
+      <div class="system-node ghl">
+        <span class="name">GHL</span>
+        <span class="role">CRM / marketing</span>
+      </div>
+
+      <div class="system-node woo">
+        <span class="name">Woo</span>
+        <span class="role">E-commerce storefront</span>
+        <span class="optional">Optional for GCP</span>
+      </div>
+
+      <div class="gcp-zone">
+        <p class="gcp-badge">Google Cloud Platform</p>
+
+        <div class="layer-box middleware">
+          <p class="layer-title">Middleware Hub</p>
+          <p class="layer-desc">Ingest &amp; translate — inventory from Zenoti; Woo only if needed for web-only metrics</p>
+        </div>
+
+        <p class="internal-flow">↓ Sync to warehouse</p>
+
+        <div class="warehouse-row">
+          <div class="layer-box bigquery">
+            <p class="layer-title">BigQuery Data Warehouse</p>
+            <p class="layer-desc">Central secure store — source of truth for analytics</p>
+          </div>
+
+          <div class="query-bridge" aria-hidden="true">
+            <span class="arrow">→</span>
+            <span>Query</span>
+          </div>
+
+          <div class="layer-box reporting">
+            <p class="layer-title">Custom Reporting App</p>
+            <p class="layer-desc">Staff dashboards · RBAC · reads from BigQuery only</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="caption">
+      <strong>What changes with Zenoti ↔ Woo:</strong> Inventory already flows between those
+      two systems via their existing API — that sync is operational, not part of GCP. For
+      BigQuery and reporting, pull inventory from <strong>Zenoti only</strong> to avoid
+      double-counting. Woo into the Middleware Hub stays optional — add it only if you need
+      web-specific data Zenoti does not hold (online orders, cart events, product-page
+      analytics). The reporting app still queries BigQuery only, never external APIs directly.
+    </p>
+  </div>
+</body>
+</html>

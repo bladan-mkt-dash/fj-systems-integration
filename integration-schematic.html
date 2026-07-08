@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Five Journeys — Integration Architecture Schematic</title>
+  <style>
+    :root {
+      --ink: #1a2e2a;
+      --ink-muted: #3d524c;
+      --surface: #f7f9f8;
+      --surface-alt: #eef3f1;
+      --gcp-blue: #1a3a52;
+      --gcp-blue-muted: #2d5a7b;
+      --gcp-fill: #f4f8fb;
+      --accent: #264540;
+      --accent-soft: #5da68a;
+      --wire: #b8c9c3;
+      --wire-label: #6b7f78;
+      --internet: #e8eef2;
+      --external: #faf8f5;
+      --optional: #9a8b7a;
+      --white: #ffffff;
+      --arrow: #5da68a;
+      --max-width: 1100px;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--white);
+      color: var(--ink);
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      line-height: 1.45;
+      margin: 0;
+      padding: 2rem 1.25rem 3rem;
+    }
+
+    .page {
+      margin: 0 auto;
+      max-width: var(--max-width);
+    }
+
+    header {
+      border-bottom: 1px solid #e4ebe8;
+      margin-bottom: 2rem;
+      padding-bottom: 1.25rem;
+    }
+
+    header h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0 0 0.35rem;
+    }
+
+    header p {
+      color: var(--ink-muted);
+      font-size: 0.9375rem;
+      margin: 0;
+      max-width: 62ch;
+    }
+
+    .legend {
+      color: var(--wire-label);
+      display: flex;
+      flex-wrap: wrap;
+      font-size: 0.75rem;
+      gap: 1rem 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .legend-item {
+      align-items: center;
+      display: flex;
+      gap: 0.4rem;
+    }
+
+    .legend-swatch {
+      border-radius: 3px;
+      height: 0.75rem;
+      width: 0.75rem;
+    }
+
+    .legend-swatch.gcp { background: var(--gcp-fill); border: 2px solid var(--gcp-blue); }
+    .legend-swatch.external { background: var(--external); border: 1px solid var(--wire); }
+    .legend-swatch.optional { background: var(--white); border: 1px dashed var(--optional); }
+    .legend-swatch.peer-sync {
+      background: linear-gradient(90deg, transparent 35%, #7a9480 35%, #7a9480 65%, transparent 65%);
+      border: none;
+      height: 2px;
+      width: 1.25rem;
+    }
+
+    .diagram {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+    }
+
+    .zone {
+      border-radius: 10px;
+      position: relative;
+    }
+
+    .zone-internet {
+      background: var(--internet);
+      border: 1px solid #c5d3dc;
+      padding: 0.85rem 1rem;
+      text-align: center;
+    }
+
+    .zone-label {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .zone-internet .zone-label {
+      color: var(--gcp-blue-muted);
+    }
+
+    .flow-connector {
+      align-items: center;
+      color: var(--wire-label);
+      display: flex;
+      flex-direction: column;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      gap: 0.15rem;
+      letter-spacing: 0.04em;
+      padding: 0.65rem 0;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .flow-connector .arrow {
+      color: var(--arrow);
+      font-size: 1.25rem;
+      line-height: 1;
+    }
+
+    .gcp-perimeter {
+      background: var(--gcp-fill);
+      border: 3px solid var(--gcp-blue);
+      border-radius: 12px;
+      padding: 1.25rem 1.25rem 1.5rem;
+    }
+
+    .gcp-perimeter-header {
+      border-bottom: 1px dashed var(--gcp-blue-muted);
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.75rem;
+      text-align: center;
+    }
+
+    .gcp-perimeter-header .zone-label {
+      color: var(--gcp-blue);
+      font-size: 0.75rem;
+    }
+
+    .gcp-perimeter-header .sub {
+      color: var(--gcp-blue-muted);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      margin: 0.35rem 0 0;
+    }
+
+    .box {
+      background: var(--white);
+      border: 1px solid var(--wire);
+      border-radius: 8px;
+      padding: 0.85rem 1rem;
+    }
+
+    .box.highlight {
+      border-color: var(--accent-soft);
+      border-width: 2px;
+    }
+
+    .box.gcp-service {
+      border-color: #7ba3c0;
+    }
+
+    .box-title {
+      color: var(--ink);
+      font-size: 0.8125rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      margin: 0 0 0.45rem;
+    }
+
+    .box-sub {
+      color: var(--gcp-blue-muted);
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      margin: -0.25rem 0 0.45rem;
+      text-transform: uppercase;
+    }
+
+    .box ul {
+      color: var(--ink-muted);
+      font-size: 0.75rem;
+      margin: 0;
+      padding-left: 1.1rem;
+    }
+
+    .box ul li {
+      margin-bottom: 0.2rem;
+    }
+
+    .lb-row {
+      margin-bottom: 0.75rem;
+    }
+
+    .split-row {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: 1fr 1fr;
+      margin-bottom: 0.75rem;
+    }
+
+    .split-row .route-label {
+      color: var(--wire-label);
+      font-size: 0.625rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.35rem;
+      text-transform: uppercase;
+    }
+
+    .bq-row {
+      margin-bottom: 0.75rem;
+      margin-top: 0.5rem;
+    }
+
+    .flow-inline {
+      align-items: center;
+      color: var(--wire-label);
+      display: flex;
+      font-size: 0.625rem;
+      font-weight: 700;
+      gap: 0.35rem;
+      justify-content: center;
+      letter-spacing: 0.05em;
+      padding: 0.45rem 0;
+      text-transform: uppercase;
+    }
+
+    .flow-inline .arrow {
+      color: var(--arrow);
+    }
+
+    .logging-row {
+      margin-top: 0.25rem;
+    }
+
+    .external-section {
+      margin-top: 0.5rem;
+    }
+
+    .external-header {
+      color: var(--wire-label);
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.75rem;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .external-grid {
+      display: grid;
+      gap: 0.75rem;
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .box.external {
+      background: var(--external);
+      padding: 0.75rem;
+      text-align: center;
+    }
+
+    .box.external.optional {
+      border-style: dashed;
+      border-color: var(--optional);
+      opacity: 0.92;
+    }
+
+    .box.external .box-title {
+      font-size: 0.75rem;
+      margin: 0;
+    }
+
+    .box.external .optional-tag {
+      color: var(--optional);
+      display: block;
+      font-size: 0.625rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      margin-top: 0.25rem;
+      text-transform: uppercase;
+    }
+
+    .external-connectors {
+      display: grid;
+      gap: 0.75rem;
+      grid-template-columns: repeat(4, 1fr);
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+
+    .external-connectors span.optional-connector {
+      color: var(--optional);
+      opacity: 0.85;
+    }
+
+    .peer-sync-row {
+      border: 1px dashed #7a9480;
+      border-radius: 8px;
+      background: #f3f7f4;
+      color: #5a6f62;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      line-height: 1.4;
+      margin-top: 0.75rem;
+      padding: 0.55rem 0.75rem;
+      text-align: center;
+    }
+
+    .peer-sync-row .peer-sync-label {
+      color: #4a6741;
+      display: block;
+      font-size: 0.625rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.2rem;
+      text-transform: uppercase;
+    }
+
+    .footnote strong {
+      color: var(--ink-muted);
+      font-weight: 600;
+    }
+
+    .footnote {
+      color: var(--wire-label);
+      font-size: 0.75rem;
+      margin-top: 2rem;
+      max-width: 72ch;
+    }
+
+    @media (max-width: 820px) {
+      .split-row,
+      .external-grid,
+      .external-connectors {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .external-grid .box:nth-child(3),
+      .external-connectors span:nth-child(3) {
+        grid-column: 1 / -1;
+        justify-self: center;
+        max-width: 50%;
+      }
+
+      .external-grid .box:nth-child(4),
+      .external-connectors span:nth-child(4) {
+        grid-column: 1 / -1;
+        justify-self: center;
+        max-width: 50%;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .split-row,
+      .external-grid,
+      .external-connectors {
+        grid-template-columns: 1fr;
+      }
+
+      .external-grid .box,
+      .external-connectors span {
+        grid-column: auto;
+        max-width: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <h1>Integration Architecture Schematic</h1>
+      <p>
+        AthenaNet, Zenoti, GoHighLevel, and optionally WooCommerce — ingested through a
+        GCP HIPAA-aligned perimeter into BigQuery. Inventory is managed in Zenoti and
+        already syncs to Woo operationally; for analytics, treat Zenoti as source of truth
+        and only add Woo to GCP if you need web-only metrics.
+      </p>
+      <div class="legend">
+        <span class="legend-item"><span class="legend-swatch gcp"></span> GCP secure perimeter (BAA)</span>
+        <span class="legend-item"><span class="legend-swatch external"></span> External SaaS APIs</span>
+        <span class="legend-item"><span class="legend-swatch peer-sync"></span> Operational peer sync (outside GCP)</span>
+        <span class="legend-item"><span class="legend-swatch optional"></span> Optional GCP ingestion</span>
+      </div>
+    </header>
+
+    <div class="diagram">
+      <section class="zone zone-internet">
+        <div class="zone-label">Public Internet</div>
+      </section>
+
+      <div class="flow-connector">
+        <span class="arrow">↓</span>
+        Secure HTTPS · Webhooks &amp; API calls
+        <span class="arrow">↓</span>
+      </div>
+
+      <section class="gcp-perimeter" aria-label="Google Cloud Platform secure compliance perimeter">
+        <div class="gcp-perimeter-header">
+          <div class="zone-label">Google Cloud Platform — Secure Compliance Perimeter</div>
+          <p class="sub">Under signed BAA · PHI handled inside boundary only</p>
+        </div>
+
+        <div class="lb-row">
+          <div class="box gcp-service highlight">
+            <p class="box-sub">Edge</p>
+            <p class="box-title">Cloud Load Balancer &amp; Cloud Armor</p>
+            <ul>
+              <li>DDoS protection &amp; IP filtering</li>
+              <li>SSL termination</li>
+              <li>Routes traffic to Integration Hub or Custom App</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="split-row">
+          <div>
+            <p class="route-label">↓ Route to Integration Hub</p>
+            <div class="box highlight">
+              <p class="box-sub">Cloud Run</p>
+              <p class="box-title">Middleware Hub</p>
+              <ul>
+                <li>Ingests &amp; translates API data from external systems</li>
+                <li>Normalizes AthenaNet, Zenoti, and GHL; inventory from Zenoti only</li>
+                <li>Optional WooCommerce ingest for web-only data (orders, cart, product analytics)</li>
+                <li>Integration code scaffolded &amp; maintained via AI-assisted dev</li>
+              </ul>
+            </div>
+          </div>
+          <div>
+            <p class="route-label">↓ Route to Custom App</p>
+            <div class="box highlight">
+              <p class="box-sub">Cloud Run</p>
+              <p class="box-title">Custom Reporting App</p>
+              <ul>
+                <li>Staff-facing web app (Next.js, React, or Python/Streamlit)</li>
+                <li>Built via Cursor / AI-assisted development</li>
+                <li>Role-based access control (RBAC)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="flow-inline">
+          <span class="arrow">↓</span> Direct sync (Middleware → warehouse)
+        </div>
+
+        <div class="bq-row">
+          <div class="box gcp-service highlight">
+            <p class="box-sub">Data warehouse</p>
+            <p class="box-title">Cloud BigQuery</p>
+            <ul>
+              <li>Central secure repository for GHL, Zenoti, and Athena data</li>
+              <li>Inventory &amp; wellness center ops metrics sourced from Zenoti — not duplicated from Woo</li>
+              <li>Custom tables optimized for Five Journeys business metrics</li>
+              <li>Source of truth for cross-system reporting &amp; analytics</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="flow-inline">
+          Custom App <span class="arrow">→</span> Run analytical SQL against BigQuery
+        </div>
+
+        <div class="flow-inline">
+          <span class="arrow">↓</span> Stream logs &amp; audit events
+        </div>
+
+        <div class="logging-row">
+          <div class="box gcp-service">
+            <p class="box-sub">Governance</p>
+            <p class="box-title">Cloud Logging &amp; Identity-Aware Proxy (IAP)</p>
+            <ul>
+              <li>MFA enforced before staff can open the custom reporting app</li>
+              <li>Immutable access logs: which staff member viewed which patient report</li>
+              <li>Compliance audit trail across all touchpoints</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <div class="flow-connector">
+        <span class="arrow">↑</span>
+        API / webhook connections from external systems
+        <span class="arrow">↑</span>
+      </div>
+
+      <section class="external-section" aria-label="External SaaS systems">
+        <p class="external-header">External systems (outside GCP perimeter)</p>
+        <div class="external-connectors">
+          <span>↑</span>
+          <span>↑</span>
+          <span>↑</span>
+          <span class="optional-connector" title="Optional GCP ingestion">↑</span>
+        </div>
+        <div class="external-grid">
+          <div class="box external">
+            <p class="box-title">athenahealth API</p>
+            <span class="optional-tag">EHR / clinical</span>
+          </div>
+          <div class="box external">
+            <p class="box-title">Zenoti API</p>
+            <span class="optional-tag">Wellness center · scheduling · inventory (source of truth)</span>
+          </div>
+          <div class="box external">
+            <p class="box-title">Go High Level API</p>
+            <span class="optional-tag">CRM / marketing automation</span>
+          </div>
+          <div class="box external optional">
+            <p class="box-title">WooCommerce API</p>
+            <span class="optional-tag">Optional for GCP · e-commerce storefront</span>
+          </div>
+        </div>
+        <div class="peer-sync-row" aria-label="Zenoti and WooCommerce inventory sync outside GCP">
+          <span class="peer-sync-label">Operational peer sync · outside GCP</span>
+          Zenoti ↔ WooCommerce — inventory sync via existing API (storefront reflects Zenoti stock)
+        </div>
+      </section>
+    </div>
+
+    <p class="footnote">
+      Schematic v1 — wireframe for architecture review. External systems push or are polled by
+      the Middleware Hub; normalized data lands in BigQuery; the Custom Reporting App queries
+      BigQuery for analytics; IAP and Cloud Logging govern staff access.
+      <strong>Zenoti ↔ Woo:</strong> Inventory already syncs between those systems via their
+      existing API — that path is operational, not part of GCP. For BigQuery, ingest inventory
+      from Zenoti only to avoid double-counting. Woo into the Middleware Hub is optional — add
+      it only for web-specific data Zenoti does not hold (online orders, cart events, product-page
+      analytics).
+    </p>
+  </div>
+</body>
+</html>

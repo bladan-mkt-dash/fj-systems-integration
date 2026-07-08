@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Golden Record — Identity Resolution Flow</title>
+  <style>
+    :root {
+      --ink: #1a2e2a;
+      --ink-muted: #3d524c;
+      --wire: #b8c9c3;
+      --wire-label: #6b7f78;
+      --white: #ffffff;
+      --surface: #fafbfb;
+      --gcp-blue: #1a3a52;
+      --gcp-fill: #f4f8fb;
+      --gcp-border: #2d5a7b;
+      --accent: #5da68a;
+      --athena: #2d5a7b;
+      --athena-bg: #eef4f8;
+      --zenoti: #4a6741;
+      --zenoti-bg: #eef4ef;
+      --ghl: #6b4c8a;
+      --ghl-bg: #f3eef8;
+      --hub: #264540;
+      --hub-bg: #edf6f2;
+      --max-width: 980px;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--surface);
+      color: var(--ink);
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      line-height: 1.45;
+      margin: 0;
+      min-height: 100vh;
+      padding: 2.5rem 1.25rem 3rem;
+    }
+
+    .page {
+      margin: 0 auto;
+      max-width: var(--max-width);
+    }
+
+    header {
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0 0 0.4rem;
+    }
+
+    header p {
+      color: var(--ink-muted);
+      font-size: 0.875rem;
+      margin: 0 auto;
+      max-width: 62ch;
+    }
+
+    .flow {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    /* ── Top: three teams ── */
+    .teams-row {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .team-card {
+      background: var(--white);
+      border: 1px solid var(--wire);
+      border-radius: 10px;
+      border-top-width: 4px;
+      padding: 1rem 1rem 0.9rem;
+      text-align: center;
+    }
+
+    .team-card.ghl { border-top-color: var(--ghl); }
+    .team-card.zenoti { border-top-color: var(--zenoti); }
+    .team-card.athena { border-top-color: var(--athena); }
+
+    .team-label {
+      color: var(--wire-label);
+      display: block;
+      font-size: 0.625rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.35rem;
+      text-transform: uppercase;
+    }
+
+    .team-card .system {
+      font-size: 0.8125rem;
+      font-weight: 700;
+      margin: 0 0 0.5rem;
+    }
+
+    .team-card.ghl .system { color: var(--ghl); }
+    .team-card.zenoti .system { color: var(--zenoti); }
+    .team-card.athena .system { color: var(--athena); }
+
+    .team-action {
+      background: var(--surface);
+      border-radius: 6px;
+      color: var(--ink-muted);
+      font-size: 0.75rem;
+      margin: 0;
+      padding: 0.55rem 0.65rem;
+    }
+
+    /* ── Connectors ── */
+    .connectors-row {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(3, 1fr);
+      padding: 0.65rem 0 0.5rem;
+    }
+
+    .connector {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+
+    .connector .arrow {
+      color: var(--accent);
+      font-size: 1.35rem;
+      line-height: 1;
+    }
+
+    .connector .tag {
+      background: var(--white);
+      border: 1px solid var(--wire);
+      border-radius: 999px;
+      color: var(--wire-label);
+      font-size: 0.625rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding: 0.2rem 0.55rem;
+      text-transform: uppercase;
+    }
+
+    .connector.inbound .tag {
+      border-color: #a8c4b8;
+      color: #3d6b58;
+    }
+
+    .connector.outbound .tag {
+      border-color: #9bb8cc;
+      color: var(--athena);
+    }
+
+    /* ── GCP Hub ── */
+    .hub-wrap {
+      margin: 0.25rem 0;
+    }
+
+    .gcp-band {
+      background: var(--gcp-fill);
+      border: 3px solid var(--gcp-blue);
+      border-radius: 12px;
+      padding: 0.65rem 1rem 1rem;
+    }
+
+    .gcp-badge {
+      color: var(--gcp-blue);
+      font-size: 0.625rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      margin: 0 0 0.65rem;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .hub-box {
+      background: var(--hub-bg);
+      border: 2px solid var(--hub);
+      border-radius: 10px;
+      padding: 1.1rem 1.25rem 1rem;
+    }
+
+    .hub-title {
+      color: var(--hub);
+      font-size: 0.9375rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      margin: 0 0 0.85rem;
+      text-align: center;
+    }
+
+    .hub-steps {
+      display: grid;
+      gap: 0.55rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .hub-steps li {
+      align-items: flex-start;
+      background: var(--white);
+      border: 1px solid #c5ddd4;
+      border-radius: 8px;
+      display: flex;
+      gap: 0.65rem;
+      padding: 0.65rem 0.75rem;
+    }
+
+    .step-num {
+      align-items: center;
+      background: var(--hub);
+      border-radius: 50%;
+      color: var(--white);
+      display: flex;
+      flex-shrink: 0;
+      font-size: 0.6875rem;
+      font-weight: 700;
+      height: 1.35rem;
+      justify-content: center;
+      width: 1.35rem;
+    }
+
+    .step-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .step-body strong {
+      color: var(--ink);
+      display: block;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      margin-bottom: 0.1rem;
+    }
+
+    .step-body span {
+      color: var(--ink-muted);
+      font-size: 0.75rem;
+    }
+
+    .hub-steps li.highlight {
+      border-color: var(--gcp-border);
+      box-shadow: 0 0 0 1px rgba(45, 90, 123, 0.08);
+    }
+
+    .hub-steps li.highlight .step-num {
+      background: var(--gcp-border);
+    }
+
+    /* ── Bottom: sync outcomes ── */
+    .outcomes-row {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(3, 1fr);
+      padding-top: 0.5rem;
+    }
+
+    .outcome-card {
+      border-radius: 10px;
+      padding: 0.85rem 0.9rem;
+      text-align: center;
+    }
+
+    .outcome-card.ghl {
+      background: var(--ghl-bg);
+      border: 1px solid #c9b8dc;
+    }
+
+    .outcome-card.zenoti {
+      background: var(--zenoti-bg);
+      border: 1px solid #b8cdb8;
+    }
+
+    .outcome-card.athena {
+      background: var(--athena-bg);
+      border: 1px solid #b8cdd8;
+    }
+
+    .outcome-card .system {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.35rem;
+      text-transform: uppercase;
+    }
+
+    .outcome-card.ghl .system { color: var(--ghl); }
+    .outcome-card.zenoti .system { color: var(--zenoti); }
+    .outcome-card.athena .system { color: var(--athena); }
+
+    .outcome-card p {
+      color: var(--ink);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    .callout {
+      background: var(--hub-bg);
+      border: 2px solid var(--hub);
+      border-radius: 12px;
+      color: var(--ink);
+      font-size: 1rem;
+      line-height: 1.55;
+      margin: 2.25rem auto 0;
+      max-width: 72ch;
+      padding: 1.25rem 1.5rem;
+      text-align: center;
+    }
+
+    .callout strong {
+      color: var(--hub);
+      display: block;
+      font-size: 1.0625rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .connector.outbound .tag.fill-only {
+      border-color: #9bb8cc;
+      color: var(--athena);
+    }
+
+    .outcome-card .outcome-note {
+      color: var(--ink-muted);
+      display: block;
+      font-size: 0.6875rem;
+      font-weight: 500;
+      margin-top: 0.35rem;
+    }
+
+    .outcome-card.athena p.main-outcome {
+      font-size: 0.75rem;
+    }
+
+    .callout .single-entry {
+      border-top: 1px solid #c5ddd4;
+      color: var(--ink-muted);
+      font-size: 0.9375rem;
+      font-weight: 600;
+      margin: 0.85rem 0 0;
+      padding-top: 0.85rem;
+    }
+
+    .callout .athena-rule {
+      border-top: 1px solid #b8cdd8;
+      color: var(--athena);
+      font-size: 0.9375rem;
+      font-weight: 600;
+      margin: 0.85rem 0 0;
+      padding-top: 0.85rem;
+    }
+
+    @media (max-width: 720px) {
+      .teams-row,
+      .connectors-row,
+      .outcomes-row {
+        grid-template-columns: 1fr;
+        max-width: 360px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <h1>Golden Record — Identity Resolution Flow</h1>
+      <p>
+        When any team updates a patient or lead, webhooks hit the GCP Middleware Hub.
+        The hub matches identity, updates the master record in BigQuery, and queues
+        outbound sync. Empty fields are filled automatically across all three systems;
+        existing AthenaNet values are never overwritten unless edited manually there.
+      </p>
+    </header>
+
+    <div class="flow" role="img" aria-label="Three teams enter data in GHL, Zenoti, and Athena. Webhooks flow to GCP Middleware Hub for identity resolution and golden record update. API pushes sync missing data back to each system.">
+
+      <!-- Teams -->
+      <div class="teams-row">
+        <div class="team-card ghl">
+          <span class="team-label">Marketing Team</span>
+          <p class="system">Go High Level</p>
+          <p class="team-action">Enters lead in GHL</p>
+        </div>
+        <div class="team-card zenoti">
+          <span class="team-label">Front Desk / Wellness Center Team</span>
+          <p class="system">Zenoti</p>
+          <p class="team-action">Enters profile in Zenoti</p>
+        </div>
+        <div class="team-card athena">
+          <span class="team-label">Clinical / Provider Team</span>
+          <p class="system">AthenaNet</p>
+          <p class="team-action">Updates patient chart in Athena</p>
+        </div>
+      </div>
+
+      <!-- Inbound webhooks -->
+      <div class="connectors-row">
+        <div class="connector inbound">
+          <span class="arrow">↓</span>
+          <span class="tag">Webhook</span>
+        </div>
+        <div class="connector inbound">
+          <span class="arrow">↓</span>
+          <span class="tag">Webhook</span>
+        </div>
+        <div class="connector inbound">
+          <span class="arrow">↓</span>
+          <span class="tag">Webhook</span>
+        </div>
+      </div>
+
+      <!-- GCP Middleware Hub -->
+      <div class="hub-wrap">
+        <div class="gcp-band">
+          <p class="gcp-badge">Google Cloud Platform</p>
+          <div class="hub-box">
+            <p class="hub-title">GCP Middleware Hub</p>
+            <ol class="hub-steps">
+              <li>
+                <span class="step-num">1</span>
+                <div class="step-body">
+                  <strong>Resolves identity</strong>
+                  <span>Matches name, date of birth, and email across GHL, Zenoti, and Athena</span>
+                </div>
+              </li>
+              <li class="highlight">
+                <span class="step-num">2</span>
+                <div class="step-body">
+                  <strong>Updates master golden record in BigQuery</strong>
+                  <span>Single source of truth for cross-system patient &amp; lead identity</span>
+                </div>
+              </li>
+              <li>
+                <span class="step-num">3</span>
+                <div class="step-body">
+                  <strong>Queues outbound synchronization</strong>
+                  <span>Fills empty fields in GHL, Zenoti, and AthenaNet. Never overwrites data already present in Athena — only manual edits there can change it.</span>
+                </div>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <!-- Outbound API pushes -->
+      <div class="connectors-row">
+        <div class="connector outbound">
+          <span class="arrow">↓</span>
+          <span class="tag">API push</span>
+        </div>
+        <div class="connector outbound">
+          <span class="arrow">↓</span>
+          <span class="tag">API push</span>
+        </div>
+        <div class="connector outbound">
+          <span class="arrow">↓</span>
+          <span class="tag fill-only">Fill if empty</span>
+        </div>
+      </div>
+
+      <!-- Outcomes -->
+      <div class="outcomes-row">
+        <div class="outcome-card ghl">
+          <p class="system">Go High Level</p>
+          <p>Updates GHL records automatically</p>
+        </div>
+        <div class="outcome-card zenoti">
+          <p class="system">Zenoti</p>
+          <p>Updates Zenoti profiles automatically</p>
+        </div>
+        <div class="outcome-card athena">
+          <p class="system">AthenaNet</p>
+          <p class="main-outcome">Fill empty fields only</p>
+          <span class="outcome-note">e.g. credit card, first name — populated from Zenoti or GHL when blank; existing values never overwritten</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>Bi-directional inbound — fill-if-empty outbound to Athena</strong>
+      Any team can be the source of a change: marketing in GHL, front desk in Zenoti, or
+      clinical in AthenaNet. The hub resolves identity, writes the golden record once, then
+      propagates data to every system.
+      <p class="athena-rule">
+        AthenaNet rule: empty fields are filled automatically (e.g. credit card entered in
+        Zenoti writes to a blank field in Athena). Once a field has data in AthenaNet, it is
+        never overwritten by the hub — only a manual edit in Athena can change it.
+      </p>
+      <p class="single-entry">
+        Once implemented, staff enter shared data in only one system — no double or triple
+        entry. A credit card, first name, or phone captured at the wellness center desk in Zenoti can
+        flow into an empty Athena record automatically. GHL and Zenoti stay fully in sync
+        for missing fields; Athena is protected once populated.
+      </p>
+    </div>
+  </div>
+</body>
+</html>
