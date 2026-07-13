@@ -358,6 +358,11 @@
       max-width: 72ch;
     }
 
+    .footnote a {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
     @media (max-width: 820px) {
       .split-row,
       .external-grid,
@@ -400,10 +405,12 @@
     <header>
       <h1>Integration Architecture Schematic</h1>
       <p>
-        AthenaNet, Zenoti, GoHighLevel, and optionally WooCommerce — ingested through a
-        GCP HIPAA-aligned perimeter into BigQuery. Inventory is managed in Zenoti and
-        already syncs to Woo operationally; for analytics, treat Zenoti as source of truth
-        and only add Woo to GCP if you need web-only metrics.
+        AthenaNet, Zenoti, GoHighLevel, and WooCommerce — ingested through a
+        GCP HIPAA-aligned perimeter into BigQuery.
+        <strong>Inventory:</strong> Zenoti is source of truth; Zenoti ↔ Woo sync stays outside GCP.
+        <strong>Identity:</strong> Woo contact fields are in scope for the golden record when store
+        customers must unify with practice patients; Woo <em>commerce metrics</em> (orders, cart)
+        remain optional.
       </p>
       <div class="legend">
         <span class="legend-item"><span class="legend-swatch gcp"></span> GCP secure perimeter (BAA)</span>
@@ -451,7 +458,7 @@
               <ul>
                 <li>Ingests &amp; translates API data from external systems</li>
                 <li>Normalizes AthenaNet, Zenoti, and GHL; inventory from Zenoti only</li>
-                <li>Optional WooCommerce ingest for web-only data (orders, cart, product analytics)</li>
+                <li>Woo: identity fields when required for golden record; optional commerce metrics (orders, cart, product analytics)</li>
                 <li>Integration code scaffolded &amp; maintained via AI-assisted dev</li>
               </ul>
             </div>
@@ -463,7 +470,7 @@
               <p class="box-title">Custom Reporting App</p>
               <ul>
                 <li>Staff-facing web app (Next.js, React, or Python/Streamlit)</li>
-                <li>Built via Cursor / AI-assisted development</li>
+                <li>Surfaces ops products (e.g. Admin Check List) from BigQuery views</li>
                 <li>Role-based access control (RBAC)</li>
               </ul>
             </div>
@@ -537,7 +544,7 @@
           </div>
           <div class="box external optional">
             <p class="box-title">WooCommerce API</p>
-            <span class="optional-tag">Optional for GCP · e-commerce storefront</span>
+            <span class="optional-tag">Identity in-scope · commerce metrics optional</span>
           </div>
         </div>
         <div class="peer-sync-row" aria-label="Zenoti and WooCommerce inventory sync outside GCP">
@@ -548,14 +555,15 @@
     </div>
 
     <p class="footnote">
-      Schematic v1 — wireframe for architecture review. External systems push or are polled by
+      Schematic for architecture review. External systems push or are polled by
       the Middleware Hub; normalized data lands in BigQuery; the Custom Reporting App queries
-      BigQuery for analytics; IAP and Cloud Logging govern staff access.
-      <strong>Zenoti ↔ Woo:</strong> Inventory already syncs between those systems via their
-      existing API — that path is operational, not part of GCP. For BigQuery, ingest inventory
-      from Zenoti only to avoid double-counting. Woo into the Middleware Hub is optional — add
-      it only for web-specific data Zenoti does not hold (online orders, cart events, product-page
-      analytics).
+      BigQuery for analytics and operations reports; IAP and Cloud Logging govern staff access.
+      <strong>Woo — two decisions:</strong> keep Zenoti ↔ Woo inventory sync outside GCP
+      (warehouse inventory from Zenoti only). Ingest Woo identity fields when Goal 1 requires
+      unifying store customers; add Woo commerce metrics only for web-specific data Zenoti does not hold.
+      <strong>Not on this map:</strong> cancellation / termination sync, Zenoti decline propagation,
+      or the Admin Check List product rules — see
+      <a href="operations-reporting-layer.html">Operations reporting layer</a>.
     </p>
   </div>
 </body>

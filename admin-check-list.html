@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Check List — Wireframe</title>
+  <style>
+    :root {
+      --ink: #1a2e2a;
+      --ink-muted: #3d524c;
+      --wire: #b8c9c3;
+      --wire-label: #6b7f78;
+      --white: #ffffff;
+      --surface: #fafbfb;
+      --header-bg: #c5d9c8;
+      --header-border: #9bb89f;
+      --accent: #5da68a;
+      --hub: #264540;
+      --warn: #8a5a2b;
+      --warn-bg: #f7f0e8;
+      --drill: #2d5a7b;
+      --drill-bg: #eef4f8;
+      --max-width: 880px;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--surface);
+      color: var(--ink);
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      line-height: 1.45;
+      margin: 0;
+      min-height: 100vh;
+      padding: 2rem 1.25rem 3.5rem;
+    }
+
+    .page {
+      margin: 0 auto;
+      max-width: var(--max-width);
+    }
+
+    .back {
+      color: var(--hub);
+      display: inline-block;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+      text-decoration: none;
+    }
+
+    .back:hover {
+      text-decoration: underline;
+    }
+
+    header {
+      margin-bottom: 1.75rem;
+      text-align: center;
+    }
+
+    header .eyebrow {
+      color: var(--wire-label);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      margin: 0 0 0.45rem;
+      text-transform: uppercase;
+    }
+
+    header h1 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0 0 0.35rem;
+    }
+
+    header .subtitle {
+      color: var(--ink-muted);
+      font-size: 0.875rem;
+      margin: 0 auto 0.75rem;
+      max-width: 58ch;
+    }
+
+    header .meta {
+      color: var(--wire-label);
+      font-size: 0.75rem;
+      margin: 0;
+    }
+
+    .note {
+      background: var(--drill-bg);
+      border: 1px solid #c5d6e3;
+      border-left: 3px solid var(--drill);
+      border-radius: 4px;
+      color: var(--ink-muted);
+      font-size: 0.8125rem;
+      margin: 0 0 1.75rem;
+      padding: 0.75rem 0.9rem;
+    }
+
+    .note strong {
+      color: var(--drill);
+    }
+
+    .filters {
+      background: var(--white);
+      border: 1px solid var(--wire);
+      border-radius: 6px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 1rem;
+      align-items: flex-end;
+      margin: 0 0 1.5rem;
+      padding: 0.9rem 1rem;
+    }
+
+    .filters .filter-title {
+      color: var(--hub);
+      flex: 1 1 100%;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .filters label {
+      display: flex;
+      flex-direction: column;
+      font-size: 0.7rem;
+      font-weight: 600;
+      gap: 0.25rem;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: var(--wire-label);
+    }
+
+    .filters input[type="date"] {
+      border: 1px solid var(--wire);
+      border-radius: 4px;
+      color: var(--ink);
+      font: inherit;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      letter-spacing: normal;
+      padding: 0.35rem 0.45rem;
+      text-transform: none;
+    }
+
+    .presets {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+    }
+
+    .presets button,
+    .filters .actions button {
+      background: var(--surface);
+      border: 1px solid var(--wire);
+      border-radius: 4px;
+      color: var(--ink);
+      cursor: pointer;
+      font: inherit;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.35rem 0.55rem;
+    }
+
+    .presets button.active,
+    .presets button:hover,
+    .filters .actions button.primary {
+      background: var(--hub);
+      border-color: var(--hub);
+      color: var(--white);
+    }
+
+    .filters .actions {
+      display: flex;
+      gap: 0.35rem;
+      margin-left: auto;
+    }
+
+    .filter-status {
+      color: var(--drill);
+      flex: 1 1 100%;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    tr.is-hidden {
+      display: none;
+    }
+
+    .summary-grid {
+      display: grid;
+      gap: 0.75rem;
+      grid-template-columns: repeat(4, 1fr);
+      margin-bottom: 2rem;
+    }
+
+    .summary-card {
+      background: var(--white);
+      border: 1px solid var(--wire);
+      border-radius: 6px;
+      padding: 0.85rem 0.9rem;
+    }
+
+    .summary-card.clickable {
+      box-shadow: inset 0 0 0 1px transparent;
+      cursor: default;
+      position: relative;
+    }
+
+    .summary-card .label {
+      color: var(--wire-label);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      margin: 0 0 0.35rem;
+      text-transform: uppercase;
+    }
+
+    .summary-card .value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin: 0;
+    }
+
+    .summary-card .hint {
+      color: var(--drill);
+      font-size: 0.7rem;
+      font-weight: 600;
+      margin: 0.4rem 0 0;
+    }
+
+    .section {
+      margin-bottom: 2rem;
+    }
+
+    .section > h2 {
+      border-bottom: 2px solid var(--hub);
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin: 0 0 1rem;
+      padding-bottom: 0.35rem;
+    }
+
+    .block {
+      margin-bottom: 1.25rem;
+    }
+
+    .block h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin: 0 0 0.45rem;
+    }
+
+    table {
+      background: var(--white);
+      border-collapse: collapse;
+      font-size: 0.8125rem;
+      width: 100%;
+    }
+
+    th,
+    td {
+      border: 1px solid var(--header-border);
+      padding: 0.4rem 0.55rem;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: var(--header-bg);
+      font-weight: 700;
+    }
+
+    tr.clickable-row td:first-child {
+      color: var(--hub);
+      font-weight: 600;
+      text-decoration: underline;
+      text-decoration-style: dotted;
+      text-underline-offset: 2px;
+    }
+
+    .issue-tag {
+      background: var(--warn-bg);
+      border-radius: 3px;
+      color: var(--warn);
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.1rem 0.4rem;
+    }
+
+    .drilldowns {
+      background: var(--white);
+      border: 1px solid var(--wire);
+      border-radius: 6px;
+      margin-top: 2.25rem;
+      padding: 1.1rem 1.2rem 1.25rem;
+    }
+
+    .drilldowns h2 {
+      color: var(--drill);
+      font-size: 1rem;
+      margin: 0 0 0.35rem;
+    }
+
+    .drilldowns > p {
+      color: var(--ink-muted);
+      font-size: 0.8125rem;
+      margin: 0 0 0.85rem;
+    }
+
+    .drilldowns ol {
+      margin: 0;
+      padding-left: 1.2rem;
+    }
+
+    .drilldowns li {
+      font-size: 0.8125rem;
+      margin-bottom: 0.65rem;
+    }
+
+    .drilldowns li strong {
+      color: var(--ink);
+    }
+
+    .drilldowns code {
+      background: var(--drill-bg);
+      border-radius: 3px;
+      font-size: 0.75rem;
+      padding: 0.05rem 0.3rem;
+    }
+
+    .totals {
+      display: grid;
+      gap: 0.75rem;
+      grid-template-columns: 1.4fr 1fr;
+      margin-top: 0.5rem;
+    }
+
+    .totals .panel {
+      background: var(--white);
+      border: 1px solid var(--wire);
+      border-radius: 6px;
+      padding: 0.9rem 1rem;
+    }
+
+    .totals h3 {
+      font-size: 0.9rem;
+      margin: 0 0 0.55rem;
+    }
+
+    .totals ul {
+      margin: 0;
+      padding-left: 1.1rem;
+    }
+
+    .totals li {
+      font-size: 0.8125rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .wire-label {
+      color: var(--wire-label);
+      font-size: 0.7rem;
+      font-style: italic;
+      margin: 0.35rem 0 0;
+    }
+
+    @media (max-width: 720px) {
+      .summary-grid,
+      .totals {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .summary-grid,
+      .totals {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <a class="back" href="index.html">← Systems Integrations</a>
+
+    <header>
+      <p class="eyebrow">Integration product · wireframe</p>
+      <h1>Admin Check List</h1>
+      <p class="subtitle">
+        Daily Action Report — missing demographics and operational exceptions,
+        generated automatically from AthenaNet, Zenoti &amp; GoHighLevel.
+      </p>
+      <p class="meta">
+        Sample layout based on the Five Journeys Daily Operations Dashboard · illustrative data ·
+        <strong>Target product:</strong> live, internal-only staff app (not public) · HIPAA-conscious access (IAP/RBAC);
+        wireframe below is design reference only
+      </p>
+    </header>
+
+    <p class="note">
+      <strong>Wireframe note:</strong>
+      Use <strong>Appointment Date Range</strong> to scope the checklist to visits in a window
+      (e.g. next 7 days). Top strip = 5 Journeys Practice–wide gaps; below = provider action lists.
+      Dotted underlines and blue “Drill →” hints mark suggested click-throughs.
+    </p>
+
+    <form class="filters" id="appt-range-filter" action="#" method="get">
+      <p class="filter-title">Filter by Appointment Date Range</p>
+      <label>
+        From
+        <input id="appt-from" name="from" type="date" value="2026-07-13" />
+      </label>
+      <label>
+        To
+        <input id="appt-to" name="to" type="date" value="2026-07-20" />
+      </label>
+      <div class="presets" role="group" aria-label="Quick ranges">
+        <button type="button" data-preset="today">Today</button>
+        <button type="button" data-preset="7" class="active">Next 7 days</button>
+        <button type="button" data-preset="14">Next 14 days</button>
+        <button type="button" data-preset="30">Next 30 days</button>
+      </div>
+      <div class="actions">
+        <button type="button" id="appt-reset">Reset</button>
+        <button type="submit" class="primary" id="appt-apply">Apply</button>
+      </div>
+      <p class="filter-status" id="filter-status" aria-live="polite">
+        Showing upcoming appointment issues for Jul 13–Jul 20, 2026 (demo filter).
+      </p>
+    </form>
+
+    <!-- 5 Journeys Practice–wide missing demographics rollup -->
+    <section class="section" aria-labelledby="demo-summary">
+      <h2 id="demo-summary">Missing demographics — 5 Journeys Practice summary</h2>
+      <div class="summary-grid">
+        <div class="summary-card clickable">
+          <p class="label">Patients with gaps</p>
+          <p class="value">47</p>
+          <p class="hint">Drill → all incomplete records</p>
+        </div>
+        <div class="summary-card clickable">
+          <p class="label">Missing credit card</p>
+          <p class="value">18</p>
+          <p class="hint">Drill → by field type</p>
+        </div>
+        <div class="summary-card clickable">
+          <p class="label">Missing phone / email</p>
+          <p class="value">12</p>
+          <p class="hint">Drill → by field type</p>
+        </div>
+        <div class="summary-card clickable">
+          <p class="label">Appts in next 7 days</p>
+          <p class="value">23</p>
+          <p class="hint">Drill → urgency window</p>
+        </div>
+      </div>
+
+      <div class="block">
+        <h3>Gap mix (all providers)</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Missing field</th>
+              <th>Count</th>
+              <th>Systems checked</th>
+              <th>Priority</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="clickable-row">
+              <td>Credit card on file</td>
+              <td>18</td>
+              <td>Zenoti · GHL</td>
+              <td>High — upcoming visit</td>
+            </tr>
+            <tr class="clickable-row">
+              <td>Mobile phone</td>
+              <td>7</td>
+              <td>AthenaNet · GHL</td>
+              <td>High</td>
+            </tr>
+            <tr class="clickable-row">
+              <td>Email</td>
+              <td>5</td>
+              <td>AthenaNet · GHL · Woo</td>
+              <td>Medium</td>
+            </tr>
+            <tr class="clickable-row">
+              <td>Date of birth</td>
+              <td>4</td>
+              <td>AthenaNet (golden)</td>
+              <td>High</td>
+            </tr>
+            <tr class="clickable-row">
+              <td>Address / ZIP</td>
+              <td>3</td>
+              <td>AthenaNet · Zenoti</td>
+              <td>Medium</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="wire-label">Click a field row → filtered patient list for that gap type</p>
+      </div>
+    </section>
+
+    <!-- Provider sections mirroring the sample doc -->
+    <section class="section" aria-labelledby="provider-actions">
+      <h2 id="provider-actions">Provider action lists</h2>
+
+      <div class="block">
+        <h3>Dr. Edward Levitan</h3>
+
+        <p style="font-size:0.8rem;font-weight:700;margin:0.75rem 0 0.35rem;">Follow-Up Appointments Needed</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Patient</th>
+              <th>Last Visit</th>
+              <th>Recommended Follow-Up</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="clickable-row">
+              <td>Jane Smith</td>
+              <td>6/20/26</td>
+              <td>4 Weeks</td>
+            </tr>
+            <tr class="clickable-row">
+              <td>Robert Chen</td>
+              <td>5/12/26</td>
+              <td>8 Weeks</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="wire-label">Drill → open scheduling / last-visit chart context</p>
+
+        <p style="font-size:0.8rem;font-weight:700;margin:1rem 0 0.35rem;">Outstanding Copays</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Patient</th>
+              <th>Amount Due</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="clickable-row">
+              <td>John Adams</td>
+              <td>$35</td>
+            </tr>
+            <tr class="clickable-row">
+              <td>Maria Lopez</td>
+              <td>$75</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="wire-label">Drill → billing detail / payment request</p>
+
+        <p style="font-size:0.8rem;font-weight:700;margin:1rem 0 0.35rem;">Upcoming Appointment Issues</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Patient</th>
+              <th>Issue</th>
+              <th>Appt date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="clickable-row" data-appt="2026-07-15">
+              <td>Sarah Green</td>
+              <td><span class="issue-tag">Missing Credit Card (Athena / Zenoti)</span></td>
+              <td>7/15/26</td>
+            </tr>
+            <tr class="clickable-row" data-appt="2026-07-16">
+              <td>Alex Rivera</td>
+              <td><span class="issue-tag">Missing Phone</span></td>
+              <td>7/16/26</td>
+            </tr>
+            <tr class="clickable-row" data-appt="2026-07-18">
+              <td>Priya Patel</td>
+              <td><span class="issue-tag">Missing DOB in AthenaNet</span></td>
+              <td>7/18/26</td>
+            </tr>
+            <tr class="clickable-row" data-appt="2026-07-28">
+              <td>Morgan Lee</td>
+              <td><span class="issue-tag">Missing Address</span></td>
+              <td>7/28/26</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="wire-label">Primary demographics checklist surface — drill → patient golden-record compare</p>
+      </div>
+
+      <div class="block">
+        <h3>Dr. Wendie Trubow</h3>
+        <p style="font-size:0.8rem;font-weight:700;margin:0.75rem 0 0.35rem;">Follow-Up Appointments Needed</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Patient</th>
+              <th>Last Visit</th>
+              <th>Recommended Follow-Up</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="clickable-row">
+              <td>Elena Brooks</td>
+              <td>6/02/26</td>
+              <td>6 Weeks</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p style="font-size:0.8rem;font-weight:700;margin:1rem 0 0.35rem;">Upcoming Appointment Issues</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Patient</th>
+              <th>Issue</th>
+              <th>Appt date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="clickable-row" data-appt="2026-07-14">
+              <td>Chris Nolan</td>
+              <td><span class="issue-tag">Missing Email</span></td>
+              <td>7/14/26</td>
+            </tr>
+            <tr class="clickable-row" data-appt="2026-08-02">
+              <td>Dana West</td>
+              <td><span class="issue-tag">Missing Credit Card</span></td>
+              <td>8/02/26</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="block">
+        <h3>Additional providers <span style="font-weight:500;color:var(--ink-muted);font-size:0.8rem;">(same pattern)</span></h3>
+        <p style="font-size:0.8125rem;color:var(--ink-muted);margin:0;">
+          Dr. Bernice Wong · Dr. Tamer Khafagy · Ashley Gerlach, NP · Erin Jankauskas, PA —
+          each with Follow-Up Appointments Needed and Upcoming Appointment Issues
+          (Outstanding Copays where applicable).
+        </p>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="team-totals">
+      <h2 id="team-totals">Daily team totals</h2>
+      <div class="totals">
+        <div class="panel">
+          <h3>Today’s counts</h3>
+          <ul>
+            <li>Follow-ups needed: <strong>14</strong></li>
+            <li>Outstanding copays: <strong>6</strong> ($412)</li>
+            <li>Upcoming appointment issues: <strong>23</strong></li>
+            <li>of which missing demographics: <strong>19</strong></li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3>Goal</h3>
+          <ul>
+            <li>Clear all <strong>High</strong> demographic gaps before next business day for patients with visits in 7 days.</li>
+            <li>Reduce recurring “Missing Credit Card” issues week over week.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <aside class="drilldowns" aria-labelledby="drill-title">
+      <h2 id="drill-title">Suggested drill-downs</h2>
+      <p>These turn the Admin Check List from a static daily PDF into an actionable ops console.</p>
+      <ol>
+        <li>
+          <strong>By gap type</strong> —
+          Click “Missing Credit Card” (or any field in the 5 Journeys Practice summary) →
+          filtered patient list with next appointment, assigned provider, and which systems lack the value.
+        </li>
+        <li>
+          <strong>Patient golden-record compare</strong> —
+          Click a patient name → side-by-side AthenaNet (golden) vs Zenoti vs GHL vs WooCommerce
+          for the incomplete fields, with “copy from source” affordances where safe.
+        </li>
+        <li>
+          <strong>Provider filter</strong> —
+          Jump from outline / provider heading → that provider’s action lists only
+          (matches the sample Doc’s per-provider structure).
+        </li>
+        <li>
+          <strong>Appointment Date Range</strong> —
+          Primary list filter (From / To, plus Today · Next 7 / 14 / 30 day presets).
+          Scopes 5 Journeys Practice summary counts and provider “Upcoming Appointment Issues” to visits
+          in the selected window; follow-ups and copays can optionally respect the same range
+          or stay unscoped.
+        </li>
+        <li>
+          <strong>Urgency window</strong> —
+          Click “Appts in next 7 days” → same issues sorted by appointment proximity;
+          presets above are the same control, not a separate system.
+        </li>
+        <li>
+          <strong>Issue → workflow</strong> —
+          From an Upcoming Appointment Issue row → deep link into AthenaNet chart,
+          Zenoti profile, or GHL contact (system where the gap must be fixed).
+        </li>
+        <li>
+          <strong>Assignment &amp; audit</strong> —
+          Assign a gap to front-desk / admin, mark resolved, and keep a short history
+          so the daily report doesn’t resurface cleared items.
+        </li>
+        <li>
+          <strong>Cross-system conflict</strong> —
+          When values disagree (e.g. phone in GHL ≠ AthenaNet), surface as
+          <code>Conflict</code> rather than merely <code>Missing</code>, then drill to reconcile
+          against the golden record.
+        </li>
+      </ol>
+    </aside>
+  </div>
+
+  <script>
+    (function () {
+      const form = document.getElementById("appt-range-filter");
+      const fromInput = document.getElementById("appt-from");
+      const toInput = document.getElementById("appt-to");
+      const status = document.getElementById("filter-status");
+      const presetButtons = form.querySelectorAll("[data-preset]");
+      const asOf = new Date(2026, 6, 13); // wireframe "today"
+
+      function iso(d) {
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, "0");
+        const day = String(d.getDate()).padStart(2, "0");
+        return y + "-" + m + "-" + day;
+      }
+
+      function addDays(base, n) {
+        const d = new Date(base.getFullYear(), base.getMonth(), base.getDate());
+        d.setDate(d.getDate() + n);
+        return d;
+      }
+
+      function formatLabel(isoDate) {
+        const d = new Date(isoDate + "T12:00:00");
+        return d.toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        });
+      }
+
+      function setPresetActive(name) {
+        presetButtons.forEach(function (btn) {
+          btn.classList.toggle("active", btn.getAttribute("data-preset") === name);
+        });
+      }
+
+      function applyFilter() {
+        const from = fromInput.value;
+        const to = toInput.value;
+        let visible = 0;
+        let total = 0;
+        document.querySelectorAll("tr[data-appt]").forEach(function (row) {
+          total += 1;
+          const appt = row.getAttribute("data-appt");
+          const inRange = (!from || appt >= from) && (!to || appt <= to);
+          row.classList.toggle("is-hidden", !inRange);
+          if (inRange) visible += 1;
+        });
+        if (!from && !to) {
+          status.textContent =
+            "No appointment date filter — showing all upcoming issues (" + total + ").";
+        } else {
+          status.textContent =
+            "Showing " +
+            visible +
+            " of " +
+            total +
+            " upcoming appointment issues for " +
+            formatLabel(from || "…") +
+            " – " +
+            formatLabel(to || "…") +
+            ".";
+        }
+      }
+
+      presetButtons.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          const preset = btn.getAttribute("data-preset");
+          fromInput.value = iso(asOf);
+          if (preset === "today") {
+            toInput.value = iso(asOf);
+          } else {
+            toInput.value = iso(addDays(asOf, Number(preset)));
+          }
+          setPresetActive(preset);
+          applyFilter();
+        });
+      });
+
+      document.getElementById("appt-reset").addEventListener("click", function () {
+        fromInput.value = "";
+        toInput.value = "";
+        setPresetActive("");
+        applyFilter();
+      });
+
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        setPresetActive("");
+        applyFilter();
+      });
+
+      fromInput.addEventListener("change", function () {
+        setPresetActive("");
+      });
+      toInput.addEventListener("change", function () {
+        setPresetActive("");
+      });
+
+      applyFilter();
+    })();
+  </script>
+</body>
+</html>

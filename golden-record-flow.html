@@ -67,6 +67,12 @@
       max-width: 62ch;
     }
 
+    header p a,
+    .callout a {
+      color: var(--hub);
+      font-weight: 600;
+    }
+
     .flow {
       display: flex;
       flex-direction: column;
@@ -385,8 +391,11 @@
       <p>
         When any team updates a patient or lead, webhooks hit the GCP Middleware Hub.
         The hub matches identity, updates the master record in BigQuery, and queues
-        outbound sync. Empty fields are filled automatically across all three systems;
+        outbound sync. Empty fields are filled automatically across GHL, Zenoti, and AthenaNet;
         existing AthenaNet values are never overwritten unless edited manually there.
+        <strong>This flow remediates blanks — it does not publish the Admin Check List.</strong>
+        Remaining gaps, conflicts, and appointment-scoped issues are reported by the
+        <a href="operations-reporting-layer.html">Operations reporting layer</a>.
       </p>
     </header>
 
@@ -438,7 +447,7 @@
                 <span class="step-num">1</span>
                 <div class="step-body">
                   <strong>Resolves identity</strong>
-                  <span>Matches name, date of birth, and email across GHL, Zenoti, and Athena</span>
+                  <span>Matches name, date of birth, and email across GHL, Zenoti, and AthenaNet (Woo contact email when store identity is in scope)</span>
                 </div>
               </li>
               <li class="highlight">
@@ -452,7 +461,7 @@
                 <span class="step-num">3</span>
                 <div class="step-body">
                   <strong>Queues outbound synchronization</strong>
-                  <span>Fills empty fields in GHL, Zenoti, and AthenaNet. Never overwrites data already present in Athena — only manual edits there can change it.</span>
+                  <span>Fills empty fields in GHL, Zenoti, and AthenaNet. Never overwrites data already present in AthenaNet — only manual edits there can change it. Does not auto-resolve conflicting non-empty values (those surface as Conflict in operations reporting).</span>
                 </div>
               </li>
             </ol>
@@ -507,8 +516,11 @@
       <p class="single-entry">
         Once implemented, staff enter shared data in only one system — no double or triple
         entry. A credit card, first name, or phone captured at the wellness center desk in Zenoti can
-        flow into an empty Athena record automatically. GHL and Zenoti stay fully in sync
-        for missing fields; Athena is protected once populated.
+        flow into an empty AthenaNet record automatically. GHL and Zenoti stay in sync
+        for missing fields; AthenaNet is protected once populated.
+        Sync success still leaves a reporting need: fields that remain blank, or disagree across
+        systems, must appear on the Admin Check List via the operations reporting layer — not
+        assumed fixed by this map alone.
       </p>
     </div>
   </div>

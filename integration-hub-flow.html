@@ -324,6 +324,11 @@
       font-weight: 600;
     }
 
+    .caption a {
+      color: var(--hub);
+      font-weight: 600;
+    }
+
     @media (max-width: 560px) {
       .system-node {
         min-height: 56px;
@@ -357,10 +362,13 @@
     <header>
       <h1>Four-System Integration Hub</h1>
       <p>
-        External systems feed the Middleware Hub; data lands in BigQuery; your
-        Custom Reporting App queries the warehouse only. Inventory is managed in
-        Zenoti and already syncs to Woo — for analytics, treat Zenoti as the source
-        of truth; Woo into GCP is optional for web-only data.
+        AthenaNet, Zenoti, GoHighLevel, and WooCommerce feed the Middleware Hub;
+        data lands in BigQuery; the Custom Reporting App queries the warehouse only.
+        <strong>Inventory:</strong> managed in Zenoti and already synced to Woo outside GCP —
+        analytics use Zenoti only (no double-count).
+        <strong>Patient / customer identity:</strong> Woo is in scope when store customers
+        must join the golden record (e.g. email) — that is separate from optional Woo
+        <em>commerce metrics</em> ingest.
       </p>
     </header>
 
@@ -395,8 +403,8 @@
       </svg>
 
       <div class="system-node athena">
-        <span class="name">Athena</span>
-        <span class="role">EHR / clinical</span>
+        <span class="name">AthenaNet</span>
+        <span class="role">EHR / clinical · golden record</span>
       </div>
 
       <div class="system-node zenoti">
@@ -412,7 +420,7 @@
       <div class="system-node woo">
         <span class="name">Woo</span>
         <span class="role">E-commerce storefront</span>
-        <span class="optional">Optional for GCP</span>
+        <span class="optional">Identity in-scope · metrics optional</span>
       </div>
 
       <div class="gcp-zone">
@@ -420,7 +428,7 @@
 
         <div class="layer-box middleware">
           <p class="layer-title">Middleware Hub</p>
-          <p class="layer-desc">Ingest &amp; translate — inventory from Zenoti; Woo only if needed for web-only metrics</p>
+          <p class="layer-desc">Ingest &amp; translate — inventory from Zenoti; Woo identity fields when required; Woo commerce metrics only if needed</p>
         </div>
 
         <p class="internal-flow">↓ Sync to warehouse</p>
@@ -428,7 +436,7 @@
         <div class="warehouse-row">
           <div class="layer-box bigquery">
             <p class="layer-title">BigQuery Data Warehouse</p>
-            <p class="layer-desc">Central secure store — source of truth for analytics</p>
+            <p class="layer-desc">Central secure store — source of truth for analytics &amp; ops reporting</p>
           </div>
 
           <div class="query-bridge" aria-hidden="true">
@@ -438,19 +446,21 @@
 
           <div class="layer-box reporting">
             <p class="layer-title">Custom Reporting App</p>
-            <p class="layer-desc">Staff dashboards · RBAC · reads from BigQuery only</p>
+            <p class="layer-desc">Staff dashboards · Admin Check List · RBAC · reads from BigQuery only</p>
           </div>
         </div>
       </div>
     </div>
 
     <p class="caption">
-      <strong>What changes with Zenoti ↔ Woo:</strong> Inventory already flows between those
-      two systems via their existing API — that sync is operational, not part of GCP. For
-      BigQuery and reporting, pull inventory from <strong>Zenoti only</strong> to avoid
-      double-counting. Woo into the Middleware Hub stays optional — add it only if you need
-      web-specific data Zenoti does not hold (online orders, cart events, product-page
-      analytics). The reporting app still queries BigQuery only, never external APIs directly.
+      <strong>Woo — two different decisions:</strong>
+      (1) <em>Inventory</em> — keep the existing Zenoti ↔ Woo API sync outside GCP; warehouse inventory from Zenoti only.
+      (2) <em>Identity / demographics</em> — when Goal 1 requires unifying store customers, ingest the Woo contact fields needed for the golden record (at minimum email); do not confuse that with optional cart/order analytics.
+      <br /><br />
+      <strong>Not on this map:</strong> cancellation / termination sync and Zenoti decline propagation (Goals 2–3) need dedicated flows.
+      This hub alone does not guarantee the Admin Check List — see
+      <a href="operations-reporting-layer.html">Operations reporting layer</a>.
+      The reporting app still queries BigQuery only, never external APIs directly.
     </p>
   </div>
 </body>

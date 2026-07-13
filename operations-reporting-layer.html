@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Operations Reporting Layer — Admin Check List Guarantee</title>
+  <style>
+    :root {
+      --ink: #1a2e2a;
+      --ink-muted: #3d524c;
+      --wire: #b8c9c3;
+      --wire-label: #6b7f78;
+      --white: #ffffff;
+      --surface: #fafbfb;
+      --accent: #5da68a;
+      --hub: #264540;
+      --hub-bg: #edf6f2;
+      --report: #3d6b8c;
+      --report-bg: #eef4f8;
+      --warn: #8a5a2b;
+      --warn-bg: #f7f0e8;
+      --athena: #2d5a7b;
+      --zenoti: #4a6741;
+      --ghl: #6b4c8a;
+      --woo: #9a7344;
+      --max-width: 920px;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--surface);
+      color: var(--ink);
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      line-height: 1.45;
+      margin: 0;
+      min-height: 100vh;
+      padding: 2.5rem 1.25rem 3rem;
+    }
+
+    .page {
+      margin: 0 auto;
+      max-width: var(--max-width);
+    }
+
+    .back {
+      color: var(--hub);
+      display: inline-block;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+      text-decoration: none;
+    }
+
+    .back:hover {
+      text-decoration: underline;
+    }
+
+    header {
+      margin-bottom: 1.75rem;
+      text-align: center;
+    }
+
+    header .eyebrow {
+      color: var(--wire-label);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      margin: 0 0 0.4rem;
+      text-transform: uppercase;
+    }
+
+    header h1 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0 0 0.4rem;
+    }
+
+    header p {
+      color: var(--ink-muted);
+      font-size: 0.875rem;
+      margin: 0 auto;
+      max-width: 68ch;
+    }
+
+    .verdict {
+      background: var(--hub-bg);
+      border: 1px solid var(--accent);
+      border-left: 4px solid var(--hub);
+      border-radius: 6px;
+      font-size: 0.8125rem;
+      margin: 0 0 2rem;
+      padding: 0.85rem 1rem;
+    }
+
+    .verdict strong {
+      color: var(--hub);
+    }
+
+    .flow {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .arrow {
+      color: var(--accent);
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      margin: 0.15rem 0;
+      text-align: center;
+    }
+
+    .stage {
+      background: var(--white);
+      border: 2px solid var(--wire);
+      border-radius: 10px;
+      padding: 1rem 1.1rem 1.1rem;
+    }
+
+    .stage.required {
+      border-color: var(--report);
+      box-shadow: 0 0 0 1px rgba(61, 107, 140, 0.12);
+    }
+
+    .stage.product {
+      background: var(--report-bg);
+      border-color: var(--report);
+    }
+
+    .stage-label {
+      color: var(--wire-label);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      margin: 0 0 0.45rem;
+      text-transform: uppercase;
+    }
+
+    .stage.required .stage-label,
+    .stage.product .stage-label {
+      color: var(--report);
+    }
+
+    .stage h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin: 0 0 0.55rem;
+    }
+
+    .stage p.lead {
+      color: var(--ink-muted);
+      font-size: 0.8125rem;
+      margin: 0 0 0.75rem;
+    }
+
+    .grid-3 {
+      display: grid;
+      gap: 0.65rem;
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .grid-2 {
+      display: grid;
+      gap: 0.65rem;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .grid-4 {
+      display: grid;
+      gap: 0.55rem;
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--wire);
+      border-radius: 8px;
+      padding: 0.7rem 0.75rem;
+    }
+
+    .card h3 {
+      font-size: 0.8125rem;
+      font-weight: 700;
+      margin: 0 0 0.3rem;
+    }
+
+    .card p,
+    .card li {
+      color: var(--ink-muted);
+      font-size: 0.75rem;
+      margin: 0;
+    }
+
+    .card ul {
+      margin: 0.25rem 0 0;
+      padding-left: 1rem;
+    }
+
+    .card li {
+      margin-bottom: 0.2rem;
+    }
+
+    .sys {
+      font-weight: 700;
+      font-size: 0.7rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .sys.athena { color: var(--athena); }
+    .sys.zenoti { color: var(--zenoti); }
+    .sys.ghl { color: var(--ghl); }
+    .sys.woo { color: var(--woo); }
+
+    table.matrix {
+      border-collapse: collapse;
+      font-size: 0.75rem;
+      width: 100%;
+    }
+
+    table.matrix th,
+    table.matrix td {
+      border: 1px solid var(--wire);
+      padding: 0.35rem 0.45rem;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    table.matrix th {
+      background: #c5d9c8;
+      font-weight: 700;
+    }
+
+    .tag {
+      background: var(--warn-bg);
+      border-radius: 3px;
+      color: var(--warn);
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 0.08rem 0.35rem;
+    }
+
+    .tag.ok {
+      background: var(--hub-bg);
+      color: var(--hub);
+    }
+
+    .tag.info {
+      background: var(--report-bg);
+      color: var(--report);
+    }
+
+    .outputs {
+      display: grid;
+      gap: 0.55rem;
+      grid-template-columns: repeat(2, 1fr);
+      margin-top: 0.35rem;
+    }
+
+    .output {
+      background: var(--white);
+      border: 1px dashed var(--report);
+      border-radius: 8px;
+      padding: 0.65rem 0.75rem;
+    }
+
+    .output strong {
+      color: var(--report);
+      display: block;
+      font-size: 0.8rem;
+      margin-bottom: 0.2rem;
+    }
+
+    .output span {
+      color: var(--ink-muted);
+      font-size: 0.72rem;
+    }
+
+    .caption {
+      color: var(--wire-label);
+      font-size: 0.75rem;
+      margin: 1.75rem auto 0;
+      max-width: 72ch;
+      text-align: center;
+    }
+
+    .caption a {
+      color: var(--hub);
+      font-weight: 600;
+    }
+
+    @media (max-width: 720px) {
+      .grid-3,
+      .grid-4,
+      .grid-2,
+      .outputs {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <a class="back" href="index.html">← Systems Integrations</a>
+
+    <header>
+      <p class="eyebrow">Integration map · required product layer</p>
+      <h1>Operations Reporting Layer</h1>
+      <p>
+        Makes the <strong>Admin Check List</strong> a guaranteed deliverable of systems
+        integration — not an assumed byproduct of the hub, golden record, or appointment sync alone.
+      </p>
+    </header>
+
+    <p class="verdict">
+      <strong>Contract:</strong>
+      Integration is “done” only when BigQuery holds the tables below
+      <em>and</em> a scheduled Operations Reporting job publishes the Admin Check List views
+      (demographics gaps, upcoming appointment issues, follow-ups, copays, team totals)
+      with date-range filter semantics and remediation state.
+    </p>
+
+    <div class="flow">
+      <!-- Stage 0: prerequisites from other maps -->
+      <section class="stage">
+        <p class="stage-label">Prerequisite inputs (from existing maps)</p>
+        <h2>Platform foundations already in scope</h2>
+        <p class="lead">
+          These come from the hub, golden-record, and appointment-sync maps.
+          Necessary — not sufficient — for the Admin Check List.
+        </p>
+        <div class="grid-4">
+          <div class="card">
+            <h3>Golden record</h3>
+            <p>Patient master IDs across AthenaNet · Zenoti · GHL (± Woo)</p>
+          </div>
+          <div class="card">
+            <h3>Appointments in BQ</h3>
+            <p>Booked / updated visits with provider + datetime</p>
+          </div>
+          <div class="card">
+            <h3>Staff registry</h3>
+            <p>Provider ownership for action lists</p>
+          </div>
+          <div class="card">
+            <h3>Custom Reporting App</h3>
+            <p>Read path from BigQuery (RBAC)</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="arrow" aria-hidden="true">↓</div>
+
+      <!-- Stage 1: completeness contract -->
+      <section class="stage required">
+        <p class="stage-label">Required · demographics completeness contract</p>
+        <h2>Field rules — Missing vs Conflict</h2>
+        <p class="lead">
+          Codify which fields matter, which system is authoritative, and how gaps are classified.
+          Without this matrix, sync can succeed while the Admin Check List still has nothing to report.
+        </p>
+        <table class="matrix">
+          <thead>
+            <tr>
+              <th>Field</th>
+              <th>Authoritative</th>
+              <th>Also checked</th>
+              <th>Classification</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Date of birth</td>
+              <td><span class="sys athena">AthenaNet</span> (golden)</td>
+              <td>Zenoti · GHL</td>
+              <td><span class="tag">Missing</span> if blank in Athena; <span class="tag">Conflict</span> if peers disagree</td>
+            </tr>
+            <tr>
+              <td>Mobile phone</td>
+              <td><span class="sys athena">AthenaNet</span></td>
+              <td>Zenoti · GHL</td>
+              <td>Missing / Conflict</td>
+            </tr>
+            <tr>
+              <td>Email</td>
+              <td><span class="sys athena">AthenaNet</span></td>
+              <td>GHL · <span class="sys woo">Woo</span> (if in scope)</td>
+              <td>Missing / Conflict</td>
+            </tr>
+            <tr>
+              <td>Address / ZIP</td>
+              <td><span class="sys athena">AthenaNet</span></td>
+              <td>Zenoti</td>
+              <td>Missing / Conflict</td>
+            </tr>
+            <tr>
+              <td>Credit card on file</td>
+              <td><span class="sys zenoti">Zenoti</span> (primary)</td>
+              <td>GHL flags if used</td>
+              <td><span class="tag">Missing</span> if neither operable card on file</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="lead" style="margin:0.75rem 0 0;">
+          Output table: <strong>demographics_gap_fact</strong> —
+          patient_id, field, status (missing|conflict), systems_checked, priority, detected_at.
+        </p>
+      </section>
+
+      <div class="arrow" aria-hidden="true">↓</div>
+
+      <!-- Stage 2: additional ingest -->
+      <section class="stage required">
+        <p class="stage-label">Required · additional data products</p>
+        <h2>Beyond identity &amp; appointments</h2>
+        <p class="lead">
+          Hub sync today does not guarantee these. They must be named integration deliverables.
+        </p>
+        <div class="grid-2">
+          <div class="card">
+            <h3>Visit history → follow-ups</h3>
+            <ul>
+              <li>Last completed visit (date, provider) from AthenaNet (± Zenoti)</li>
+              <li>Recommended follow-up interval rule (care path / provider default)</li>
+              <li>Output: patients overdue or due within N days without a booked follow-up</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Balances → outstanding copays</h3>
+            <ul>
+              <li>Ingest patient balance / open copay from AthenaNet billing (or agreed source)</li>
+              <li>Amount due + aging; attribute to last / responsible provider when possible</li>
+              <li>Output: <strong>copay_open_fact</strong></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <div class="arrow" aria-hidden="true">↓</div>
+
+      <!-- Stage 3: appointment-issue pipeline -->
+      <section class="stage required">
+        <p class="stage-label">Required · appointment-issue pipeline</p>
+        <h2>Join: upcoming visit + demographic gap + provider</h2>
+        <p class="lead">
+          Triggered on appointment ingest/update (and nightly recompute). This is the core of
+          “Upcoming Appointment Issues” on the Admin Check List.
+        </p>
+        <div class="grid-3">
+          <div class="card">
+            <h3>1. Scope visits</h3>
+            <p>Upcoming appointments in the selected date window (default: next 7 days).</p>
+          </div>
+          <div class="card">
+            <h3>2. Evaluate patient</h3>
+            <p>Apply completeness contract against golden record + source fields.</p>
+          </div>
+          <div class="card">
+            <h3>3. Emit issue rows</h3>
+            <p>patient · provider · appt_at · issue_tag · priority (proximity-weighted).</p>
+          </div>
+        </div>
+        <p class="lead" style="margin:0.75rem 0 0;">
+          Output table: <strong>appt_issue_fact</strong> —
+          powers provider lists and the practice-wide summary after date-range filter.
+        </p>
+      </section>
+
+      <div class="arrow" aria-hidden="true">↓</div>
+
+      <!-- Stage 4: daily job -->
+      <section class="stage required">
+        <p class="stage-label">Required · daily snapshot &amp; filter semantics</p>
+        <h2>Scheduled Operations Reporting job</h2>
+        <div class="grid-3">
+          <div class="card">
+            <h3>Cadence</h3>
+            <p>Nightly (or every N hours) rebuild of snapshot tables for the Daily Action Report.</p>
+          </div>
+          <div class="card">
+            <h3>Date-range filter</h3>
+            <p>
+              <span class="tag info">Primary</span> scopes appt issues + practice gap counts
+              tied to upcoming visits. Follow-ups / copays: in-range or unscoped (product choice).
+            </p>
+          </div>
+          <div class="card">
+            <h3>Freshness SLA</h3>
+            <p>Document max lag from source webhook → gap visible on Admin Check List.</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="arrow" aria-hidden="true">↓</div>
+
+      <!-- Stage 5: remediation -->
+      <section class="stage required">
+        <p class="stage-label">Required · remediation state</p>
+        <h2>Assigned · resolved · don’t resurface</h2>
+        <p class="lead">
+          Distinct from IAP “who viewed the report.” Front desk / admin must clear gaps without
+          the next daily run repeating finished work.
+        </p>
+        <div class="grid-3">
+          <div class="card">
+            <h3>Assign</h3>
+            <p>Owner (role or person) on gap or issue row.</p>
+          </div>
+          <div class="card">
+            <h3>Resolve</h3>
+            <p>Mark cleared after source system update verified, or waive with reason.</p>
+          </div>
+          <div class="card">
+            <h3>Audit</h3>
+            <p>History of detection → assignment → resolution; suppress open issues that are resolved.</p>
+          </div>
+        </div>
+        <p class="lead" style="margin:0.75rem 0 0;">
+          Output table: <strong>gap_remediation_state</strong>
+        </p>
+      </section>
+
+      <div class="arrow" aria-hidden="true">↓</div>
+
+      <!-- Stage 6: product -->
+      <section class="stage product">
+        <p class="stage-label">Guaranteed product</p>
+        <h2>Admin Check List / Daily Action Report</h2>
+        <p class="lead">
+          Published views consumed by the Custom Reporting App (and/or email PDF).
+          Linked from Operations Report on the hub index.
+        </p>
+        <div class="outputs">
+          <div class="output">
+            <strong>5 Journeys Practice summary</strong>
+            <span>Patients with gaps · by field · appts in window</span>
+          </div>
+          <div class="output">
+            <strong>Provider action lists</strong>
+            <span>Follow-ups · Outstanding copays · Upcoming appointment issues</span>
+          </div>
+          <div class="output">
+            <strong>Daily team totals + Goal</strong>
+            <span>Practice rollup for leadership / ops standup</span>
+          </div>
+          <div class="output">
+            <strong>Drill-downs</strong>
+            <span>Gap type · golden-record compare · urgency · system deep links</span>
+          </div>
+        </div>
+        <p class="lead" style="margin:0.9rem 0 0;">
+          <span class="tag ok">Done when</span>
+          authorized staff can open the <strong>live, internal-only</strong> Admin Check List
+          (IAP + RBAC; BigQuery-backed) for a chosen appointment date range and see accurate,
+          actionable lists — without manual spreadsheet assembly and without exposing the app
+          as a public or patient-facing page. Static HTML wireframes are design references only.
+        </p>
+      </section>
+    </div>
+
+    <p class="caption">
+      Companion to the hub, golden-record, and appointment-sync maps.
+      Preview surface:
+      <a href="admin-check-list.html">Admin Check List wireframe</a>.
+    </p>
+  </div>
+</body>
+</html>

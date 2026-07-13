@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Build Checklist — Systems Integrations</title>
+  <style>
+    :root {
+      --ink: #1a2e2a;
+      --ink-muted: #3d524c;
+      --wire: #b8c9c3;
+      --wire-label: #6b7f78;
+      --white: #ffffff;
+      --surface: #fafbfb;
+      --hub: #264540;
+      --accent: #5da68a;
+      --fj: #2d5a7b;
+      --fj-bg: #eef4f8;
+      --collab: #6b4c8a;
+      --collab-bg: #f3eef8;
+      --contractor: #4a6741;
+      --contractor-bg: #eef4ef;
+      --max-width: 44rem;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--surface);
+      color: var(--ink);
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      line-height: 1.5;
+      margin: 0;
+      min-height: 100vh;
+      padding: 2rem 1.25rem 3.5rem;
+    }
+
+    .page {
+      margin: 0 auto;
+      max-width: var(--max-width);
+    }
+
+    .back {
+      color: var(--hub);
+      display: inline-block;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+      text-decoration: none;
+    }
+
+    .back:hover {
+      text-decoration: underline;
+    }
+
+    header {
+      margin-bottom: 1.5rem;
+    }
+
+    header h1 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0 0 0.4rem;
+    }
+
+    header p {
+      color: var(--ink-muted);
+      font-size: 0.875rem;
+      margin: 0;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.25rem 0 1.75rem;
+    }
+
+    .legend span {
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 0.3rem 0.55rem;
+      text-transform: uppercase;
+    }
+
+    .legend .fj {
+      background: var(--fj-bg);
+      color: var(--fj);
+    }
+
+    .legend .collab {
+      background: var(--collab-bg);
+      color: var(--collab);
+    }
+
+    .legend .contractor {
+      background: var(--contractor-bg);
+      color: var(--contractor);
+    }
+
+    .intro {
+      background: var(--white);
+      border: 1px solid var(--wire);
+      border-left: 3px solid var(--hub);
+      border-radius: 4px;
+      color: var(--ink-muted);
+      font-size: 0.8125rem;
+      margin-bottom: 2rem;
+      padding: 0.85rem 1rem;
+    }
+
+    .intro strong {
+      color: var(--hub);
+    }
+
+    .intro a {
+      color: var(--hub);
+      font-weight: 600;
+    }
+
+    section.owner {
+      margin-bottom: 2.25rem;
+    }
+
+    section.owner > h2 {
+      border-radius: 6px;
+      font-size: 1rem;
+      font-weight: 700;
+      margin: 0 0 0.35rem;
+      padding: 0.55rem 0.75rem;
+    }
+
+    section.owner.fj > h2 {
+      background: var(--fj-bg);
+      color: var(--fj);
+    }
+
+    section.owner.collab > h2 {
+      background: var(--collab-bg);
+      color: var(--collab);
+    }
+
+    section.owner.contractor > h2 {
+      background: var(--contractor-bg);
+      color: var(--contractor);
+    }
+
+    section.owner > .owner-lead {
+      color: var(--ink-muted);
+      font-size: 0.8125rem;
+      margin: 0 0 1rem;
+      padding-left: 0.15rem;
+    }
+
+    ol.checklist {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      counter-reset: item;
+    }
+
+    ol.checklist > li {
+      background: var(--white);
+      border: 1px solid var(--wire);
+      border-radius: 8px;
+      counter-increment: item;
+      margin-bottom: 0.75rem;
+      padding: 0.85rem 0.95rem 0.95rem;
+    }
+
+    ol.checklist > li::before {
+      color: var(--hub);
+      content: counter(item) ".";
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-right: 0.35rem;
+    }
+
+    ol.checklist > li > .title {
+      display: inline;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .depends {
+      color: var(--wire-label);
+      display: block;
+      font-size: 0.72rem;
+      font-style: italic;
+      margin: 0.35rem 0 0.45rem;
+    }
+
+    .sub {
+      margin: 0.45rem 0 0.35rem;
+      padding-left: 1.1rem;
+    }
+
+    .sub li {
+      color: var(--ink-muted);
+      font-size: 0.8rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .dod {
+      background: var(--surface);
+      border-radius: 4px;
+      color: var(--ink-muted);
+      font-size: 0.78rem;
+      margin-top: 0.55rem;
+      padding: 0.45rem 0.6rem;
+    }
+
+    .dod strong {
+      color: var(--hub);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    h3.phase {
+      color: var(--contractor);
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      margin: 1.35rem 0 0.65rem;
+      text-transform: uppercase;
+    }
+
+    .end-goal {
+      background: #edf6f2;
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      margin-top: 2rem;
+      padding: 1rem 1.1rem;
+    }
+
+    .end-goal h2 {
+      color: var(--hub);
+      font-size: 0.95rem;
+      margin: 0 0 0.4rem;
+    }
+
+    .end-goal p {
+      color: var(--ink-muted);
+      font-size: 0.8125rem;
+      margin: 0;
+    }
+
+    .end-goal a {
+      color: var(--hub);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <a class="back" href="index.html">← Systems Integrations</a>
+
+    <header>
+      <h1>Build checklist</h1>
+      <p>
+        Sequential readiness and delivery path for systems integration, ending in the
+        Admin Check List (Daily Action Report) for the 5 Journeys Practice.
+      </p>
+    </header>
+
+    <div class="legend" aria-label="Ownership legend">
+      <span class="fj">5 Journeys</span>
+      <span class="collab">5 Journeys &amp; Contractor</span>
+      <span class="contractor">Contractor</span>
+    </div>
+
+    <p class="intro">
+      <strong>How to read this:</strong>
+      Items are ordered by dependency. Sub-items must be true before the parent is done.
+      “Depends on” points at prior checklist numbers.
+      Architecture context:
+      <a href="operations-reporting-layer.html">Operations reporting layer</a>,
+      <a href="admin-check-list.html">Admin Check List wireframe</a>.
+      Imagined schedule:
+      <a href="build-gantt.html">Build Gantt (Day −60 → Day 0 launch)</a>.
+      Credentials appear only where sequence requires them — store and rotate outside this pack.
+    </p>
+
+    <!-- ═══════════════ 5 JOURNEYS ═══════════════ -->
+    <section class="owner fj" aria-labelledby="fj-title">
+      <h2 id="fj-title">1. 5 Journeys</h2>
+      <p class="owner-lead">Onus on Five Journeys — decisions, rules, samples, and priorities only you can supply.</p>
+
+      <ol class="checklist">
+        <li>
+          <span class="title">Confirm product outcomes and phase priorities</span>
+          <ul class="sub">
+            <li>Confirm Goals order: unify records → cancels/terminations → Zenoti declines → Admin Check List dashboard as the ops product outcome.</li>
+            <li>Confirm Admin Check List as the near-term live, internal-only operations dashboard (Day 0 go-live gate).</li>
+            <li>Confirm near-term appointment direction: AthenaNet (clinical) / Zenoti (wellness) → GHL + BigQuery only; two-way GHL→AthenaNet deferred.</li>
+          </ul>
+          <p class="dod"><strong>Done when</strong> a one-page priority note exists that the contractor can quote in the backlog (no open “which first?” debates).</p>
+        </li>
+
+        <li>
+          <span class="title">Settle architecture decisions (decision log)</span>
+          <span class="depends">Depends on 1</span>
+          <ul class="sub">
+            <li>AthenaNet = golden source of truth for patient clinical demographics.</li>
+            <li>Woo: identity fields in scope for Goal 1; inventory stays Zenoti↔Woo outside GCP; Woo commerce metrics optional.</li>
+            <li>GHL staff calendars: de-identified busy blocks unless/until full PHI on calendar is approved.</li>
+            <li>Future two-way booking: explicitly gated on Google Meet / telehealth HIPAA–BAA posture (document “not now”).</li>
+          </ul>
+          <p class="dod"><strong>Done when</strong> each decision above has an owner, date, and status (accepted / deferred) in a short decision log.</p>
+        </li>
+
+        <li>
+          <span class="title">Define demographics completeness rules (business)</span>
+          <span class="depends">Depends on 2</span>
+          <ul class="sub">
+            <li>List required fields for Admin Check List (e.g. DOB, phone, email, address/ZIP, credit card on file).</li>
+            <li>For each field: authoritative system + other systems to check.</li>
+            <li>Define Missing vs Conflict in plain language (examples from real messy records welcome).</li>
+            <li>Define priority rules (e.g. High if visit within 7 days).</li>
+          </ul>
+          <p class="dod"><strong>Done when</strong> a field matrix exists that matches the intent of the operations reporting layer and can be typed into code without reinterpretation.</p>
+        </li>
+
+        <li>
+          <span class="title">Define follow-up and copay business rules</span>
+          <span class="depends">Depends on 1</span>
+          <ul class="sub">
+            <li>What counts as “last visit” and which system owns it.</li>
+            <li>How recommended follow-up interval is chosen (care path, provider default, or manual).</li>
+            <li>Which balance/copay source is authoritative for “Outstanding Copays.”</li>
+            <li>Whether follow-ups/copays respect the appointment date-range filter or stay unscoped.</li>
+          </ul>
+          <p class="dod"><strong>Done when</strong> contractor can write acceptance tests for follow-up and copay rows on the Admin Check List without guessing.</p>
+        </li>
+
+        <li>
+          <span class="title">Provide Staff Registry starter list</span>
+          <span class="depends">Depends on 2</span>
+          <ul class="sub">
+            <li>Providers / staff who need GHL calendar reflection of AthenaNet (or Zenoti) appointments.</li>
+            <li>Known IDs where available (AthenaNet provider, Zenoti employee, GHL user) and <code>sync_calendar</code> yes/no.</li>
+          </ul>
+          <p class="dod"><strong>Done when</strong> Track A can be piloted for at least one clinical provider without inventing roster data.</p>
+        </li>
+
+        <li>
+          <span class="title">Supply redacted real-world examples</span>
+          <span class="depends">Depends on 3–4</span>
+          <ul class="sub">
+            <li>2–3 anonymized “messy patient” stories (missing card, conflicting phone, etc.).</li>
+            <li>1–2 sample Admin Check List situations you expect to see on a Monday morning.</li>
+            <li>Optional: redacted webhook/API payload screenshots or exports (no secrets).</li>
+          </ul>
+          <p class="dod"><strong>Done when</strong> examples are attached to the field matrix and dashboard wireframe as reference cases.</p>
+        </li>
+
+        <li>
+          <span class="title">Name open questions you are still deciding</span>
+          <ul class="sub">
+            <li>Woo identity in v1 vs later.</li>
+            <li>Cancel/termination and Zenoti decline timing relative to Admin Check List v1.</li>
+            <li>Any fields that must never appear on a GHL calendar or contact note.</li>
+          </ul>
+          <p class="dod"><strong>Done when</strong> open questions are listed with “decide by” dates so they don’t silently block build.</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ═══════════════ COLLAB ═══════════════ -->
+    <section class="owner collab" aria-labelledby="collab-title">
+      <h2 id="collab-title">2. 5 Journeys &amp; Contractor</h2>
+      <p class="owner-lead">Joint workshops and reviews — both sides must participate for the artifact to be accepted.</p>
+
+      <ol class="checklist" start="8">
+        <li>
+          <span class="title">Walk architecture pack and confirm shared understanding</span>
+          <span class="depends">Depends on 1–2; maps on index</span>
+          <ul class="sub">
+            <li>Review hub, GCP schematic, golden record, appointment sync, operations reporting layer, Admin Check List wireframe.</li>
+            <li>Mark gaps or disagreements on the maps themselves.</li>
+          </ul>
+          <p class="dod"><strong>Done when</strong> both parties agree the maps describe the intended system (with a dated note of any deferred map updates).</p>
+        </li>
+
+        <li>
+          <span class="title">Draft &amp; accept field and event contracts</span>
+          <span class="depends">Depends on 3–4, 6, 8</span>
+          <ul class="sub">
+            <li>Map business field names → system field / API attributes (AthenaNet, Zenoti, GHL, Woo as in scope).</li>
+            <li>List webhook / poll events for patient upsert, appointment booked/updated/cancelled/rescheduled.</li>
+            <li>Agree redacted sample payloads for each critical event.</li>
+          </ul>
+          <p class="dod"><strong>Done when</strong> a contract doc is signed off (“v1 accepted”) and is the only field reference for engineering.</p>
+        </li>
+
+        <li>
+          <span class="title">Draft &amp; accept entity / ID map</span>
+          <span class="depends">Depends on 5, 9</span>
+          <ul class="sub">
+            <li>Golden record keys: <code>athena_patient_id</code>, <code>zenoti_guest_id</code>, <code>ghl_contact_id</code>, optional Woo customer id.</li>
+            <li>Match policy (name + DOB + email) and what happens on ambiguous match.</li>
+            <li>Staff Registry schema and ownership of ongoing updates.</li>
+          </ul>
+          <p class="dod"><strong>Done when</strong> identity resolution rules are testable and ambiguous-match handling is agreed (manual queue vs block).</p>
+        </li>
+
+        <li>
+          <span class="title">Agree Admin Check List acceptance criteria</span>
+          <span class="depends">Depends on 3–4, 8</span>
+          <ul class="sub">
+            <li>Practice summary counts + gap mix behave as specified for a fixed date range.</li>
+            <li>Provider lists: Follow-ups, Outstanding Copays, Upcoming Appointment Issues.</li>
+            <li>Appointment Date Range filter semantics (what is in/out of scope).</li>
+            <li>Remediation: assign / resolve / don’t resurface cleared items.</li>
+            <li>
+              Product posture: <strong>live, internal-only</strong> staff app (IAP + RBAC) —
+              not patient- or public-facing. HIPAA-conscious GCP posture (BAA’d boundary, BigQuery-only reads).
+            </li>
+            <li>
+              Broader program hygiene in scope for build: least-privilege roles, session timeout,
+              no PHI on GHL staff calendars (de-identified busy blocks), access logging for who viewed which patient report.
+              Excludes physical shoulder-surfing / screen left open in a public space (workforce safeguard).
+            </li>
+          </ul>
+          <p class="dod"><strong>Done when</strong> criteria are written as checkable statements tied to the <a href="admin-check-list.html">Admin Check List</a> wireframe (this is the product DoD for the dashboard). Day 0 means this <em>live internal app</em> meets the bar — not that the static HTML wireframe is “public.”</p>
+        </li>
+
+        <li>
+          <span class="title">Agree non-functional envelope</span>
+          <span class="depends">Depends on 8</span>
+          <ul class="sub">
+            <li>Freshness SLA (e.g. appointment → BQ / calendar within N minutes; daily report by time local).</li>
+            <li>Expected volumes; PHI boundaries; idempotency / retry expectations.</li>
+            <li>Environments: sandbox vs production promotion rules.</li>
+            <li>
+              Security hygiene defaults: least-privilege IAM/RBAC, idle session timeout,
+              IAP (or equivalent) for staff-only access, audit logs for report access.
+            </li>
+            <li>
+              Calendar PHI rule: GHL staff calendar events stay de-identified busy blocks unless/until
+              full clinical detail on calendar is explicitly approved.
+            </li>
+          </ul>
+          <p class="dod"><strong>Done when</strong> SLA, PHI boundary, and hygiene notes are accepted and referenced in the backlog.</p>
+        </li>
+
+        <li>
+          <span class="title">Provision access &amp; secrets (joint, when ready to build)</span>
+          <span class="depends">Depends on 9–12; only when Phase A is about to start</span>
+          <ul class="sub">
+            <li>5 Journeys: create contractor accounts / API apps in AthenaNet, Zenoti, GHL (± Woo) with least privilege.</li>
+            <li>5 Journeys: issue sandbox credentials; document rotation owner.</li>
+            <li>Contractor: store secrets in agreed vault / secret manager — never in git or HTML docs.</li>
+            <li>Joint: confirm sandbox connectivity with a non-PHI or approved test probe.</li>
+          </ul>
+          <p class="dod"><strong>Done when</strong> contractor can authenticate to each in-scope sandbox API and 5 Journeys retains ownership of credential lifecycle.</p>
+        </li>
+
+        <li>
+          <span class="title">Accept phased delivery plan</span>
+          <span class="depends">Depends on 11–12</span>
+          <ul class="sub">
+            <li>Review Contractor phases A–F below; adjust scope for v1 if needed (e.g. defer declines).</li>
+            <li>Define go-live gate: Admin Check List usable for daily ops on agreed date range.</li>
+          </ul>
+          <p class="dod"><strong>Done when</strong> phase list and go-live gate are approved by 5 Journeys.</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ═══════════════ CONTRACTOR ═══════════════ -->
+    <section class="owner contractor" aria-labelledby="contractor-title">
+      <h2 id="contractor-title">3. Contractor</h2>
+      <p class="owner-lead">Design and build — after 5 Journeys inputs and joint acceptances unlock each phase.</p>
+
+      <h3 class="phase">Design artifacts (before / alongside early build)</h3>
+      <ol class="checklist" start="15">
+        <li>
+          <span class="title">Produce sequence diagrams for critical paths</span>
+          <span class="depends">Depends on 9–10</span>
+          <ul class="sub">
+            <li>Golden-record upsert (happy path + ambiguous match).</li>
+            <li>AthenaNet appointment → BigQuery + GHL staff calendar + patient flags.</li>
+            <li>Daily Admin Check List snapshot job.</li>
+          </ul>
+          <p class="dod"><strong>Done when</strong> sequences are reviewed in a joint session (item 8 follow-up) and match accepted contracts.</p>
+        </li>
+
+        <li>
+          <span class="title">Produce BigQuery data model sketch</span>
+          <span class="depends">Depends on 9–11</span>
+          <ul class="sub">
+            <li>Tables/views: golden record, appointment fact, <code>demographics_gap_fact</code>, <code>appt_issue_fact</code>, <code>copay_open_fact</code>, follow-up fact, <code>gap_remediation_state</code>.</li>
+            <li>Primary keys, grain, and partition/cluster intent.</li>
+          </ul>
+          <p class="dod"><strong>Done when</strong> model supports every Admin Check List acceptance criterion in item 11 without new mystery tables.</p>
+        </li>
+
+        <li>
+          <span class="title">Publish engineering backlog from phases A–F</span>
+          <span class="depends">Depends on 14–16</span>
+          <ul class="sub">
+            <li>Tickets with blockers named (checklist numbers).</li>
+            <li>Test plan stubs per phase (unit / integration / UAT).</li>
+          </ul>
+          <p class="dod"><strong>Done when</strong> sprint-ready backlog exists and Phase A can start after item 13.</p>
+        </li>
+      </ol>
+
+      <h3 class="phase">Build phases (sequential)</h3>
+      <ol class="checklist" start="18">
+        <li>
+          <span class="title">Phase A — Platform ingest &amp; warehouse</span>
+          <span class="depends">Depends on 13, 16–17</span>
+          <ul class="sub">
+            <li>Stand up middleware + BigQuery project per GCP schematic (HIPAA posture as agreed).</li>
+            <li>Ingest AthenaNet, Zenoti, GHL (± Woo identity) into raw/normalized landing zones.</li>
+            <li>Reporting app can run a trivial authenticated query against BQ.</li>
+          </ul>
+          <p class="dod"><strong>Done when</strong> sandbox end-to-end “source → BQ → app query” works for at least one entity type per in-scope system.</p>
+        </li>
+
+        <li>
+          <span class="title">Phase B — Golden record</span>
+          <span class="depends">Depends on 18, 10</span>
+          <ul class="sub">
+            <li>Identity match + master record in BQ.</li>
+            <li>Fill-if-empty outbound to GHL / Zenoti / AthenaNet (AthenaNet never overwritten when populated).</li>
+            <li>Ambiguous-match handling per item 10.</li>
+          </ul>
+          <p class="dod"><strong>Done when</strong> pilot patients resolve to one golden ID and blank fields fill per rules; conflicts are detectable for later reporting.</p>
+        </li>
+
+        <li>
+          <span class="title">Phase C — Appointments (BQ + one-way calendar / flags)</span>
+          <span class="depends">Depends on 19, 5</span>
+          <ul class="sub">
+            <li>Persist appointment facts (booked / updated / cancelled / rescheduled) in BQ — always.</li>
+            <li>Track A: AthenaNet (and Zenoti as in scope) → staff GHL calendar for linked providers.</li>
+            <li>Track B: patient record flags in GHL / Zenoti.</li>
+          </ul>
+          <p class="dod"><strong>Done when</strong> a test AthenaNet appointment appears in BQ and on the pilot provider’s GHL calendar (busy block), and cancels update status in BQ.</p>
+        </li>
+
+        <li>
+          <span class="title">Phase D — Operations reporting / Admin Check List v1</span>
+          <span class="depends">Depends on 20, 11, 3–4</span>
+          <ul class="sub">
+            <li>Implement demographics gap detection (Missing / Conflict) from completeness contract.</li>
+            <li>Appointment-issue pipeline joined to upcoming visits + provider.</li>
+            <li>Follow-up and copay facts per business rules.</li>
+            <li>Daily (or agreed cadence) snapshot; Appointment Date Range filter.</li>
+            <li>Remediation state (assign / resolve / suppress).</li>
+            <li>Ship UI or export matching the Admin Check List wireframe.</li>
+          </ul>
+          <p class="dod"><strong>Done when</strong> item 11 acceptance criteria pass in UAT: authorized staff can use the <em>live internal</em> Admin Check List for a chosen date range without manual spreadsheets — IAP/RBAC enforced, hygiene items from #11–12 verified. <strong>This is the primary dashboard go-live gate (Day 0).</strong> The static wireframe is design reference only, not the launch surface.</p>
+        </li>
+
+        <li>
+          <span class="title">Phase E — Cancellations, terminations &amp; Zenoti declines</span>
+          <span class="depends">Depends on 20; may start after or overlapping late D if prioritized</span>
+          <ul class="sub">
+            <li>Propagate cancel/termination across connected systems per Goal 2.</li>
+            <li>Propagate Zenoti declines per Goal 3.</li>
+            <li>Ensure BQ appointment / membership state stays consistent with Admin Check List.</li>
+          </ul>
+          <p class="dod"><strong>Done when</strong> agreed cancel/decline scenarios update all in-scope systems and no longer appear as active upcoming issues incorrectly.</p>
+        </li>
+
+        <li>
+          <span class="title">Phase F — Future two-way booking (explicitly deferred)</span>
+          <span class="depends">Depends on 2 (Meet/HIPAA decision) + stable Phases C–D</span>
+          <ul class="sub">
+            <li>Design reverse path: GHL patient booking → AthenaNet appointment.</li>
+            <li>Do not build until 5 Journeys accepts Google Meet / telehealth HIPAA posture.</li>
+          </ul>
+          <p class="dod"><strong>Done when</strong> either (a) documented deferral remains in force, or (b) after compliance go-ahead, reverse sync passes a joint UAT without breaking AthenaNet-as-source-of-record rules.</p>
+        </li>
+      </ol>
+    </section>
+
+    <div class="end-goal">
+      <h2>End goal</h2>
+      <p>
+        Integration is successful when the
+        <a href="admin-check-list.html">Admin Check List</a>
+        is a <strong>live, internal-only, HIPAA-conscious</strong> ops dashboard for the 5 Journeys Practice —
+        staff access only (IAP + RBAC), BigQuery-backed, filterable by appointment date range —
+        with accurate demographics gaps, provider action lists, and remediation, as guaranteed by the
+        <a href="operations-reporting-layer.html">operations reporting layer</a>.
+        Not a patient- or public-facing page. Day 0 is when that live app meets the acceptance bar,
+        not when the static HTML wireframe is shared.
+        Hub, golden record, and appointment sync are means to that end; Phase D is the dashboard finish line for v1.
+        Program hygiene (least privilege, session timeout, no PHI on GHL staff calendars, access logs)
+        is in scope; physical shoulder-surfing remains a workforce control outside the app.
+      </p>
+    </div>
+  </div>
+</body>
+</html>

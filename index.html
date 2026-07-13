@@ -14,20 +14,59 @@
       padding: 0 1.25rem;
     }
     h1 { font-size: 1.35rem; letter-spacing: -0.02em; }
+    h2 {
+      font-size: 1.05rem;
+      letter-spacing: -0.01em;
+      margin: 1.75rem 0 0.65rem;
+    }
     p { color: #3d524c; font-size: 0.9375rem; }
     ul { padding-left: 1.25rem; }
-    li { margin-bottom: 0.5rem; }
+    li { margin-bottom: 0.65rem; }
     a { color: #264540; font-weight: 600; }
   </style>
 </head>
 <body>
   <h1>Five Journeys — Systems Integrations</h1>
-  <p>Architecture wireframes for review.</p>
+  <p>Goals, operations report, integration maps, and build checklist for review.</p>
+
+  <h2>Goals</h2>
+  <ul>
+    <li>
+      Unify patient records across AthenaNet, Zenoti, GoHighLevel, and WooCommerce,
+      with AthenaNet as the golden source of truth.
+    </li>
+    <li>
+      Keep patient cancellations and terminations synchronized across every connected system.
+    </li>
+    <li>
+      Propagate Zenoti declines across the full systems stack.
+    </li>
+    <li>
+      Deliver a live, internal-only, HIPAA-conscious
+      <a href="admin-check-list.html">Admin Check List</a>
+      dashboard for the 5 Journeys Practice — staff access only —
+      so missing demographics and daily operational exceptions surface automatically from integrated systems.
+    </li>
+  </ul>
+
+  <h2>Operations Report</h2>
+  <ul>
+    <li><a href="admin-check-list.html">Admin Check List — missing demographics &amp; daily action report</a></li>
+  </ul>
+
+  <h2>Integration Maps</h2>
   <ul>
     <li><a href="integration-hub-flow.html">Four-system hub flow</a></li>
     <li><a href="integration-schematic.html">Full GCP integration schematic</a></li>
     <li><a href="golden-record-flow.html">Golden record — patient identity</a></li>
-    <li><a href="staff-calendar-sync-flow.html">Appointment sync — staff calendar &amp; patient record flags</a></li>
+    <li><a href="staff-calendar-sync-flow.html">Appointment sync — calendars, record flags &amp; BigQuery history</a></li>
+    <li><a href="operations-reporting-layer.html">Operations reporting layer — Admin Check List guarantee</a></li>
+  </ul>
+
+  <h2>Build checklist</h2>
+  <ul>
+    <li><a href="build-checklist.html">Implementation readiness &amp; delivery checklist</a></li>
+    <li><a href="build-gantt.html">Build Gantt — countdown to Admin Check List launch</a></li>
   </ul>
 </body>
 </html>

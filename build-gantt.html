@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Build Gantt — Systems Integrations</title>
+  <style>
+    :root {
+      --ink: #1a2e2a;
+      --ink-muted: #3d524c;
+      --wire: #b8c9c3;
+      --wire-label: #6b7f78;
+      --white: #ffffff;
+      --surface: #fafbfb;
+      --hub: #264540;
+      --fj: #2d5a7b;
+      --fj-bar: #7aa0bd;
+      --collab: #6b4c8a;
+      --collab-bar: #a78bc4;
+      --contractor: #4a6741;
+      --contractor-bar: #7fa57a;
+      --launch: #8a5a2b;
+      --max-width: 1100px;
+      /* Timeline: Day -60 … Day 0 = 61 days. Chart plot width uses % of that span. */
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--surface);
+      color: var(--ink);
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      line-height: 1.45;
+      margin: 0;
+      padding: 2rem 1.25rem 3.5rem;
+    }
+
+    .page {
+      margin: 0 auto;
+      max-width: var(--max-width);
+    }
+
+    .back {
+      color: var(--hub);
+      display: inline-block;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+      text-decoration: none;
+    }
+
+    .back:hover {
+      text-decoration: underline;
+    }
+
+    header {
+      margin-bottom: 1.25rem;
+    }
+
+    header h1 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0 0 0.4rem;
+    }
+
+    header p {
+      color: var(--ink-muted);
+      font-size: 0.875rem;
+      margin: 0;
+      max-width: 72ch;
+    }
+
+    .assumptions {
+      background: var(--white);
+      border: 1px solid var(--wire);
+      border-left: 3px solid var(--hub);
+      border-radius: 4px;
+      font-size: 0.8125rem;
+      color: var(--ink-muted);
+      margin: 1.25rem 0 1.5rem;
+      padding: 0.85rem 1rem;
+    }
+
+    .assumptions strong {
+      color: var(--hub);
+    }
+
+    .assumptions ul {
+      margin: 0.4rem 0 0;
+      padding-left: 1.15rem;
+    }
+
+    .assumptions li {
+      margin-bottom: 0.25rem;
+    }
+
+    .assumptions a {
+      color: var(--hub);
+      font-weight: 600;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem 1.25rem;
+      font-size: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .legend i {
+      border-radius: 2px;
+      display: inline-block;
+      height: 0.65rem;
+      margin-right: 0.35rem;
+      width: 1.1rem;
+    }
+
+    .legend .fj i { background: var(--fj-bar); }
+    .legend .collab i { background: var(--collab-bar); }
+    .legend .contractor i { background: var(--contractor-bar); }
+    .legend .launch i { background: var(--launch); }
+
+    .gantt-wrap {
+      background: var(--white);
+      border: 1px solid var(--wire);
+      border-radius: 8px;
+      overflow-x: auto;
+      padding: 0.75rem 0.75rem 1rem;
+    }
+
+    .gantt {
+      min-width: 920px;
+    }
+
+    .axis {
+      display: grid;
+      gap: 0;
+      /* label col + 61 day units approximated as equal % in plot */
+      grid-template-columns: 220px 1fr;
+      margin-bottom: 0.35rem;
+    }
+
+    .axis .label-spacer {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--wire-label);
+      padding: 0 0.5rem 0.35rem 0;
+    }
+
+    .axis .ticks {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--wire);
+      color: var(--wire-label);
+      font-size: 0.65rem;
+      font-weight: 600;
+      padding-bottom: 0.35rem;
+      position: relative;
+    }
+
+    .axis .ticks .day0 {
+      color: var(--launch);
+      font-weight: 700;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      align-items: center;
+      min-height: 2rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .row .name {
+      font-size: 0.72rem;
+      line-height: 1.25;
+      padding-right: 0.65rem;
+    }
+
+    .row .name .owner {
+      display: block;
+      color: var(--wire-label);
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .row .name .deps {
+      color: var(--wire-label);
+      font-size: 0.62rem;
+      font-style: italic;
+    }
+
+    .track {
+      background: repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent calc(100% / 8 - 1px),
+        #eef2f0 calc(100% / 8 - 1px),
+        #eef2f0 calc(100% / 8)
+      );
+      border-radius: 3px;
+      height: 1.35rem;
+      position: relative;
+    }
+
+    .track::after {
+      /* Day 0 marker line at right edge */
+      background: var(--launch);
+      content: "";
+      height: 100%;
+      opacity: 0.35;
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 2px;
+    }
+
+    .bar {
+      border-radius: 3px;
+      height: 100%;
+      min-width: 4px;
+      position: absolute;
+      top: 0;
+    }
+
+    .bar.fj { background: var(--fj-bar); }
+    .bar.collab { background: var(--collab-bar); }
+    .bar.contractor { background: var(--contractor-bar); }
+    .bar.launch {
+      background: var(--launch);
+      width: 3px !important;
+      left: auto !important;
+      right: 0;
+    }
+
+    .bar span {
+      color: var(--white);
+      font-size: 0.58rem;
+      font-weight: 700;
+      left: 0.3rem;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      white-space: nowrap;
+    }
+
+    .section-label {
+      color: var(--hub);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      margin: 0.85rem 0 0.4rem;
+      text-transform: uppercase;
+    }
+
+    .section-label:first-of-type {
+      margin-top: 0.25rem;
+    }
+
+    .scale-note {
+      color: var(--wire-label);
+      font-size: 0.7rem;
+      margin: 0.65rem 0 0;
+      text-align: right;
+    }
+
+    .dep-table {
+      margin-top: 1.75rem;
+    }
+
+    .dep-table h2 {
+      font-size: 1rem;
+      margin: 0 0 0.5rem;
+    }
+
+    .dep-table p {
+      color: var(--ink-muted);
+      font-size: 0.8rem;
+      margin: 0 0 0.75rem;
+    }
+
+    table {
+      background: var(--white);
+      border-collapse: collapse;
+      font-size: 0.75rem;
+      width: 100%;
+    }
+
+    th,
+    td {
+      border: 1px solid var(--wire);
+      padding: 0.4rem 0.5rem;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #c5d9c8;
+      font-weight: 700;
+    }
+
+    td.mono {
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <a class="back" href="build-checklist.html">← Build checklist</a>
+    ·
+    <a class="back" href="index.html" style="margin-left:0.35rem;">Index</a>
+
+    <header>
+      <h1>Build Gantt (imagined)</h1>
+      <p>
+        Countdown timeline for the
+        <a href="build-checklist.html" style="color:var(--hub);font-weight:600;">build checklist</a>:
+        <strong>Day −60</strong> at the left (kickoff) → <strong>Day 0</strong> at the right
+        (Admin Check List launch / end goal). Moderate pace for information gathering &amp;
+        architecture; aggressive for AI-assisted implementation.
+      </p>
+    </header>
+
+    <div class="assumptions">
+      <strong>Assumptions (art, not contract):</strong>
+      <ul>
+        <li>~½ FTE 5 Journeys decision-maker during discovery; contractor is a competent AI-assisted engineer (not a full team).</li>
+        <li>Sandbox API access available by ~Day −29 (checklist item 13); no major vendor API blockers.</li>
+        <li>
+          <strong>Day 0</strong> = go-live of the <em>live, internal-only</em> Admin Check List app
+          (Phase D + UAT) — staff-only (IAP/RBAC), HIPAA-conscious GCP posture — <em>not</em> publishing the static HTML wireframe.
+        </li>
+        <li>
+          Build hygiene in scope: least-privilege roles, session timeout, no PHI on GHL staff calendars (busy blocks),
+          access logging. Excludes shoulder-surfing / screen left open in public (workforce safeguard).
+        </li>
+        <li>Phase E may land soft / follow-on; Phase F stays deferred.</li>
+        <li>Overlap is intentional where dependencies allow (e.g. design artifacts with late joint work).</li>
+        <li>Calendar days shown; weekends included as buffer rather than drawn separately.</li>
+      </ul>
+    </div>
+
+    <div class="legend">
+      <span class="fj"><i></i>5 Journeys</span>
+      <span class="collab"><i></i>5 Journeys &amp; Contractor</span>
+      <span class="contractor"><i></i>Contractor</span>
+      <span class="launch"><i></i>Day 0 — Launch</span>
+    </div>
+
+    <!--
+      Timeline math: span = 60 days (Day -60 … Day 0).
+      left%  = (startDay - (-60)) / 60 * 100
+      width% = durationDays / 60 * 100
+      Day -60 = 0%, Day 0 = 100%
+    -->
+    <div class="gantt-wrap">
+      <div class="gantt">
+        <div class="axis">
+          <div class="label-spacer">Workstream</div>
+          <div class="ticks" aria-hidden="true">
+            <span>Day −60</span>
+            <span>−45</span>
+            <span>−30</span>
+            <span>−15</span>
+            <span class="day0">Day 0 Launch</span>
+          </div>
+        </div>
+
+        <p class="section-label">5 Journeys — information gathering</p>
+
+        <div class="row">
+          <div class="name">
+            Priorities &amp; decision log
+            <span class="owner">5 Journeys · #1–2</span>
+            <span class="deps">Start → unlocks rules</span>
+          </div>
+          <div class="track">
+            <!-- -60 to -50 = 10d → left 0%, width 16.67% -->
+            <div class="bar fj" style="left:0%;width:16.67%"><span>−60 → −50</span></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="name">
+            Demographics completeness matrix
+            <span class="owner">5 Journeys · #3</span>
+            <span class="deps">After #1–2</span>
+          </div>
+          <div class="track">
+            <!-- -52 to -42 = 10d → left 13.33%, width 16.67% -->
+            <div class="bar fj" style="left:13.33%;width:16.67%"><span>−52 → −42</span></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="name">
+            Follow-up &amp; copay rules
+            <span class="owner">5 Journeys · #4</span>
+            <span class="deps">After #1; parallel w/ #3</span>
+          </div>
+          <div class="track">
+            <!-- -52 to -44 = 8d -->
+            <div class="bar fj" style="left:13.33%;width:13.33%"><span>−52 → −44</span></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="name">
+            Staff Registry + examples + open Qs
+            <span class="owner">5 Journeys · #5–7</span>
+            <span class="deps">After #2; overlaps #3–4</span>
+          </div>
+          <div class="track">
+            <!-- -48 to -40 = 8d -->
+            <div class="bar fj" style="left:20%;width:13.33%"><span>−48 → −40</span></div>
+          </div>
+        </div>
+
+        <p class="section-label">Joint — architecture &amp; contracts</p>
+
+        <div class="row">
+          <div class="name">
+            Architecture pack walkthrough
+            <span class="owner">Joint · #8</span>
+            <span class="deps">After #1–2 (+ maps)</span>
+          </div>
+          <div class="track">
+            <!-- -43 to -41 = 2d -->
+            <div class="bar collab" style="left:28.33%;width:3.33%"><span>−43</span></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="name">
+            Field / event contracts
+            <span class="owner">Joint · #9</span>
+            <span class="deps">After #3–4, #6, #8</span>
+          </div>
+          <div class="track">
+            <!-- -41 to -33 = 8d -->
+            <div class="bar collab" style="left:31.67%;width:13.33%"><span>−41 → −33</span></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="name">
+            Entity / ID map
+            <span class="owner">Joint · #10</span>
+            <span class="deps">After #5, #9</span>
+          </div>
+          <div class="track">
+            <!-- -38 to -32 = 6d -->
+            <div class="bar collab" style="left:36.67%;width:10%"><span>−38 → −32</span></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="name">
+            Admin Check List acceptance + NFRs
+            <span class="owner">Joint · #11–12</span>
+            <span class="deps">After #3–4, #8</span>
+          </div>
+          <div class="track">
+            <!-- -36 to -30 = 6d -->
+            <div class="bar collab" style="left:40%;width:10%"><span>−36 → −30</span></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="name">
+            Credentials &amp; sandbox access
+            <span class="owner">Joint · #13</span>
+            <span class="deps">After #9–12; before Phase A</span>
+          </div>
+          <div class="track">
+            <!-- -31 to -28 = 3d -->
+            <div class="bar collab" style="left:48.33%;width:5%"><span>−31 → −28</span></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="name">
+            Accept phased delivery plan
+            <span class="owner">Joint · #14</span>
+            <span class="deps">After #11–13</span>
+          </div>
+          <div class="track">
+            <!-- -28 to -27 = 1d -->
+            <div class="bar collab" style="left:53.33%;width:1.67%"><span>−28</span></div>
+          </div>
+        </div>
+
+        <p class="section-label">Contractor — design (moderate / overlapping)</p>
+
+        <div class="row">
+          <div class="name">
+            Sequences + BQ model + backlog
+            <span class="owner">Contractor · #15–17</span>
+            <span class="deps">After #9–11; overlaps #13–14</span>
+          </div>
+          <div class="track">
+            <!-- -33 to -27 = 6d -->
+            <div class="bar contractor" style="left:45%;width:10%"><span>−33 → −27</span></div>
+          </div>
+        </div>
+
+        <p class="section-label">Contractor — implementation (aggressive)</p>
+
+        <div class="row">
+          <div class="name">
+            Phase A — Ingest &amp; warehouse
+            <span class="owner">Contractor · #18</span>
+            <span class="deps">After #13–17</span>
+          </div>
+          <div class="track">
+            <!-- -27 to -22 = 5d -->
+            <div class="bar contractor" style="left:55%;width:8.33%"><span>−27 → −22</span></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="name">
+            Phase B — Golden record
+            <span class="owner">Contractor · #19</span>
+            <span class="deps">After A + #10</span>
+          </div>
+          <div class="track">
+            <!-- -22 to -16 = 6d -->
+            <div class="bar contractor" style="left:63.33%;width:10%"><span>−22 → −16</span></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="name">
+            Phase C — Appointments / calendar
+            <span class="owner">Contractor · #20</span>
+            <span class="deps">After B + #5</span>
+          </div>
+          <div class="track">
+            <!-- -16 to -10 = 6d -->
+            <div class="bar contractor" style="left:73.33%;width:10%"><span>−16 → −10</span></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="name">
+            Phase D — Admin Check List v1
+            <span class="owner">Contractor · #21</span>
+            <span class="deps">After C + #11 + #3–4</span>
+          </div>
+          <div class="track">
+            <!-- -10 to -2 = 8d -->
+            <div class="bar contractor" style="left:83.33%;width:13.33%"><span>−10 → −2</span></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="name">
+            UAT / harden → Launch
+            <span class="owner">Joint · gate</span>
+            <span class="deps">After D; Day 0 = end goal</span>
+          </div>
+          <div class="track">
+            <!-- -2 to 0 = 2d -->
+            <div class="bar collab" style="left:96.67%;width:3.33%"><span>−2→0</span></div>
+            <div class="bar launch" title="Day 0 Launch"></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="name">
+            Phase E — Cancels / declines
+            <span class="owner">Contractor · #22</span>
+            <span class="deps">Soft-launch after / overlapping late D</span>
+          </div>
+          <div class="track">
+            <!-- -5 to +0 shown clipped at 0; extend conceptually post-launch -->
+            <div class="bar contractor" style="left:91.67%;width:8.33%"><span>−5 → 0+</span></div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="name">
+            Phase F — Two-way GHL booking
+            <span class="owner">Contractor · #23</span>
+            <span class="deps">Deferred — HIPAA / Meet gate</span>
+          </div>
+          <div class="track">
+            <!-- placeholder after launch - not on critical path -->
+            <div class="bar contractor" style="left:98.33%;width:1.67%;opacity:0.45" title="Post Day 0 / TBD"></div>
+          </div>
+        </div>
+
+        <p class="scale-note">Axis: Day −60 (kickoff) ←————————→ Day 0 (Admin Check List launch)</p>
+      </div>
+    </div>
+
+    <div class="dep-table">
+      <h2>Dependency spine (critical path to Day 0)</h2>
+      <p>
+        Imagined critical path (~60 calendar days). Discovery is paced for real decision latency;
+        build assumes strong AI-assisted velocity once contracts and sandbox access exist.
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Order</th>
+            <th>Window</th>
+            <th>Must finish before</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="mono">#1–2</td>
+            <td class="mono">−60 → −50</td>
+            <td>Field rules, map walk</td>
+            <td>Priorities + decision log (incl. one-way calendar, Woo split, Meet deferral)</td>
+          </tr>
+          <tr>
+            <td class="mono">#3–4</td>
+            <td class="mono">−52 → −42</td>
+            <td>Contracts (#9), acceptance (#11), Phase D</td>
+            <td>Moderate: workshops + examples beat rushing bad rules</td>
+          </tr>
+          <tr>
+            <td class="mono">#5–7</td>
+            <td class="mono">−48 → −40</td>
+            <td>ID map (#10), Phase C</td>
+            <td>Staff Registry unlocks calendar pilot</td>
+          </tr>
+          <tr>
+            <td class="mono">#8 → #9–12</td>
+            <td class="mono">−43 → −30</td>
+            <td>Credentials, design, all build</td>
+            <td>Architecture &amp; contracts — moderate, not skimped</td>
+          </tr>
+          <tr>
+            <td class="mono">#13–14</td>
+            <td class="mono">−31 → −27</td>
+            <td>Phase A</td>
+            <td>Secrets + phase acceptance</td>
+          </tr>
+          <tr>
+            <td class="mono">#15–17</td>
+            <td class="mono">−33 → −27</td>
+            <td>Phase A</td>
+            <td>Sequences, BQ model, backlog — overlaps late joint work</td>
+          </tr>
+          <tr>
+            <td class="mono">#18 A</td>
+            <td class="mono">−27 → −22</td>
+            <td>Phase B</td>
+            <td>Aggressive: hub + BQ + trivial app query</td>
+          </tr>
+          <tr>
+            <td class="mono">#19 B</td>
+            <td class="mono">−22 → −16</td>
+            <td>Phase C</td>
+            <td>Aggressive: golden record + fill-if-empty</td>
+          </tr>
+          <tr>
+            <td class="mono">#20 C</td>
+            <td class="mono">−16 → −10</td>
+            <td>Phase D</td>
+            <td>Aggressive: BQ appt fact + one-way GHL calendar/flags</td>
+          </tr>
+          <tr>
+            <td class="mono">#21 D</td>
+            <td class="mono">−10 → −2</td>
+            <td>UAT / Day 0</td>
+            <td>Aggressive but longest build slice — dashboard is the product</td>
+          </tr>
+          <tr>
+            <td class="mono">UAT</td>
+            <td class="mono">−2 → 0</td>
+            <td>—</td>
+            <td>
+              <strong>Day 0 = live internal Admin Check List</strong> for authorized staff
+              (IAP/RBAC, hygiene checks) — not a public/wireframe publish
+            </td>
+          </tr>
+          <tr>
+            <td class="mono">#22 E</td>
+            <td class="mono">−5 → 0+</td>
+            <td>Post-launch hardening OK</td>
+            <td>Cancels/declines — not required to call Day 0 a success if D passes</td>
+          </tr>
+          <tr>
+            <td class="mono">#23 F</td>
+            <td class="mono">TBD after 0</td>
+            <td>Meet / HIPAA decision</td>
+            <td>Out of critical path by design</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>
