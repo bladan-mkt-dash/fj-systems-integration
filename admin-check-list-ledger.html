@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Check List — Record Ledger Wireframe</title>
+  <style>
+    :root {
+      --ink: #1a2e2a;
+      --ink-muted: #3d524c;
+      --wire: #b8c9c3;
+      --wire-label: #6b7f78;
+      --white: #ffffff;
+      --surface: #fafbfb;
+      --header-bg: #c5d9c8;
+      --header-border: #9bb89f;
+      --hub: #264540;
+      --ok: #2f6b4f;
+      --ok-bg: #e7f3ec;
+      --miss: #8a3b2b;
+      --miss-bg: #f8ebe7;
+      --na: #6b7f78;
+      --na-bg: #eef1f0;
+      --drill: #2d5a7b;
+      --drill-bg: #eef4f8;
+      --warn: #8a5a2b;
+      --warn-bg: #f7f0e8;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--surface);
+      color: var(--ink);
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      line-height: 1.45;
+      margin: 0;
+      min-height: 100vh;
+      padding: 2rem 1.25rem 3.5rem;
+    }
+
+    .page {
+      margin: 0 auto;
+      max-width: 1180px;
+    }
+
+    .back {
+      color: var(--hub);
+      display: inline-block;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+      text-decoration: none;
+    }
+
+    .back:hover {
+      text-decoration: underline;
+    }
+
+    header {
+      margin-bottom: 1.5rem;
+    }
+
+    header .eyebrow {
+      color: var(--wire-label);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      margin: 0 0 0.45rem;
+      text-transform: uppercase;
+    }
+
+    header h1 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0 0 0.35rem;
+    }
+
+    header .subtitle {
+      color: var(--ink-muted);
+      font-size: 0.875rem;
+      margin: 0 0 0.65rem;
+      max-width: 68ch;
+    }
+
+    header .meta {
+      color: var(--wire-label);
+      font-size: 0.75rem;
+      margin: 0;
+    }
+
+    .note {
+      background: var(--drill-bg);
+      border: 1px solid #c5d6e3;
+      border-left: 3px solid var(--drill);
+      border-radius: 4px;
+      color: var(--ink-muted);
+      font-size: 0.8125rem;
+      margin: 0 0 1.5rem;
+      padding: 0.75rem 0.9rem;
+    }
+
+    .note strong {
+      color: var(--drill);
+    }
+
+    .filters {
+      background: var(--white);
+      border: 1px solid var(--wire);
+      border-radius: 6px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem 1rem;
+      align-items: flex-end;
+      margin: 0 0 1.5rem;
+      padding: 0.9rem 1rem;
+    }
+
+    .filters .filter-title {
+      color: var(--hub);
+      flex: 1 1 100%;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .filters label {
+      display: flex;
+      flex-direction: column;
+      font-size: 0.7rem;
+      font-weight: 600;
+      gap: 0.25rem;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: var(--wire-label);
+    }
+
+    .filters input[type="date"] {
+      border: 1px solid var(--wire);
+      border-radius: 4px;
+      color: var(--ink);
+      font: inherit;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      letter-spacing: normal;
+      padding: 0.35rem 0.45rem;
+      text-transform: none;
+    }
+
+    .presets {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+    }
+
+    .presets button,
+    .filters .actions button {
+      background: var(--surface);
+      border: 1px solid var(--wire);
+      border-radius: 4px;
+      color: var(--ink);
+      cursor: pointer;
+      font: inherit;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.35rem 0.55rem;
+    }
+
+    .presets button.active,
+    .presets button:hover,
+    .filters .actions button.primary {
+      background: var(--hub);
+      border-color: var(--hub);
+      color: var(--white);
+    }
+
+    .filters .actions {
+      display: flex;
+      gap: 0.35rem;
+      margin-left: auto;
+    }
+
+    .filter-status {
+      color: var(--drill);
+      flex: 1 1 100%;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    tr.is-hidden {
+      display: none;
+    }
+
+    .provider-block.is-empty {
+      display: none;
+    }
+
+    .legend {
+      align-items: center;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem 1rem;
+      margin: 0 0 1.5rem;
+    }
+
+    .legend span {
+      align-items: center;
+      display: inline-flex;
+      font-size: 0.75rem;
+      font-weight: 600;
+      gap: 0.35rem;
+    }
+
+    .pill {
+      border-radius: 3px;
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      min-width: 4.25rem;
+      padding: 0.18rem 0.4rem;
+      text-align: center;
+    }
+
+    .pill.ok {
+      background: var(--ok-bg);
+      color: var(--ok);
+    }
+
+    .pill.miss {
+      background: var(--miss-bg);
+      color: var(--miss);
+    }
+
+    .pill.na {
+      background: var(--na-bg);
+      color: var(--na);
+    }
+
+    .summary-grid {
+      display: grid;
+      gap: 0.75rem;
+      grid-template-columns: repeat(4, 1fr);
+      margin-bottom: 1.75rem;
+    }
+
+    .summary-card {
+      background: var(--white);
+      border: 1px solid var(--wire);
+      border-radius: 6px;
+      padding: 0.85rem 0.9rem;
+    }
+
+    .summary-card .label {
+      color: var(--wire-label);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      margin: 0 0 0.35rem;
+      text-transform: uppercase;
+    }
+
+    .summary-card .value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin: 0;
+    }
+
+    .section {
+      margin-bottom: 2rem;
+    }
+
+    .section > h2 {
+      border-bottom: 2px solid var(--hub);
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin: 0 0 0.85rem;
+      padding-bottom: 0.35rem;
+    }
+
+    .provider-head {
+      align-items: baseline;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem 0.85rem;
+      margin: 0 0 0.65rem;
+    }
+
+    .provider-head h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .provider-head .period {
+      color: var(--wire-label);
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .provider-head .count {
+      color: var(--ink-muted);
+      font-size: 0.8rem;
+    }
+
+    .table-wrap {
+      background: var(--white);
+      border: 1px solid var(--header-border);
+      border-radius: 6px;
+      overflow-x: auto;
+    }
+
+    table.ledger {
+      border-collapse: collapse;
+      font-size: 0.78rem;
+      min-width: 980px;
+      width: 100%;
+    }
+
+    table.ledger th,
+    table.ledger td {
+      border-bottom: 1px solid var(--wire);
+      padding: 0.55rem 0.5rem;
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    table.ledger th {
+      background: var(--header-bg);
+      border-bottom: 1px solid var(--header-border);
+      font-size: 0.72rem;
+      font-weight: 700;
+      line-height: 1.25;
+      position: sticky;
+      top: 0;
+      white-space: normal;
+    }
+
+    table.ledger th.field {
+      max-width: 6.5rem;
+      text-align: center;
+    }
+
+    table.ledger td.field {
+      text-align: center;
+    }
+
+    table.ledger tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    table.ledger tbody tr.has-gaps {
+      background: #fffaf7;
+    }
+
+    table.ledger tbody tr.complete {
+      background: #f7fbf8;
+    }
+
+    .patient-name {
+      color: var(--hub);
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .appt {
+      color: var(--ink-muted);
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    .gaps {
+      color: var(--miss);
+      font-size: 0.72rem;
+      font-weight: 600;
+      max-width: 14rem;
+    }
+
+    .gaps.none {
+      color: var(--ok);
+    }
+
+    .notes {
+      color: var(--ink-muted);
+      font-size: 0.72rem;
+      max-width: 12rem;
+    }
+
+    .wire-label {
+      color: var(--wire-label);
+      font-size: 0.7rem;
+      font-style: italic;
+      margin: 0.45rem 0 1.35rem;
+    }
+
+    .alt-link {
+      background: var(--warn-bg);
+      border: 1px solid #e2d0b8;
+      border-radius: 4px;
+      color: var(--warn);
+      font-size: 0.8125rem;
+      margin: 0 0 1.5rem;
+      padding: 0.7rem 0.85rem;
+    }
+
+    .alt-link a {
+      color: var(--hub);
+      font-weight: 700;
+    }
+
+    @media (max-width: 720px) {
+      .summary-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <a class="back" href="index.html">← Systems Integrations</a>
+
+    <header>
+      <p class="eyebrow">Integration product · wireframe · ledger variant</p>
+      <h1>Admin Check List — Record Ledger</h1>
+      <p class="subtitle">
+        Provider-scoped completeness ledger: each patient appears once, with a collected vs
+        missing view of chart / payment / membership fields drawn from AthenaNet &amp; Zenoti.
+      </p>
+      <p class="meta">
+        Layout inspired by the Q3 admin workbook pattern · illustrative data only · fictitious names ·
+        not a live chart extract
+      </p>
+    </header>
+
+    <p class="alt-link">
+      Looking for the daily action / issues layout instead?
+      See the original <a href="admin-check-list.html">Admin Check List wireframe</a>.
+    </p>
+
+    <p class="note">
+      <strong>Design shift:</strong>
+      The spreadsheet often lists the same patient under multiple appointment dates.
+      This wireframe collapses to <strong>one row per patient under each provider</strong>,
+      and turns the Yes / No / N/A columns into a ledger of what is collected vs still missing.
+      Use <strong>Appointment Date Range</strong> to scope the ledger to patients whose next visit
+      falls in the window (same control pattern as the daily action report).
+    </p>
+
+    <form class="filters" id="appt-range-filter" action="#" method="get">
+      <p class="filter-title">Filter by Appointment Date Range</p>
+      <label>
+        From
+        <input id="appt-from" name="from" type="date" value="2026-07-13" />
+      </label>
+      <label>
+        To
+        <input id="appt-to" name="to" type="date" value="2026-07-20" />
+      </label>
+      <div class="presets" role="group" aria-label="Quick ranges">
+        <button type="button" data-preset="today">Today</button>
+        <button type="button" data-preset="7" class="active">Next 7 days</button>
+        <button type="button" data-preset="14">Next 14 days</button>
+        <button type="button" data-preset="30">Next 30 days</button>
+      </div>
+      <div class="actions">
+        <button type="button" id="appt-reset">Reset</button>
+        <button type="submit" class="primary" id="appt-apply">Apply</button>
+      </div>
+      <p class="filter-status" id="filter-status" aria-live="polite">
+        Showing patients with next appointment Jul 13–Jul 20, 2026 (demo filter).
+      </p>
+    </form>
+
+    <div class="legend" aria-label="Status legend">
+      <span><span class="pill ok">Yes</span> Collected</span>
+      <span><span class="pill miss">No</span> Missing</span>
+      <span><span class="pill na">N/A</span> Not applicable</span>
+    </div>
+
+    <section class="section" aria-labelledby="practice-summary">
+      <h2 id="practice-summary">Practice rollup (demo)</h2>
+      <div class="summary-grid">
+        <div class="summary-card">
+          <p class="label">Unique patients</p>
+          <p class="value" id="stat-patients">18</p>
+        </div>
+        <div class="summary-card">
+          <p class="label">Fully collected</p>
+          <p class="value" id="stat-complete">7</p>
+        </div>
+        <div class="summary-card">
+          <p class="label">With gaps</p>
+          <p class="value" id="stat-gaps">11</p>
+        </div>
+        <div class="summary-card">
+          <p class="label">Missing CC (either system)</p>
+          <p class="value" id="stat-cc">6</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="provider-ledgers">
+      <h2 id="provider-ledgers">Provider ledgers</h2>
+
+      <div class="provider-block" data-provider-block>
+      <div class="provider-head">
+        <h3>Dr. Wendie Trubow</h3>
+        <span class="period">Q3 2026</span>
+        <span class="count" data-provider-count>10 unique patients · 6 with gaps</span>
+      </div>
+      <div class="table-wrap">
+        <table class="ledger">
+          <thead>
+            <tr>
+              <th>Patient</th>
+              <th>Next appt</th>
+              <th class="field">Photo ID<br />(on record)</th>
+              <th class="field">Insurance<br />Card Pic</th>
+              <th class="field">Insurance<br />(eligibility / active)</th>
+              <th class="field">Referral on File<br />(if HMO)</th>
+              <th class="field">Credit Card<br />Athena</th>
+              <th class="field">Credit Card<br />Zenoti</th>
+              <th class="field">Active<br />Membership</th>
+              <th>Still missing</th>
+              <th>Checkout notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="has-gaps" data-appt="2026-07-15">
+              <td class="patient-name">Amelia Hart</td>
+              <td class="appt">7/15/26</td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps">Photo ID</td>
+              <td class="notes">Ask front desk for ID scan at check-in</td>
+            </tr>
+            <tr class="complete" data-appt="2026-07-16">
+              <td class="patient-name">Jordan Blake</td>
+              <td class="appt">7/16/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="has-gaps" data-appt="2026-07-18">
+              <td class="patient-name">Priya Nandakumar</td>
+              <td class="appt">7/18/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps">Insurance card pic</td>
+              <td class="notes">LVM — upload request sent</td>
+            </tr>
+            <tr class="has-gaps" data-appt="2026-07-20">
+              <td class="patient-name">Marcus Ellison</td>
+              <td class="appt">7/20/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps">Eligibility · CC Athena</td>
+              <td class="notes">Verify before visit; Zenoti card OK</td>
+            </tr>
+            <tr class="complete" data-appt="2026-07-22">
+              <td class="patient-name">Helena Ortiz</td>
+              <td class="appt">7/22/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">HMO referral confirmed</td>
+            </tr>
+            <tr class="has-gaps" data-appt="2026-07-23">
+              <td class="patient-name">Theo Langford</td>
+              <td class="appt">7/23/26</td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps">Photo ID · Ins. card · CC Athena · CC Zenoti</td>
+              <td class="notes">New patient packet incomplete</td>
+            </tr>
+            <tr class="complete" data-appt="2026-07-27">
+              <td class="patient-name">Sloane Mercer</td>
+              <td class="appt">7/27/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="has-gaps" data-appt="2026-07-28">
+              <td class="patient-name">Nadia Quintero</td>
+              <td class="appt">7/28/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps">HMO referral</td>
+              <td class="notes">Awaiting PCP referral fax</td>
+            </tr>
+            <tr class="has-gaps" data-appt="2026-07-30">
+              <td class="patient-name">Evan Cho</td>
+              <td class="appt">7/30/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="gaps">CC Zenoti · Membership</td>
+              <td class="notes">Membership renewal pending</td>
+            </tr>
+            <tr class="complete" data-appt="2026-08-02">
+              <td class="patient-name">Iris Vanderbilt</td>
+              <td class="appt">8/02/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="wire-label">
+        One row per patient — even if they have multiple visits in the quarter, the ledger does not repeat the name.
+      </p>
+      </div>
+
+      <div class="provider-block" data-provider-block>
+      <div class="provider-head">
+        <h3>Dr. Edward Levitan</h3>
+        <span class="period">Q3 2026</span>
+        <span class="count" data-provider-count>8 unique patients · 5 with gaps</span>
+      </div>
+      <div class="table-wrap">
+        <table class="ledger">
+          <thead>
+            <tr>
+              <th>Patient</th>
+              <th>Next appt</th>
+              <th class="field">Photo ID<br />(on record)</th>
+              <th class="field">Insurance<br />Card Pic</th>
+              <th class="field">Insurance<br />(eligibility / active)</th>
+              <th class="field">Referral on File<br />(if HMO)</th>
+              <th class="field">Credit Card<br />Athena</th>
+              <th class="field">Credit Card<br />Zenoti</th>
+              <th class="field">Active<br />Membership</th>
+              <th>Still missing</th>
+              <th>Checkout notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="has-gaps" data-appt="2026-07-14">
+              <td class="patient-name">Camille Brooks</td>
+              <td class="appt">7/14/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps">CC Athena</td>
+              <td class="notes">Card declined in Athena — update needed</td>
+            </tr>
+            <tr class="complete" data-appt="2026-07-17">
+              <td class="patient-name">Derek Fontaine</td>
+              <td class="appt">7/17/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="has-gaps" data-appt="2026-07-21">
+              <td class="patient-name">Lila Nguyen</td>
+              <td class="appt">7/21/26</td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="gaps">Photo ID · Membership</td>
+              <td class="notes">Email reminder sent</td>
+            </tr>
+            <tr class="has-gaps" data-appt="2026-07-24">
+              <td class="patient-name">Owen Farrell</td>
+              <td class="appt">7/24/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps">Ins. card · Eligibility</td>
+              <td class="notes">Eligibility re-check before visit</td>
+            </tr>
+            <tr class="complete" data-appt="2026-07-29">
+              <td class="patient-name">Beatrice Holm</td>
+              <td class="appt">7/29/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="has-gaps" data-appt="2026-08-01">
+              <td class="patient-name">Samir Haddad</td>
+              <td class="appt">8/01/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps">CC Athena · CC Zenoti</td>
+              <td class="notes">No card on file in either system</td>
+            </tr>
+            <tr class="has-gaps" data-appt="2026-08-04">
+              <td class="patient-name">Grace Pettigrew</td>
+              <td class="appt">8/04/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps">HMO referral</td>
+              <td class="notes">Referral request logged</td>
+            </tr>
+            <tr class="complete" data-appt="2026-08-05">
+              <td class="patient-name">Noah Kessler</td>
+              <td class="appt">8/05/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="wire-label">
+        Same field set as the admin workbook: Photo ID, Insurance Card Pic, Eligibility, HMO Referral,
+        Credit Card (Athena / Zenoti), Active Membership — plus a rolled-up “Still missing” column.
+      </p>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    (function () {
+      const form = document.getElementById("appt-range-filter");
+      const fromInput = document.getElementById("appt-from");
+      const toInput = document.getElementById("appt-to");
+      const status = document.getElementById("filter-status");
+      const presetButtons = form.querySelectorAll("[data-preset]");
+      const asOf = new Date(2026, 6, 13); // wireframe "today"
+
+      function iso(d) {
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, "0");
+        const day = String(d.getDate()).padStart(2, "0");
+        return y + "-" + m + "-" + day;
+      }
+
+      function addDays(base, n) {
+        const d = new Date(base.getFullYear(), base.getMonth(), base.getDate());
+        d.setDate(d.getDate() + n);
+        return d;
+      }
+
+      function formatLabel(isoDate) {
+        const d = new Date(isoDate + "T12:00:00");
+        return d.toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        });
+      }
+
+      function setPresetActive(name) {
+        presetButtons.forEach(function (btn) {
+          btn.classList.toggle("active", btn.getAttribute("data-preset") === name);
+        });
+      }
+
+      function rowMissingCc(row) {
+        const fields = row.querySelectorAll("td.field .pill");
+        // CC Athena = 5th field pill, CC Zenoti = 6th (0-based: 4, 5)
+        if (fields.length < 6) return false;
+        return (
+          fields[4].classList.contains("miss") || fields[5].classList.contains("miss")
+        );
+      }
+
+      function applyFilter() {
+        const from = fromInput.value;
+        const to = toInput.value;
+        let visible = 0;
+        let total = 0;
+        let complete = 0;
+        let gaps = 0;
+        let missingCc = 0;
+
+        document.querySelectorAll("tr[data-appt]").forEach(function (row) {
+          total += 1;
+          const appt = row.getAttribute("data-appt");
+          const inRange = (!from || appt >= from) && (!to || appt <= to);
+          row.classList.toggle("is-hidden", !inRange);
+          if (!inRange) return;
+          visible += 1;
+          if (row.classList.contains("complete")) complete += 1;
+          if (row.classList.contains("has-gaps")) gaps += 1;
+          if (rowMissingCc(row)) missingCc += 1;
+        });
+
+        document.querySelectorAll("[data-provider-block]").forEach(function (block) {
+          const rows = block.querySelectorAll("tr[data-appt]");
+          let shown = 0;
+          let gapCount = 0;
+          rows.forEach(function (row) {
+            if (row.classList.contains("is-hidden")) return;
+            shown += 1;
+            if (row.classList.contains("has-gaps")) gapCount += 1;
+          });
+          block.classList.toggle("is-empty", shown === 0);
+          const countEl = block.querySelector("[data-provider-count]");
+          if (countEl) {
+            countEl.textContent =
+              shown +
+              " unique patient" +
+              (shown === 1 ? "" : "s") +
+              " · " +
+              gapCount +
+              " with gaps";
+          }
+        });
+
+        document.getElementById("stat-patients").textContent = String(visible);
+        document.getElementById("stat-complete").textContent = String(complete);
+        document.getElementById("stat-gaps").textContent = String(gaps);
+        document.getElementById("stat-cc").textContent = String(missingCc);
+
+        if (!from && !to) {
+          status.textContent =
+            "No appointment date filter — showing all ledger patients (" + total + ").";
+        } else {
+          status.textContent =
+            "Showing " +
+            visible +
+            " of " +
+            total +
+            " patients with next appointment " +
+            formatLabel(from || "…") +
+            " – " +
+            formatLabel(to || "…") +
+            ".";
+        }
+      }
+
+      presetButtons.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          const preset = btn.getAttribute("data-preset");
+          fromInput.value = iso(asOf);
+          if (preset === "today") {
+            toInput.value = iso(asOf);
+          } else {
+            toInput.value = iso(addDays(asOf, Number(preset)));
+          }
+          setPresetActive(preset);
+          applyFilter();
+        });
+      });
+
+      document.getElementById("appt-reset").addEventListener("click", function () {
+        fromInput.value = "";
+        toInput.value = "";
+        setPresetActive("");
+        applyFilter();
+      });
+
+      form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        setPresetActive("");
+        applyFilter();
+      });
+
+      fromInput.addEventListener("change", function () {
+        setPresetActive("");
+      });
+      toInput.addEventListener("change", function () {
+        setPresetActive("");
+      });
+
+      applyFilter();
+    })();
+  </script>
+</body>
+</html>
