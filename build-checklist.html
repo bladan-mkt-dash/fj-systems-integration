@@ -262,7 +262,7 @@
 </head>
 <body>
   <div class="page">
-    <a class="back" href="index.html">← Systems Integrations</a>
+    <a class="back" href="index.html">← Back to systems integration</a>
 
     <header>
       <h1>Build checklist</h1>
@@ -299,9 +299,17 @@
         <li>
           <span class="title">Confirm product outcomes and phase priorities</span>
           <ul class="sub">
-            <li>Confirm Goals order: unify records → cancels/terminations → Zenoti declines → Admin Check List dashboard as the ops product outcome.</li>
-            <li>Confirm Admin Check List as the near-term live, internal-only operations dashboard (Day 0 go-live gate).</li>
-            <li>Confirm near-term appointment direction: AthenaNet (clinical) / Zenoti (wellness) → GHL + BigQuery only; two-way GHL→AthenaNet deferred.</li>
+            <li>Confirm Goals order: unify records → cancels/terminations → Zenoti declines → Admin Check List dashboard as the ops product outcome, including <a href="admin-check-list-ledger.html">Admin Check List — record ledger (collected vs missing)</a>.</li>
+            <li>Confirm Admin Check List (daily action report + <a href="admin-check-list-ledger.html">record ledger</a>) as the near-term live, internal-only operations dashboard (Day 0 go-live gate).</li>
+            <li>
+              Confirm near-term appointment sync:
+              <ul class="sub">
+                <li>Appointments are booked in AthenaNet (doctor visits) or Zenoti (wellness).</li>
+                <li>Every appointment is also stored in BigQuery for history and reporting.</li>
+                <li>Staff calendar sync with GoHighLevel starts with the Health Coach and Nutritionist — two-way, so their AthenaNet/Zenoti schedules and GHL calendars stay matched either way.</li>
+                <li>Future potential: patient self-booking on the patient portal (e.g. book in GoHighLevel and create the AthenaNet appointment automatically) — not in this phase.</li>
+              </ul>
+            </li>
           </ul>
           <p class="dod"><strong>Done when</strong> a one-page priority note exists that the contractor can quote in the backlog (no open “which first?” debates).</p>
         </li>
@@ -310,12 +318,50 @@
           <span class="title">Settle architecture decisions (decision log)</span>
           <span class="depends">Depends on 1</span>
           <ul class="sub">
-            <li>AthenaNet = golden source of truth for patient clinical demographics.</li>
-            <li>Woo: identity fields in scope for Goal 1; inventory stays Zenoti↔Woo outside GCP; Woo commerce metrics optional.</li>
-            <li>GHL staff calendars: de-identified busy blocks unless/until full PHI on calendar is approved.</li>
-            <li>Future two-way booking: explicitly gated on Google Meet / telehealth HIPAA–BAA posture (document “not now”).</li>
+            <li>
+              <strong>Core — easier data entry that propagates</strong>
+              <ul class="sub">
+                <li>AthenaNet is the golden source of truth for patient clinical demographics.</li>
+                <li>Staff enter shared patient data once (in AthenaNet, Zenoti, or GHL); the hub matches the person and updates the master record in BigQuery.</li>
+                <li>Empty fields in other systems are filled automatically from that master record (including filling blank AthenaNet fields from Zenoti/GHL).</li>
+                <li>Once a field already has a value in AthenaNet, the hub never overwrites it — only a manual AthenaNet edit can change it.</li>
+                <li>Conflicting non-empty values across systems are not auto-“fixed”; they surface as Conflicts on the Admin Check List.</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Core — operational reporting as a required product</strong>
+              <ul class="sub">
+                <li>BigQuery is the warehouse for cross-system history and reporting; the staff app reads BigQuery only (not live Athena/Zenoti/GHL APIs for dashboards).</li>
+                <li>The Admin Check List (daily action report + record ledger) is a guaranteed deliverable — not assumed to appear just because sync is working.</li>
+                <li>A scheduled operations-reporting job must publish gap / issue views (missing demographics, upcoming appointment issues, follow-ups, copays) with appointment date-range filters and remediation state.</li>
+                <li>The live dashboard is internal-only and HIPAA-conscious (staff access control + least privilege); not a patient- or public-facing page.</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Core — cancellations, terminations &amp; declines</strong>
+              <ul class="sub">
+                <li>Patient cancellations and terminations must stay synchronized across connected systems (Goal 2).</li>
+                <li>Zenoti declines must propagate across the stack (Goal 3) so ops reporting does not keep showing “active” incorrectly.</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Supporting — WooCommerce (not the main thrust)</strong>
+              <ul class="sub">
+                <li>Who the customer is: Woo details (e.g. email) can join the unified patient record when a shopper is also a practice patient.</li>
+                <li>Product inventory: Zenoti↔Woo stock sync stays outside this project.</li>
+                <li>Sales: Zenoti POS and Woo eComm both land in BigQuery, kept distinguishable.</li>
+              </ul>
+            </li>
+            <li>
+              <strong>Supporting — Health Coach / Nutritionist calendar &amp; later booking</strong>
+              <ul class="sub">
+                <li>Calendar sync for those roles is two-way with AthenaNet/Zenoti; default calendar shows blocked time only (no patient name / visit reason) because PHI on a shared calendar is a risk.</li>
+                <li>Full patient/visit details on the calendar only with explicit compliance approval.</li>
+                <li>Future patient-portal self-booking (GHL → AthenaNet) is gated on Zoom / telehealth HIPAA–BAA posture — document as “not now.”</li>
+              </ul>
+            </li>
           </ul>
-          <p class="dod"><strong>Done when</strong> each decision above has an owner, date, and status (accepted / deferred) in a short decision log.</p>
+          <p class="dod"><strong>Done when</strong> each decision above has an owner, date, and status (accepted / deferred) in a short decision log — with core items accepted before supporting Woo/calendar work is treated as blocking.</p>
         </li>
 
         <li>

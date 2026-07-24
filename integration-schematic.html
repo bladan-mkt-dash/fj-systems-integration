@@ -45,6 +45,19 @@
       max-width: var(--max-width);
     }
 
+    .back {
+      color: var(--accent);
+      display: inline-block;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+      text-decoration: none;
+    }
+
+    .back:hover {
+      text-decoration: underline;
+    }
+
     header {
       border-bottom: 1px solid #e4ebe8;
       margin-bottom: 2rem;
@@ -402,15 +415,16 @@
 </head>
 <body>
   <div class="page">
+    <a class="back" href="index.html">← Back to systems integration</a>
+
     <header>
       <h1>Integration Architecture Schematic</h1>
       <p>
-        AthenaNet, Zenoti, GoHighLevel, and WooCommerce — ingested through a
-        GCP HIPAA-aligned perimeter into BigQuery.
-        <strong>Inventory:</strong> Zenoti is source of truth; Zenoti ↔ Woo sync stays outside GCP.
-        <strong>Identity:</strong> Woo contact fields are in scope for the golden record when store
-        customers must unify with practice patients; Woo <em>commerce metrics</em> (orders, cart)
-        remain optional.
+        <strong>Core:</strong> AthenaNet, Zenoti, and GoHighLevel feed a GCP HIPAA-aligned hub;
+        BigQuery holds the golden record and ops history; the staff reporting app (Admin Check List)
+        reads BigQuery only — enter once, propagate empty fields, never overwrite AthenaNet once set.
+        <strong>Supporting:</strong> Woo identity + eComm sales (POS vs eComm kept distinct);
+        Zenoti↔Woo inventory sync stays outside GCP.
       </p>
       <div class="legend">
         <span class="legend-item"><span class="legend-swatch gcp"></span> GCP secure perimeter (BAA)</span>
@@ -458,7 +472,7 @@
               <ul>
                 <li>Ingests &amp; translates API data from external systems</li>
                 <li>Normalizes AthenaNet, Zenoti, and GHL; inventory from Zenoti only</li>
-                <li>Woo: identity fields when required for golden record; optional commerce metrics (orders, cart, product analytics)</li>
+                <li>Woo: identity fields when required for golden record; eCommerce sales ingested alongside Zenoti POS (kept distinct)</li>
                 <li>Integration code scaffolded &amp; maintained via AI-assisted dev</li>
               </ul>
             </div>
@@ -544,7 +558,7 @@
           </div>
           <div class="box external optional">
             <p class="box-title">WooCommerce API</p>
-            <span class="optional-tag">Identity in-scope · commerce metrics optional</span>
+            <span class="optional-tag">Identity in-scope · eComm sales (vs Zenoti POS)</span>
           </div>
         </div>
         <div class="peer-sync-row" aria-label="Zenoti and WooCommerce inventory sync outside GCP">
@@ -558,9 +572,9 @@
       Schematic for architecture review. External systems push or are polled by
       the Middleware Hub; normalized data lands in BigQuery; the Custom Reporting App queries
       BigQuery for analytics and operations reports; IAP and Cloud Logging govern staff access.
-      <strong>Woo — two decisions:</strong> keep Zenoti ↔ Woo inventory sync outside GCP
-      (warehouse inventory from Zenoti only). Ingest Woo identity fields when Goal 1 requires
-      unifying store customers; add Woo commerce metrics only for web-specific data Zenoti does not hold.
+      <strong>Core:</strong> identity sync + fill-empty fields; appointments in BigQuery; Admin Check List from warehouse views.
+      <strong>Supporting — Woo:</strong> inventory Zenoti↔Woo outside GCP; Woo identity when unifying store customers;
+      Zenoti POS and Woo eComm under one roof, kept distinguishable.
       <strong>Not on this map:</strong> cancellation / termination sync, Zenoti decline propagation,
       or the Admin Check List product rules — see
       <a href="operations-reporting-layer.html">Operations reporting layer</a>.

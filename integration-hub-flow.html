@@ -41,6 +41,19 @@
       max-width: 920px;
     }
 
+    .back {
+      color: var(--hub);
+      display: inline-block;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+      text-decoration: none;
+    }
+
+    .back:hover {
+      text-decoration: underline;
+    }
+
     header {
       margin-bottom: 2rem;
       text-align: center;
@@ -359,16 +372,17 @@
 </head>
 <body>
   <div class="page">
+    <a class="back" href="index.html">← Back to systems integration</a>
+
     <header>
       <h1>Four-System Integration Hub</h1>
       <p>
-        AthenaNet, Zenoti, GoHighLevel, and WooCommerce feed the Middleware Hub;
-        data lands in BigQuery; the Custom Reporting App queries the warehouse only.
-        <strong>Inventory:</strong> managed in Zenoti and already synced to Woo outside GCP —
-        analytics use Zenoti only (no double-count).
-        <strong>Patient / customer identity:</strong> Woo is in scope when store customers
-        must join the golden record (e.g. email) — that is separate from optional Woo
-        <em>commerce metrics</em> ingest.
+        <strong>Core:</strong> staff enter shared patient data once (AthenaNet, Zenoti, or GHL);
+        the Middleware Hub matches identity, updates BigQuery, and fills empty fields across systems
+        (AthenaNet never overwritten once populated). The Custom Reporting App reads BigQuery only —
+        including the Admin Check List.
+        <strong>Supporting:</strong> Woo identity / POS–eComm sales when needed; inventory Zenoti↔Woo
+        stays outside GCP.
       </p>
     </header>
 
@@ -420,7 +434,7 @@
       <div class="system-node woo">
         <span class="name">Woo</span>
         <span class="role">E-commerce storefront</span>
-        <span class="optional">Identity in-scope · metrics optional</span>
+        <span class="optional">Supporting · identity + eComm sales</span>
       </div>
 
       <div class="gcp-zone">
@@ -428,7 +442,7 @@
 
         <div class="layer-box middleware">
           <p class="layer-title">Middleware Hub</p>
-          <p class="layer-desc">Ingest &amp; translate — inventory from Zenoti; Woo identity fields when required; Woo commerce metrics only if needed</p>
+          <p class="layer-desc">Ingest &amp; translate — identity sync + fill-empty fields; appointments; Zenoti POS + Woo eComm (kept distinct)</p>
         </div>
 
         <p class="internal-flow">↓ Sync to warehouse</p>
@@ -453,14 +467,14 @@
     </div>
 
     <p class="caption">
-      <strong>Woo — two different decisions:</strong>
-      (1) <em>Inventory</em> — keep the existing Zenoti ↔ Woo API sync outside GCP; warehouse inventory from Zenoti only.
-      (2) <em>Identity / demographics</em> — when Goal 1 requires unifying store customers, ingest the Woo contact fields needed for the golden record (at minimum email); do not confuse that with optional cart/order analytics.
+      <strong>Core on this map:</strong> enter once → hub → BigQuery golden record → fill empty fields across systems;
+      staff ops dashboards (Admin Check List) read BigQuery only.
+      <strong>Supporting — Woo:</strong> inventory Zenoti↔Woo stays outside GCP; Woo identity when a shopper is also a patient;
+      Zenoti POS + Woo eComm sales under one roof, kept distinguishable.
       <br /><br />
       <strong>Not on this map:</strong> cancellation / termination sync and Zenoti decline propagation (Goals 2–3) need dedicated flows.
       This hub alone does not guarantee the Admin Check List — see
       <a href="operations-reporting-layer.html">Operations reporting layer</a>.
-      The reporting app still queries BigQuery only, never external APIs directly.
     </p>
   </div>
 </body>

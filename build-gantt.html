@@ -315,7 +315,7 @@
   <div class="page">
     <a class="back" href="build-checklist.html">← Build checklist</a>
     ·
-    <a class="back" href="index.html" style="margin-left:0.35rem;">Index</a>
+    <a class="back" href="index.html" style="margin-left:0.35rem;">← Back to systems integration</a>
 
     <header>
       <h1>Build Gantt (imagined)</h1>
@@ -323,8 +323,9 @@
         Countdown timeline for the
         <a href="build-checklist.html" style="color:var(--hub);font-weight:600;">build checklist</a>:
         <strong>Day −60</strong> at the left (kickoff) → <strong>Day 0</strong> at the right
-        (Admin Check List launch / end goal). Moderate pace for information gathering &amp;
-        architecture; aggressive for AI-assisted implementation.
+        (Admin Check List launch — daily action report + record ledger).
+        Spine is easier single-entry sync + ops reporting; calendar / Woo / portal booking are supporting.
+        Moderate pace for information gathering &amp; architecture; aggressive for AI-assisted implementation.
       </p>
     </header>
 
@@ -338,10 +339,11 @@
           (Phase D + UAT) — staff-only (IAP/RBAC), HIPAA-conscious GCP posture — <em>not</em> publishing the static HTML wireframe.
         </li>
         <li>
-          Build hygiene in scope: least-privilege roles, session timeout, no PHI on GHL staff calendars (busy blocks),
-          access logging. Excludes shoulder-surfing / screen left open in public (workforce safeguard).
+          Build hygiene in scope: least-privilege roles, session timeout, Health Coach / Nutritionist calendar
+          shows blocked time only by default (no patient details), access logging.
+          Excludes shoulder-surfing / screen left open in public (workforce safeguard).
         </li>
-        <li>Phase E may land soft / follow-on; Phase F stays deferred.</li>
+        <li>Phase E (cancels/declines) may land soft / follow-on; Phase F (patient-portal self-booking) stays deferred on Zoom / HIPAA–BAA.</li>
         <li>Overlap is intentional where dependencies allow (e.g. design artifacts with late joint work).</li>
         <li>Calendar days shown; weekends included as buffer rather than drawn separately.</li>
       </ul>
@@ -377,7 +379,7 @@
 
         <div class="row">
           <div class="name">
-            Priorities &amp; decision log
+            Priorities &amp; decision log (core first)
             <span class="owner">5 Journeys · #1–2</span>
             <span class="deps">Start → unlocks rules</span>
           </div>
@@ -415,7 +417,7 @@
           <div class="name">
             Staff Registry + examples + open Qs
             <span class="owner">5 Journeys · #5–7</span>
-            <span class="deps">After #2; overlaps #3–4</span>
+            <span class="deps">After #2; HC/Nutritionist calendar is supporting</span>
           </div>
           <div class="track">
             <!-- -48 to -40 = 8d -->
@@ -465,7 +467,7 @@
           <div class="name">
             Admin Check List acceptance + NFRs
             <span class="owner">Joint · #11–12</span>
-            <span class="deps">After #3–4, #8</span>
+            <span class="deps">Daily report + ledger · after #3–4, #8</span>
           </div>
           <div class="track">
             <!-- -36 to -30 = 6d -->
@@ -527,9 +529,9 @@
 
         <div class="row">
           <div class="name">
-            Phase B — Golden record
+            Phase B — Golden record (enter once)
             <span class="owner">Contractor · #19</span>
-            <span class="deps">After A + #10</span>
+            <span class="deps">After A + #10 · core path</span>
           </div>
           <div class="track">
             <!-- -22 to -16 = 6d -->
@@ -539,9 +541,9 @@
 
         <div class="row">
           <div class="name">
-            Phase C — Appointments / calendar
+            Phase C — Appointments (+ HC/Nutritionist calendar)
             <span class="owner">Contractor · #20</span>
-            <span class="deps">After B + #5</span>
+            <span class="deps">After B + #5 · calendar supporting</span>
           </div>
           <div class="track">
             <!-- -16 to -10 = 6d -->
@@ -553,7 +555,7 @@
           <div class="name">
             Phase D — Admin Check List v1
             <span class="owner">Contractor · #21</span>
-            <span class="deps">After C + #11 + #3–4</span>
+            <span class="deps">Daily report + ledger · after C + #11 + #3–4</span>
           </div>
           <div class="track">
             <!-- -10 to -2 = 8d -->
@@ -588,9 +590,9 @@
 
         <div class="row">
           <div class="name">
-            Phase F — Two-way GHL booking
+            Phase F — Patient-portal self-booking
             <span class="owner">Contractor · #23</span>
-            <span class="deps">Deferred — HIPAA / Meet gate</span>
+            <span class="deps">Deferred — Zoom / HIPAA–BAA gate</span>
           </div>
           <div class="track">
             <!-- placeholder after launch - not on critical path -->
@@ -622,7 +624,7 @@
             <td class="mono">#1–2</td>
             <td class="mono">−60 → −50</td>
             <td>Field rules, map walk</td>
-            <td>Priorities + decision log (incl. one-way calendar, Woo split, Meet deferral)</td>
+            <td>Priorities + decision log (core: single-entry sync + ops reporting; Woo/calendar supporting; Zoom deferral)</td>
           </tr>
           <tr>
             <td class="mono">#3–4</td>
@@ -634,7 +636,7 @@
             <td class="mono">#5–7</td>
             <td class="mono">−48 → −40</td>
             <td>ID map (#10), Phase C</td>
-            <td>Staff Registry unlocks calendar pilot</td>
+            <td>Staff Registry; HC/Nutritionist calendar pilot is supporting</td>
           </tr>
           <tr>
             <td class="mono">#8 → #9–12</td>
@@ -664,19 +666,19 @@
             <td class="mono">#19 B</td>
             <td class="mono">−22 → −16</td>
             <td>Phase C</td>
-            <td>Aggressive: golden record + fill-if-empty</td>
+            <td>Aggressive: golden record + fill-if-empty (core)</td>
           </tr>
           <tr>
             <td class="mono">#20 C</td>
             <td class="mono">−16 → −10</td>
             <td>Phase D</td>
-            <td>Aggressive: BQ appt fact + one-way GHL calendar/flags</td>
+            <td>BQ appointment fact + HC/Nutritionist two-way calendar (supporting) + patient flags</td>
           </tr>
           <tr>
             <td class="mono">#21 D</td>
             <td class="mono">−10 → −2</td>
             <td>UAT / Day 0</td>
-            <td>Aggressive but longest build slice — dashboard is the product</td>
+            <td>Aggressive but longest build slice — Admin Check List (daily report + ledger) is the product</td>
           </tr>
           <tr>
             <td class="mono">UAT</td>
@@ -696,8 +698,8 @@
           <tr>
             <td class="mono">#23 F</td>
             <td class="mono">TBD after 0</td>
-            <td>Meet / HIPAA decision</td>
-            <td>Out of critical path by design</td>
+            <td>Zoom / HIPAA–BAA decision</td>
+            <td>Patient-portal self-booking — out of critical path by design</td>
           </tr>
         </tbody>
       </table>

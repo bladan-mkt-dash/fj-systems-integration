@@ -48,6 +48,19 @@
       max-width: var(--max-width);
     }
 
+    .back {
+      color: var(--hub);
+      display: inline-block;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+      text-decoration: none;
+    }
+
+    .back:hover {
+      text-decoration: underline;
+    }
+
     header {
       margin-bottom: 2rem;
       text-align: center;
@@ -386,13 +399,15 @@
 </head>
 <body>
   <div class="page">
+    <a class="back" href="index.html">← Back to systems integration</a>
+
     <header>
       <h1>Golden Record — Identity Resolution Flow</h1>
       <p>
-        When any team updates a patient or lead, webhooks hit the GCP Middleware Hub.
-        The hub matches identity, updates the master record in BigQuery, and queues
-        outbound sync. Empty fields are filled automatically across GHL, Zenoti, and AthenaNet;
-        existing AthenaNet values are never overwritten unless edited manually there.
+        <strong>Core path for easier data entry:</strong> when any team updates a patient or lead,
+        webhooks hit the GCP Middleware Hub. The hub matches identity, updates the master record in BigQuery,
+        and fills empty fields across GHL, Zenoti, and AthenaNet.
+        Existing AthenaNet values are never overwritten unless edited manually there.
         <strong>This flow remediates blanks — it does not publish the Admin Check List.</strong>
         Remaining gaps, conflicts, and appointment-scoped issues are reported by the
         <a href="operations-reporting-layer.html">Operations reporting layer</a>.

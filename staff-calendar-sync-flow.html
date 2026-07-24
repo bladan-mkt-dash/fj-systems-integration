@@ -50,6 +50,19 @@
       max-width: var(--max-width);
     }
 
+    .back {
+      color: var(--hub);
+      display: inline-block;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+      text-decoration: none;
+    }
+
+    .back:hover {
+      text-decoration: underline;
+    }
+
     header {
       margin-bottom: 2rem;
       text-align: center;
@@ -78,8 +91,8 @@
     .sources-row {
       display: grid;
       gap: 1rem;
-      grid-template-columns: 1fr 1fr;
-      max-width: 640px;
+      grid-template-columns: 1fr 1fr 1fr;
+      max-width: 820px;
       margin: 0 auto;
       width: 100%;
     }
@@ -95,6 +108,7 @@
 
     .source-card.athena { border-top-color: var(--athena); }
     .source-card.zenoti { border-top-color: var(--zenoti); }
+    .source-card.ghl { border-top-color: var(--ghl); }
 
     .source-card .label {
       color: var(--wire-label);
@@ -114,6 +128,7 @@
 
     .source-card.athena .system { color: var(--athena); }
     .source-card.zenoti .system { color: var(--zenoti); }
+    .source-card.ghl .system { color: var(--ghl); }
 
     .source-card .action {
       background: var(--surface);
@@ -509,18 +524,25 @@
 </head>
 <body>
   <div class="page">
+    <a class="back" href="index.html">← Back to systems integration</a>
+
     <header>
       <h1>Appointment Sync — Calendars, Record Flags &amp; BigQuery History</h1>
       <p>
-        <strong>Near-term (in scope):</strong> appointments are scheduled in AthenaNet (clinical)
-        or Zenoti (wellness), then reflected outbound — BigQuery always; staff GHL calendars
-        when the provider is a linked GHL user; patient GHL/Zenoti <em>record flags</em> (not patient calendars).
-        <strong>Not in scope yet:</strong> patients booking in GHL and writing back to AthenaNet
-        (possible later; see callout — depends on Google Meet / telehealth HIPAA posture).
+        <strong>Supporting map</strong> (feeds ops reporting; not the main project thrust).
+        <strong>Near-term (in scope):</strong> appointments are booked in AthenaNet (clinical)
+        or Zenoti (wellness). Every appointment is stored in BigQuery.
+        Staff calendar sync starts with the <strong>Health Coach</strong> and
+        <strong>Nutritionist</strong> — two-way, so their AthenaNet/Zenoti schedules and GHL
+        calendars stay matched either way. Default calendar shows blocked time only (no patient
+        name / visit reason) to limit PHI exposure. Patient GHL/Zenoti <em>record flags</em>
+        (not patient calendars) still apply.
+        <strong>Future potential:</strong> patient self-booking on the patient portal
+        (e.g. book in GHL → create the AthenaNet appointment) — not in this phase.
       </p>
     </header>
 
-    <div class="flow" role="img" aria-label="Athena or Zenoti appointment webhooks flow to GCP Middleware Hub. Staff registry eligibility check determines whether to push to GHL staff calendar or skip.">
+    <div class="flow" role="img" aria-label="AthenaNet, Zenoti, or Health Coach/Nutritionist GHL calendar changes flow to GCP Middleware Hub. Eligible staff get two-way calendar sync; BigQuery always stores the appointment.">
 
       <div class="sources-row">
         <div class="source-card athena">
@@ -532,6 +554,11 @@
           <span class="label">Wellness center scheduling</span>
           <p class="system">Zenoti</p>
           <p class="action">Wellness appointment booked or updated for a staff member</p>
+        </div>
+        <div class="source-card ghl">
+          <span class="label">Staff calendar (pilot roles)</span>
+          <p class="system">GoHighLevel</p>
+          <p class="action">Health Coach or Nutritionist calendar change — syncs back to AthenaNet / Zenoti</p>
         </div>
       </div>
 
@@ -564,11 +591,10 @@
               <div class="step-body">
                 <strong>Staff eligibility (Track A — GHL calendar)</strong>
                 <span>
-                  Is this provider linked in the Staff Registry to a GHL user with
-                  <code>sync_calendar = true</code>?
-                  <em>Clinical (AthenaNet) path:</em> GHL link is enough — Zenoti is not required.
-                  <em>Wellness (Zenoti) path:</em> typically requires Zenoti + GHL when the same
-                  person works both systems (avoid duplicate or orphaned calendar blocks).
+                  Near-term: Health Coach and Nutritionist only — linked in the Staff Registry
+                  with <code>sync_calendar = true</code>. For those roles, sync is <strong>two-way</strong>
+                  (AthenaNet/Zenoti ↔ GHL calendar). Other staff skip Track A for now;
+                  BigQuery still records every appointment.
                 </span>
               </div>
             </li>
@@ -589,13 +615,14 @@
             <li>
               <span class="step-num">5</span>
               <div class="step-body">
-                <strong>Execute outbound queue (Tracks A &amp; B)</strong>
-                <span>Track A: staff calendar block on GHL user if eligible. Track B: append appointment flag to patient record in GHL contact and/or Zenoti guest profile.</span>
+                <strong>Execute calendar / flag sync (Tracks A &amp; B)</strong>
+                <span>Track A: two-way calendar sync for Health Coach and Nutritionist. Track B: append appointment flag to patient record in GHL contact and/or Zenoti guest profile.</span>
               </div>
             </li>
           </ol>
           <p class="registry-note">
-            <strong>Staff Registry example:</strong> Dr. Chen → athena_provider_id · zenoti_employee_id · ghl_user_id · sync_calendar = true
+            <strong>Staff Registry example:</strong> Health Coach → athena_provider_id · zenoti_employee_id · ghl_user_id · sync_calendar = true
+            (same pattern for Nutritionist)
           </p>
         </div>
       </div>
@@ -604,23 +631,23 @@
         <div>
           <div class="branch-connector">
             <span class="arrow">↓</span>
-            <span class="tag yes">Track A — staff eligible</span>
+            <span class="tag yes">Track A — Health Coach / Nutritionist</span>
           </div>
           <div class="branch-card push">
-            <p class="branch-label">Staff GHL calendar</p>
-            <p>Update staff user calendar</p>
+            <p class="branch-label">Staff GHL calendar (two-way)</p>
+            <p>Keep AthenaNet/Zenoti and GHL calendars matched</p>
             <span class="note">De-identified busy block — e.g. “Clinical — unavailable” (no patient PHI on staff calendar)</span>
           </div>
         </div>
         <div>
           <div class="branch-connector">
             <span class="arrow">↓</span>
-            <span class="tag no">Track A — not eligible</span>
+            <span class="tag no">Track A — other staff</span>
           </div>
           <div class="branch-card skip">
             <p class="branch-label">Skip staff calendar</p>
-            <p>No GHL user calendar write</p>
-            <span class="note">Staff without a linked GHL user / calendar sync off — schedule stays in AthenaNet or Zenoti; BigQuery still records the appointment</span>
+            <p>No GHL user calendar sync yet</p>
+            <span class="note">Schedule stays in AthenaNet or Zenoti; BigQuery still records the appointment</span>
           </div>
         </div>
       </div>
@@ -659,9 +686,8 @@
         the destination system and without overwriting AthenaNet clinical data once populated.
       </p>
       <p class="sub-rule">
-        Direction today: <strong>AthenaNet / Zenoti → hub → GHL (+ BigQuery)</strong> — one-way.<br />
         Always: BigQuery appointment fact (status-aware).<br />
-        Track A (staff): busy block on that provider’s GHL user calendar when linked.<br />
+        Track A (staff): Health Coach and Nutritionist — <strong>two-way</strong> AthenaNet/Zenoti ↔ GHL calendar.<br />
         Track B (patient): record flag on GHL contact and/or Zenoti guest — not a patient calendar; skip the system where the appt was booked.
       </p>
       <p class="privacy-note">
@@ -671,12 +697,10 @@
         <a href="operations-reporting-layer.html">Operations reporting layer</a> — this map supplies the appointment feed.
       </p>
       <p class="future-note">
-        <strong>Future (optional two-way):</strong>
-        Patient self-schedules in GHL → hub creates / updates the AthenaNet appointment.
-        Architecturally feasible as a reverse webhook path, but <em>out of scope</em> until
-        product and compliance decide that Google Meet (or the telehealth surface used with GHL)
-        can operate under an acceptable HIPAA / BAA posture. Until then, keep AthenaNet as the
-        system of record for clinical booking; GHL only reflects staff calendars and patient flags.
+        <strong>Future potential:</strong>
+        Patient self-booking on the patient portal — e.g. the patient books in GoHighLevel and the
+        hub creates / updates the AthenaNet appointment. Out of scope for this phase; keeps AthenaNet
+        as the system of record for clinical booking until that portal path is approved.
       </p>
     </div>
   </div>
