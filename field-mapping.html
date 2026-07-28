@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Field Mapping — Ledger attributes across systems</title>
+  <style>
+    :root {
+      --ink: #1a2e2a;
+      --ink-muted: #3d524c;
+      --wire: #b8c9c3;
+      --wire-label: #6b7f78;
+      --white: #ffffff;
+      --surface: #fafbfb;
+      --hub: #264540;
+      --ok: #2f6b4f;
+      --ok-bg: #e7f3ec;
+      --warn: #8a5a2b;
+      --warn-bg: #f7f0e8;
+      --block: #8a3b2b;
+      --block-bg: #f8ebe7;
+      --athena: #2d5a7b;
+    }
+
+    body {
+      background: var(--surface);
+      color: var(--ink);
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      line-height: 1.45;
+      margin: 0;
+      padding: 2rem 1.25rem 3.5rem;
+    }
+
+    .page { margin: 0 auto; max-width: 820px; }
+
+    .back {
+      color: var(--hub);
+      display: inline-block;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+      text-decoration: none;
+    }
+
+    header h1 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0 0 0.4rem;
+    }
+
+    header p {
+      color: var(--ink-muted);
+      font-size: 0.875rem;
+      margin: 0 0 1.5rem;
+      max-width: 68ch;
+    }
+
+    .eyebrow {
+      color: var(--wire-label);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      margin: 0 0 0.45rem;
+      text-transform: uppercase;
+    }
+
+    table {
+      background: var(--white);
+      border: 1px solid var(--wire);
+      border-collapse: collapse;
+      font-size: 0.8rem;
+      width: 100%;
+    }
+
+    th, td {
+      border-bottom: 1px solid var(--wire);
+      padding: 0.65rem 0.7rem;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #c5d9c8;
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    tr:last-child td { border-bottom: none; }
+
+    a { color: var(--hub); font-weight: 700; }
+
+    .chip {
+      border-radius: 3px;
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      padding: 0.15rem 0.4rem;
+      text-transform: uppercase;
+    }
+
+    .chip.done { background: var(--ok-bg); color: var(--ok); }
+    .chip.open { background: var(--warn-bg); color: var(--warn); }
+    .chip.na { background: var(--block-bg); color: var(--block); }
+
+    .mono {
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 0.72rem;
+    }
+
+    .note {
+      background: #eef4f8;
+      border: 1px solid #c5d6e3;
+      border-radius: 6px;
+      color: var(--athena);
+      font-size: 0.8125rem;
+      margin-top: 1.25rem;
+      padding: 0.75rem 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <a class="back" href="index.html">← Back to systems integration</a>
+    <p class="eyebrow">Integration product · field mapping registry</p>
+    <header>
+      <h1>Ledger field mapping registry</h1>
+      <p>
+        Cross-system map for Admin Check List / Record Ledger attributes:
+        where the field lives, whether Zenoti/GHL participate, and sync direction
+        (firewall · manual dual entry · one-way presence · two-way · not present).
+      </p>
+    </header>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Ledger field</th>
+          <th>AthenaNet</th>
+          <th>Zenoti</th>
+          <th>GoHighLevel</th>
+          <th>Sync class</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><a href="field-mapping-credit-card.html">Credit Card</a></td>
+          <td class="mono">Card On File</td>
+          <td class="mono">Saved Card → Payments</td>
+          <td class="mono">Call Outcomes → Credit Card</td>
+          <td>Firewall vaults + one-way Athena → GHL</td>
+          <td><span class="chip done">Mapped</span></td>
+        </tr>
+        <tr>
+          <td><a href="field-mapping-photo-id.html">Photo ID</a></td>
+          <td class="mono">Drivers License Image</td>
+          <td><span class="chip na">Not present</span></td>
+          <td class="mono">Call Outcomes → Other Important Documentation → Pt. Picture ID</td>
+          <td>Athena document + one-way → GHL</td>
+          <td><span class="chip done">Mapped</span></td>
+        </tr>
+        <tr>
+          <td>Insurance Card Pic</td>
+          <td>—</td>
+          <td>—</td>
+          <td>—</td>
+          <td>—</td>
+          <td><span class="chip open">Next</span></td>
+        </tr>
+        <tr>
+          <td>Insurance eligibility</td>
+          <td>—</td>
+          <td>—</td>
+          <td>—</td>
+          <td>—</td>
+          <td><span class="chip open">Open</span></td>
+        </tr>
+        <tr>
+          <td>HMO referral</td>
+          <td>—</td>
+          <td>—</td>
+          <td>—</td>
+          <td>—</td>
+          <td><span class="chip open">Open</span></td>
+        </tr>
+        <tr>
+          <td>Active membership</td>
+          <td>—</td>
+          <td>—</td>
+          <td>—</td>
+          <td>—</td>
+          <td><span class="chip open">Open</span></td>
+        </tr>
+        <tr>
+          <td>Follow-up Appt</td>
+          <td>—</td>
+          <td>—</td>
+          <td>—</td>
+          <td>—</td>
+          <td><span class="chip open">Open</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="note">
+      Credit Card and Photo ID detail pages include engineer rules, hub contracts, and
+      Admin Check List column keys. Continue with the next ledger field when ready.
+    </p>
+  </div>
+</body>
+</html>
