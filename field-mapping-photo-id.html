@@ -538,6 +538,13 @@
       <strong>Pattern:</strong>
       Single-system document store + one-way presence sync to GHL.
       No Zenoti field. No dual entry. No document binary pushed into GHL.
+      <strong>Athena is golden record</strong> — if the image is absent, GHL Pt. Picture ID stays unchecked/cleared.
+    </p>
+
+    <p class="callout block">
+      <strong>Post-integration UX (GHL):</strong>
+      After go-live, <em>Pt. Picture ID</em> must be <strong>hidden or unclickable</strong>
+      (integration-owned) so staff cannot create mismatches against Athena.
     </p>
 
     <div class="legend" aria-label="Flow legend">
@@ -583,8 +590,8 @@
             <p class="field-path">Call Outcomes → Other Important Documentation → Pt. Picture ID</p>
             <ul>
               <li>Multi-select / dropdown checkbox option (not a file upload)</li>
-              <li>Today: checked manually by staff</li>
-              <li>Target: auto-check when Athena Drivers License Image exists</li>
+              <li>Integration-owned — set/cleared from Athena presence only</li>
+              <li>Hidden or unclickable after go-live (prevent staff mismatch)</li>
             </ul>
             <span class="payload flag">Presence flag · no image</span>
           </article>
@@ -670,7 +677,7 @@
             <td>GoHighLevel</td>
             <td class="mono">Call Outcomes → Other Important Documentation → Pt. Picture ID</td>
             <td>Multi-select checkbox option</td>
-            <td><span class="chip oneway">Sink</span> one-way from Athena</td>
+            <td><span class="chip oneway">Sink</span> one-way from Athena · locked/hidden</td>
           </tr>
           <tr>
             <td>Admin Check List · Photo ID</td>
@@ -704,11 +711,11 @@
         </article>
         <article class="rule">
           <span class="tag" style="color: var(--ok)">Do</span>
-          <h3>Sync Athena presence → GHL option</h3>
+          <h3>Sync Athena presence → GHL option (locked)</h3>
           <p>
             When Athena Drivers License Image exists, select
-            Other Important Documentation → Pt. Picture ID. Keep the write idempotent if
-            staff already checked it manually.
+            Other Important Documentation → Pt. Picture ID; when absent, clear it.
+            After integration, hide or disable the option so staff cannot toggle it.
           </p>
         </article>
         <article class="rule">

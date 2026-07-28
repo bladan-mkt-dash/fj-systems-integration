@@ -574,14 +574,14 @@
             <td>GoHighLevel</td>
             <td class="mono">Call Outcomes → Insurance Card Front → Insurance ID Front</td>
             <td>Dropdown checkbox option</td>
-            <td><span class="chip oneway">Sink</span> one-way from Athena front</td>
+            <td><span class="chip oneway">Sink</span> one-way from Athena front · locked/hidden</td>
           </tr>
           <tr>
             <td>Insurance card back collected? (CRM)</td>
             <td>GoHighLevel</td>
             <td class="mono">Call Outcomes → Insurance Card Back → Insurance ID Back</td>
             <td>Dropdown checkbox option</td>
-            <td><span class="chip oneway">Sink</span> one-way from Athena back</td>
+            <td><span class="chip oneway">Sink</span> one-way from Athena back · locked/hidden</td>
           </tr>
           <tr>
             <td>Admin Check List · Insurance card pic</td>
@@ -598,12 +598,16 @@
       <strong>Pattern:</strong>
       Dual Athena document images (front + back) + two independent one-way presence mirrors into GHL.
       Zenoti N/A. No image bytes pushed to GHL.
+      <strong>Athena is golden record</strong> for these attributes — GHL options stay unchecked
+      (or are cleared) when Athena images are absent.
     </p>
 
-    <p class="callout warn">
-      <strong>Assumption to confirm:</strong>
-      GHL options auto set/clear from Athena image presence (same family as Photo ID / Credit Card mirrors).
-      Say if these GHL options should also be <em>integration-owned / not manually checkable</em>.
+    <p class="callout block">
+      <strong>Post-integration UX (GHL):</strong>
+      After go-live, <em>Insurance Card Front</em> / <em>Insurance Card Back</em> options must be
+      <strong>hidden or unclickable</strong> (integration-owned). Staff must not toggle them —
+      that would create mismatches against Athena. Only the hub sets/clears each option from
+      Athena Front/Back image presence.
     </p>
 
     <section class="section" aria-labelledby="arch">
@@ -643,6 +647,7 @@
               <li>Field <strong>Insurance Card Front</strong> → option <strong>Insurance ID Front</strong></li>
               <li>Field <strong>Insurance Card Back</strong> → option <strong>Insurance ID Back</strong></li>
               <li>Presence only — no card image upload in GHL</li>
+              <li><strong>Hidden or unclickable</strong> after integration go-live</li>
             </ul>
             <span class="payload flag">Two presence flags · no images</span>
           </article>
@@ -700,10 +705,12 @@
           <h3>Integration behavior</h3>
           <p>
             Derive <code>has_athena_insurance_card_front</code> and
-            <code>has_athena_insurance_card_back</code>.
+            <code>has_athena_insurance_card_back</code> from Athena (golden record).
             Mirror into GHL Call Outcomes:
             <code>Insurance Card Front → Insurance ID Front</code> and
-            <code>Insurance Card Back → Insurance ID Back</code>.
+            <code>Insurance Card Back → Insurance ID Back</code>
+            (set when present; <strong>clear when absent</strong>).
+            Configure GHL so these options are hidden or non-editable for staff.
             Admin Check List <code>ins_card</code> = yes only when <strong>both</strong> Athena images exist
             (until/unless the ledger splits into two columns). Never copy image bytes to GHL or Zenoti.
           </p>
