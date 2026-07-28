@@ -567,11 +567,18 @@
             <td><span class="chip oneway">Peer vault</span> Active contains 1 when membership active</td>
           </tr>
           <tr>
-            <td>Membership status (inactive)</td>
+            <td>Membership status (inactive · cancelled)</td>
             <td>Zenoti</td>
-            <td class="mono">Memberships → Inactive → Suspended | Cancelled</td>
+            <td class="mono">Memberships → Inactive → Cancelled</td>
             <td>Inactive reason label</td>
-            <td>On cancel, Active loses 1; membership appears under Inactive → <strong>Cancelled</strong> (hub never writes Suspended)</td>
+            <td>Automated cancels land here (hub never writes Suspended)</td>
+          </tr>
+          <tr>
+            <td>Membership status (inactive · suspended)</td>
+            <td>Zenoti</td>
+            <td class="mono">Memberships → Inactive → Suspended</td>
+            <td>Inactive reason label</td>
+            <td><span class="chip oneway">Source</span> manual in Zenoti only → mirrors to GHL</td>
           </tr>
           <tr>
             <td>Membership cancelled?</td>
@@ -586,6 +593,13 @@
             <td class="mono">Membership Cancellation Data → Membership Cancellation Date</td>
             <td>Date</td>
             <td>Transferred from Athena on phone-path cancel; form path already populates GHL</td>
+          </tr>
+          <tr>
+            <td>Membership suspended?</td>
+            <td>GoHighLevel</td>
+            <td class="mono">Membership Suspended → Membership Suspended</td>
+            <td>Radio select (single option)</td>
+            <td><span class="chip oneway">Sink</span> one-way from Zenoti Suspended · set/clear</td>
           </tr>
           <tr>
             <td>Admin Check List · Active membership</td>
@@ -642,10 +656,28 @@
           <span>Date transferred from Athena; Cancelled = True</span>
         </div>
       </div>
+      <div class="flow-row sync">
+        <div class="flow-node">
+          <strong>Path C · Manual Zenoti suspend</strong>
+          <span>Staff set Memberships → Inactive → Suspended</span>
+        </div>
+        <div class="flow-edge">
+          <div class="dir" aria-hidden="true">→</div>
+          <div class="kind" style="color: var(--ok)">One-way · Zenoti</div>
+        </div>
+        <div class="flow-node">
+          <strong>GHL · Membership Suspended → Membership Suspended</strong>
+          <span>Select when Suspended; clear when not Suspended</span>
+        </div>
+      </div>
     </div>
 
-    <p class="callout warn">
-      <strong>Two-way depending on trigger:</strong>
+    <p class="callout ok">
+      <strong>Suspended (confirmed):</strong>
+      Suspensions are created manually in Zenoti only (hub never writes Suspended).
+      One-way sink: Zenoti Inactive → Suspended present ⇒ set GHL radio
+      <em>Membership Suspended → Membership Suspended</em>; if no longer Suspended, clear it.
+    </p>
       Form-originated cancels authoritative in GHL first, then push to Athena/Zenoti.
       Phone-originated cancels authoritative in Athena first, then push to Zenoti/GHL.
       Do not create an endless loop — hub should stamp cancel source and skip echo writes.
