@@ -241,7 +241,7 @@ window.FJ_ADMIN_DATA = {
           "cc_athena": "yes",
           "cc_zenoti": "no",
           "membership": "no",
-          "notes": "Membership renewal pending",
+          "notes": "Goal 3 sample: Zenoti renewal decline → Suspended; cc_zenoti=no",
           "copay": null,
           "cc_agreement": "ok"
         },
@@ -486,7 +486,7 @@ window.FJ_ADMIN_DATA = {
           "cc_athena": "no",
           "cc_zenoti": "no",
           "membership": "yes",
-          "notes": "No card on file in either system",
+          "notes": "No operable Zenoti card (and Athena missing) — same reporting signal as Goal 3 decline for cc_zenoti",
           "copay": null,
           "cc_agreement": "n/a"
         },

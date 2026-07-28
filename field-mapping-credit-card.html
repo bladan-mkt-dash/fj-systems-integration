@@ -524,9 +524,11 @@
         Same business concept in three systems: two isolated payment vaults (Athena / Zenoti)
         that never share card data, plus a GHL multi-select under
         <strong>Call Outcomes → Credit Card</strong> with two system-driven options —
-        <em>Credit Card Athena</em> and <em>Credit Card Zenoti</em> — that mirror vault presence
-        one-way and cannot be checked manually. Athena also surfaces
+        <em>Credit Card Athena</em> and <em>Credit Card Zenoti</em> — that mirror
+        <em>operable</em> vault presence one-way and cannot be checked manually. Athena also surfaces
         <strong>Credit Card Agreement</strong> flags (<em>Expiring Soon</em> / <em>Expired</em>) for the ledger.
+        <strong>Goal 3:</strong> a Zenoti membership-renewal decline forces
+        <code>cc_zenoti = no</code> immediately (and clears GHL Credit Card Zenoti).
       </p>
     </header>
 
@@ -555,6 +557,18 @@
       This date sometimes, but not always, coincides with the payment-card expiration date —
       treat the agreement flag as its own ledger signal. No Zenoti/GHL sync for this attribute
       unless added later. Admin Check List column <code>cc_agreement</code> reads these flags.
+    </p>
+
+    <p class="callout block">
+      <strong>Goal 3 — Zenoti renewal decline ⇒ CC Zenoti No (hard rule):</strong>
+      Zenoti membership renewals charge the Zenoti Saved Card only (never Athena Card On File).
+      If renewal fails because the Zenoti card is <em>missing</em>, <em>expired</em>, or
+      <em>invalid/declined</em>, then as soon as that decline is known:
+      Admin Check List / ledger <code>cc_zenoti = no</code>, and GHL option
+      <em>Credit Card Zenoti</em> is cleared.
+      “Present but unchargeable” counts as <strong>No</strong> for reporting — operable card only.
+      Membership Suspended side effects live on the
+      <a href="field-mapping-active-membership.html">Active Membership</a> Path D.
     </p>
 
     <div class="legend" aria-label="Flow legend">
@@ -587,8 +601,9 @@
             <h3>Zenoti</h3>
             <p class="field-path">Saved Card → Payments</p>
             <ul>
-              <li>Stores a chargeable payment method for Zenoti POS / membership</li>
-              <li>Drives GHL option <em>Credit Card Zenoti</em></li>
+              <li>Stores a chargeable payment method for Zenoti POS / <strong>membership renewals</strong></li>
+              <li>Drives GHL option <em>Credit Card Zenoti</em> only when <em>operable</em></li>
+              <li>Renewal decline ⇒ clear GHL option + <code>cc_zenoti=no</code> (Goal 3)</li>
               <li>Never receives Athena card tokens</li>
             </ul>
             <span class="payload vault">Payment vault · tokenized card</span>
@@ -656,8 +671,8 @@
 
           <div class="flow-row sync">
             <div class="flow-node">
-              <strong>Zenoti · Saved Card present?</strong>
-              <span>true → check · false → clear</span>
+              <strong>Zenoti · Saved Card operable?</strong>
+              <span>operable → check · missing/expired/declined → clear</span>
             </div>
             <div class="flow-edge">
               <div class="dir" aria-hidden="true">→</div>
@@ -668,18 +683,38 @@
               <span>Independent of Athena option</span>
             </div>
           </div>
+
+          <div class="flow-row sync">
+            <div class="flow-node">
+              <strong>Zenoti · Membership renewal decline</strong>
+              <span>No card / expired / invalid charge failure</span>
+            </div>
+            <div class="flow-edge">
+              <div class="dir" aria-hidden="true">→</div>
+              <div class="kind" style="color: var(--block)">Goal 3 · immediate</div>
+            </div>
+            <div class="flow-node">
+              <strong>cc_zenoti = no (+ clear GHL Credit Card Zenoti)</strong>
+              <span>Also triggers membership Suspended Path D</span>
+            </div>
+          </div>
         </div>
 
         <div class="hub-band">
           <p class="badge">GCP middleware hub · proposed contract</p>
           <h3>Integration behavior for this field family</h3>
           <p>
-            Derive <code>has_athena_card_on_file</code> and <code>has_zenoti_saved_card</code>.
+            Derive <code>has_athena_card_on_file</code> and
+            <code>has_zenoti_saved_card_operable</code>
+            (present <em>and</em> chargeable — not known expired/invalid/declined for membership billing).
             Mirror into GHL field <code>Credit Card</code> (Call Outcomes folder):
             set/clear option <code>Credit Card Athena</code> from Athena presence;
-            set/clear option <code>Credit Card Zenoti</code> from Zenoti presence.
+            set/clear option <code>Credit Card Zenoti</code> from Zenoti <em>operable</em> presence.
+            On Zenoti membership-renewal decline event: force operable=false,
+            <code>cc_zenoti=no</code>, clear GHL Credit Card Zenoti (Goal 3).
             Options may be blank/checked independently. Lock or overwrite manual edits —
             these options are integration-owned. Never move PAN/token between vaults or into GHL.
+            Never charge Zenoti renewal from Athena Card On File.
           </p>
         </div>
       </div>
@@ -711,7 +746,7 @@
             <td>Zenoti</td>
             <td class="mono">Saved Card → Payments</td>
             <td>Payment method / token</td>
-            <td><span class="chip oneway">Source</span> → GHL Credit Card Zenoti; vault isolated from Athena</td>
+            <td><span class="chip oneway">Source</span> → GHL Credit Card Zenoti when operable; vault isolated; Goal 3 decline ⇒ not operable</td>
           </tr>
           <tr>
             <td>Credit card on file in Athena? (CRM)</td>
@@ -753,7 +788,7 @@
             <td>Reporting app</td>
             <td class="mono">cc_zenoti</td>
             <td>yes / no</td>
-            <td>Read Zenoti presence only (independent)</td>
+            <td>yes only if Zenoti Saved Card <em>operable</em>; no if missing, expired, invalid, or renewal-declined (Goal 3) — independent of Athena</td>
           </tr>
         </tbody>
       </table>
@@ -785,8 +820,9 @@
           <h3>Mirror each vault into its GHL option</h3>
           <p>
             Athena present ⇔ select <em>Credit Card Athena</em>; Athena absent ⇔ clear it.
-            Zenoti present ⇔ select <em>Credit Card Zenoti</em>; Zenoti absent ⇔ clear it.
-            Keep writes idempotent. Do not store last4 / brand / token in GHL.
+            Zenoti <em>operable</em> ⇔ select <em>Credit Card Zenoti</em>; missing/expired/declined ⇔ clear it.
+            On renewal decline, clear immediately (Goal 3). Keep writes idempotent.
+            Do not store last4 / brand / token in GHL.
           </p>
         </article>
         <article class="rule">
@@ -802,8 +838,8 @@
           <h3>Keep Admin Check List dual columns</h3>
           <p>
             <code>cc_athena</code> and <code>cc_zenoti</code> stay independent.
-            Missing in one vault is still a gap even if the other vault — and its GHL
-            option — is complete.
+            Missing or non-operable in one vault is still a gap even if the other vault — and its GHL
+            option — is complete. A Zenoti renewal decline is always a <code>cc_zenoti</code> gap.
           </p>
         </article>
         <article class="rule">
@@ -812,6 +848,16 @@
           <p>
             Valid GHL states: neither, Athena only, Zenoti only, or both.
             Never infer Zenoti from Athena or the reverse.
+          </p>
+        </article>
+        <article class="rule">
+          <span class="tag" style="color: var(--block)">Goal 3</span>
+          <h3>Renewal decline forces CC Zenoti No</h3>
+          <p>
+            Do not wait for staff to delete the Saved Card token. As soon as Zenoti reports a
+            membership-renewal payment failure (no card / expired / invalid), set
+            <code>cc_zenoti=no</code>, clear GHL Credit Card Zenoti, and hand off to membership
+            Path D (Suspended in Zenoti + GHL). Athena Card On File is irrelevant to this charge.
           </p>
         </article>
       </div>

@@ -235,8 +235,13 @@
           </tr>
           <tr>
             <td><code>two_path_cancel</code><br /><span class="tax-name">Two-path cancel / allowed Athena write</span></td>
-            <td>Product-allowed write that may change Athena when another system is authoritative (stamped source). Not fill-if-empty. Includes Zenoti Suspended → GHL one-way.</td>
-            <td><a href="field-mapping-active-membership.html">Active Membership</a></td>
+            <td>Product-allowed write that may change Athena when another system is authoritative (stamped source). Not fill-if-empty. Form/phone cancel paths only.</td>
+            <td><a href="field-mapping-active-membership.html">Active Membership · Paths A–B</a></td>
+          </tr>
+          <tr>
+            <td><code>zenoti_renewal_decline</code><br /><span class="tax-name">Zenoti renewal decline (Goal 3)</span></td>
+            <td>On Zenoti membership-renewal payment failure (no Saved Card, expired, or invalid/declined): ensure Zenoti membership <em>Suspended</em>; set GHL Membership Suspended; force <code>cc_zenoti = no</code> and clear GHL Credit Card Zenoti. Leaves Athena Membership Status unchanged until staff manually set inactive (confirmed for now; may revisit).</td>
+            <td><a href="field-mapping-active-membership.html">Active Membership · Path D</a> · <a href="field-mapping-credit-card.html">Credit Card Zenoti</a></td>
           </tr>
         </tbody>
       </table>
@@ -257,9 +262,9 @@
         <tr>
           <td><a href="field-mapping-credit-card.html">Credit Card</a></td>
           <td class="mono">Card On File + Agreement (Expiring Soon|Expired)</td>
-          <td class="mono">Saved Card → Payments</td>
+          <td class="mono">Saved Card → Payments (operable for membership billing)</td>
           <td class="mono">Credit Card → Credit Card Athena | Credit Card Zenoti</td>
-          <td><code>isolated_vault</code> + dual <code>forced_presence_mirror</code></td>
+          <td><code>isolated_vault</code> + dual <code>forced_presence_mirror</code> + <code>zenoti_renewal_decline</code> ⇒ <code>cc_zenoti=no</code></td>
           <td><span class="chip done">Mapped</span></td>
         </tr>
         <tr>
@@ -297,9 +302,9 @@
         <tr>
           <td><a href="field-mapping-active-membership.html">Active membership</a></td>
           <td class="mono">Membership Status = Active</td>
-          <td class="mono">Memberships → Active (1) / Inactive → Cancelled</td>
+          <td class="mono">Active / Inactive → Cancelled | Suspended</td>
           <td class="mono">Membership Cancellation Data + Membership Suspended</td>
-          <td><code>two_path_cancel</code> (+ Suspended → GHL mirror)</td>
+          <td><code>two_path_cancel</code> + <code>zenoti_renewal_decline</code> (Suspended)</td>
           <td><span class="chip done">Mapped</span></td>
         </tr>
         <tr>

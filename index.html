@@ -100,7 +100,15 @@
       Keep patient cancellations and terminations synchronized across every connected system.
     </li>
     <li>
-      Propagate Zenoti declines across the full systems stack.
+      <strong>Zenoti membership-renewal declines (Goal 3):</strong>
+      Zenoti renews memberships by charging the patient’s
+      <em>Zenoti Saved Card</em>. If renewal fails because that card is missing,
+      expired, or invalid/declined, the membership must be
+      <em>Suspended</em> in Zenoti and in GoHighLevel, and the Admin Check List /
+      ledger must show <strong>Credit Card Zenoti = No</strong> as soon as the
+      decline is known. Athena Membership Status stays unchanged until staff manually set it inactive (confirmed for now; may revisit) — see
+      <a href="field-mapping-active-membership.html">Active Membership</a> and
+      <a href="field-mapping-credit-card.html">Credit Card</a> field maps.
     </li>
     <li>
       Deliver a live, internal-only, HIPAA-conscious
@@ -125,12 +133,12 @@
     <li><a href="integration-schematic.html">Full GCP integration schematic</a></li>
     <li><a href="staff-calendar-sync-flow.html">Appointment sync — Health Coach &amp; Nutritionist calendars (supporting)</a></li>
     <li><a href="field-mapping.html">Field mapping registry — Ledger attributes + hub sync-class taxonomy</a></li>
-    <li><a href="field-mapping-credit-card.html">Field mapping — Credit Card (vault firewall &amp; dual one-way status)</a></li>
+    <li><a href="field-mapping-credit-card.html">Field mapping — Credit Card (vault firewall, dual presence, Zenoti decline ⇒ CC Zenoti No)</a></li>
     <li><a href="field-mapping-photo-id.html">Field mapping — Photo ID (Athena document → GHL Pt. Picture ID)</a></li>
     <li><a href="field-mapping-insurance-card.html">Field mapping — Insurance Card Pic (Athena Front/Back → GHL)</a></li>
     <li><a href="field-mapping-insurance-eligibility.html">Field mapping — Insurance Eligibility (Athena-only)</a></li>
     <li><a href="field-mapping-hmo-referral.html">Field mapping — HMO Referral (Athena → GHL)</a></li>
-    <li><a href="field-mapping-active-membership.html">Field mapping — Active Membership (two-way cancel paths)</a></li>
+    <li><a href="field-mapping-active-membership.html">Field mapping — Active Membership (cancel paths + Zenoti renewal decline → Suspended)</a></li>
     <li><a href="field-mapping-follow-up-appt.html">Field mapping — Follow-up Appt (Athena-only)</a></li>
   </ul>
 

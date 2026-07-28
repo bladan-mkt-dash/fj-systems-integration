@@ -372,7 +372,7 @@
           <a href="field-mapping.html#sync-classes">hub sync-class taxonomy</a>
           (<code>fill_if_empty</code> · <code>isolated_vault</code> ·
           <code>forced_presence_mirror</code> · <code>athena_only_read</code> ·
-          <code>two_path_cancel</code>) — do not assume every gap is a fill-if-empty miss.
+          <code>two_path_cancel</code> · <code>zenoti_renewal_decline</code>) — do not assume every gap is a fill-if-empty miss.
         </p>
         <table class="matrix">
           <thead>
@@ -416,9 +416,15 @@
             </tr>
             <tr>
               <td>Credit card — Zenoti vault</td>
-              <td><span class="sys zenoti">Zenoti</span> Saved Card → Payments</td>
-              <td>GHL Call Outcomes → Credit Card → Credit Card Zenoti (presence mirror only)</td>
-              <td><span class="tag">Missing</span> if Zenoti Saved Card absent — independent of Athena</td>
+              <td><span class="sys zenoti">Zenoti</span> Saved Card → Payments (operable)</td>
+              <td>GHL Call Outcomes → Credit Card → Credit Card Zenoti (operable mirror)</td>
+              <td><span class="tag">Missing</span> if Saved Card absent <em>or not operable</em> (expired / invalid / <strong>membership-renewal declined — Goal 3</strong>) — independent of Athena</td>
+            </tr>
+            <tr>
+              <td>Active membership (Zenoti Suspended)</td>
+              <td><span class="sys zenoti">Zenoti</span> Inactive → Suspended</td>
+              <td>GHL Membership Suspended (set/clear)</td>
+              <td>After Goal 3 renewal decline: Suspended in Zenoti + GHL; <code>membership</code> not Active; expected <span class="tag">Conflict</span> while Athena still Active until staff manually set Athena inactive</td>
             </tr>
             <tr>
               <td>Credit card agreement</td>
@@ -434,8 +440,9 @@
         </p>
         <p class="lead" style="margin:0.75rem 0 0;">
           Output table: <strong>demographics_gap_fact</strong> —
-          patient_id, field (<code>cc_athena</code> | <code>cc_zenoti</code> | <code>cc_agreement</code> | …),
-          status (missing|conflict|expiring_soon|expired), systems_checked, priority, detected_at.
+          patient_id, field (<code>cc_athena</code> | <code>cc_zenoti</code> | <code>cc_agreement</code> | <code>membership</code> | …),
+          status (missing|conflict|expiring_soon|expired|suspended|declined), systems_checked, priority, detected_at.
+          Goal 3 decline events should publish <code>cc_zenoti</code> missing/declined and membership suspended without waiting for a later poll if webhooks allow.
         </p>
       </section>
 
