@@ -549,6 +549,13 @@
         </thead>
         <tbody>
           <tr>
+            <td>Insurance policy status</td>
+            <td>AthenaNet</td>
+            <td class="mono">Policy Information → policy (default Self Pay when none on file)</td>
+            <td>Policy / Self Pay</td>
+            <td><span class="chip oneway">Gate</span> Self Pay ⇒ GHL Front/Back unchecked; Zenoti no-op</td>
+          </tr>
+          <tr>
             <td>Insurance card front (document)</td>
             <td>AthenaNet</td>
             <td class="mono">Policy Information → Insurance card Front image</td>
@@ -610,6 +617,15 @@
       Athena Front/Back image presence.
     </p>
 
+    <p class="callout warn">
+      <strong>Self Pay default (Athena Policy):</strong>
+      When there is <strong>no insurance policy on file</strong> in Athena, the policy field
+      defaults to <em>Self Pay</em>. For as long as that is true:
+      GHL <em>Insurance ID Front</em> and <em>Insurance ID Back</em> must stay
+      <strong>blank / unchecked</strong> (and be cleared if previously set), and there is
+      <strong>nothing to update in Zenoti</strong> for this attribute family.
+    </p>
+
     <section class="section" aria-labelledby="arch">
       <h2 id="arch">Architecture at a glance</h2>
       <p class="lead">Two image sides in Athena → two independent GHL options. Zenoti out of scope.</p>
@@ -654,6 +670,21 @@
         </div>
 
         <div class="flows">
+          <div class="flow-row blocked">
+            <div class="flow-node">
+              <strong>Athena · no policy → Self Pay</strong>
+              <span>Default when insurance policy not on file</span>
+            </div>
+            <div class="flow-edge">
+              <div class="dir" aria-hidden="true">→</div>
+              <div class="kind" style="color: var(--block)">Gate · clear GHL</div>
+            </div>
+            <div class="flow-node">
+              <strong>GHL Front/Back unchecked · Zenoti no-op</strong>
+              <span>Do not set Insurance ID Front/Back while Self Pay</span>
+            </div>
+          </div>
+
           <div class="flow-row blocked">
             <div class="flow-node">
               <strong>AthenaNet · Policy Information images</strong>
@@ -704,15 +735,18 @@
           <p class="badge">GCP middleware hub · proposed contract</p>
           <h3>Integration behavior</h3>
           <p>
-            Derive <code>has_athena_insurance_card_front</code> and
-            <code>has_athena_insurance_card_back</code> from Athena (golden record).
-            Mirror into GHL Call Outcomes:
+            Derive <code>has_athena_insurance_policy</code> (false when Athena defaults to
+            <strong>Self Pay</strong> / no policy on file), plus
+            <code>has_athena_insurance_card_front</code> and
+            <code>has_athena_insurance_card_back</code>.
+            If Self Pay / no policy: force-clear both GHL options and skip Zenoti (no-op).
+            If a policy exists: mirror Front/Back image presence into
             <code>Insurance Card Front → Insurance ID Front</code> and
             <code>Insurance Card Back → Insurance ID Back</code>
             (set when present; <strong>clear when absent</strong>).
             Configure GHL so these options are hidden or non-editable for staff.
-            Admin Check List <code>ins_card</code> = yes only when <strong>both</strong> Athena images exist
-            (until/unless the ledger splits into two columns). Never copy image bytes to GHL or Zenoti.
+            Admin Check List <code>ins_card</code> = yes only when a policy exists <strong>and</strong>
+            both Athena images exist (until/unless the ledger splits). Never copy image bytes to GHL or Zenoti.
           </p>
         </div>
       </div>
