@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Field Mapping — Photo ID (Athena · GHL)</title>
+  <title>Field Mapping — Insurance Card Pic (Athena · GHL)</title>
   <style>
     :root {
       --ink: #1a2e2a;
@@ -517,52 +517,111 @@
   <div class="page">
     <a class="back" href="index.html">← Back to systems integration</a>
 
-    <header>
-      <p class="eyebrow">Integration product · field mapping · identity document</p>
-      <h1>Photo ID — Cross-System Field Map</h1>
-      <p class="subtitle">
-        Ledger field <strong>Photo ID</strong>: document lives only in AthenaNet; Zenoti has no
-        equivalent; GoHighLevel carries a Call Outcomes multi-select presence flag that should
-        auto-check when the Athena image exists.
-      </p>
-    </header>
-
     <nav class="nav-fields" aria-label="Field maps">
       <a href="field-mapping.html">All fields</a>
       <a href="field-mapping-credit-card.html">Credit Card</a>
       <a href="field-mapping-photo-id.html">Photo ID</a>
-      <a href="field-mapping-insurance-card.html">Insurance Card</a>
+      <a class="active" href="field-mapping-insurance-card.html">Insurance Card</a>
     </nav>
+
+    <header>
+      <p class="eyebrow">Integration product · field mapping · insurance document</p>
+      <h1>Insurance Card Pic — Cross-System Field Map</h1>
+      <p class="subtitle">
+        Nuanced ledger field: Athena stores <strong>front and back</strong> images under
+        Policy Information; Zenoti has no equivalent; GHL mirrors each side as a separate
+        Call Outcomes presence option.
+      </p>
+    </header>
+
+    <section class="section" aria-labelledby="matrix">
+      <h2 id="matrix">Field dictionary</h2>
+      <p class="lead">Working view for engineers — clean final version later.</p>
+      <table class="map">
+        <thead>
+          <tr>
+            <th>Business concept</th>
+            <th>System</th>
+            <th>UI path / field</th>
+            <th>Type</th>
+            <th>Sync role</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Insurance card front (document)</td>
+            <td>AthenaNet</td>
+            <td class="mono">Policy Information → Insurance card Front image</td>
+            <td>Image / document</td>
+            <td><span class="chip oneway">Source</span> for GHL Insurance ID Front</td>
+          </tr>
+          <tr>
+            <td>Insurance card back (document)</td>
+            <td>AthenaNet</td>
+            <td class="mono">Policy Information → Insurance card Back image</td>
+            <td>Image / document</td>
+            <td><span class="chip oneway">Source</span> for GHL Insurance ID Back</td>
+          </tr>
+          <tr>
+            <td>Insurance card pic</td>
+            <td>Zenoti</td>
+            <td class="mono">—</td>
+            <td>—</td>
+            <td><span class="chip block">Not present</span></td>
+          </tr>
+          <tr>
+            <td>Insurance card front collected? (CRM)</td>
+            <td>GoHighLevel</td>
+            <td class="mono">Call Outcomes → Insurance Card Front → Insurance ID Front</td>
+            <td>Dropdown checkbox option</td>
+            <td><span class="chip oneway">Sink</span> one-way from Athena front</td>
+          </tr>
+          <tr>
+            <td>Insurance card back collected? (CRM)</td>
+            <td>GoHighLevel</td>
+            <td class="mono">Call Outcomes → Insurance Card Back → Insurance ID Back</td>
+            <td>Dropdown checkbox option</td>
+            <td><span class="chip oneway">Sink</span> one-way from Athena back</td>
+          </tr>
+          <tr>
+            <td>Admin Check List · Insurance card pic</td>
+            <td>Reporting app</td>
+            <td class="mono">ins_card</td>
+            <td>yes / no</td>
+            <td>Read Athena only — complete when <strong>both</strong> front and back images exist (rollup)</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
 
     <p class="callout ok">
       <strong>Pattern:</strong>
-      Single-system document store + one-way presence sync to GHL.
-      No Zenoti field. No dual entry. No document binary pushed into GHL.
+      Dual Athena document images (front + back) + two independent one-way presence mirrors into GHL.
+      Zenoti N/A. No image bytes pushed to GHL.
     </p>
 
-    <div class="legend" aria-label="Flow legend">
-      <span><span class="chip block">Not present</span> No field in this system</span>
-      <span><span class="chip oneway">One-way</span> Presence / boolean only</span>
-      <span><span class="chip status">Status flag</span> No image payload in GHL</span>
-      <span><span class="chip manual">Document vault</span> Image stored in Athena only</span>
-    </div>
+    <p class="callout warn">
+      <strong>Assumption to confirm:</strong>
+      GHL options auto set/clear from Athena image presence (same family as Photo ID / Credit Card mirrors).
+      Say if these GHL options should also be <em>integration-owned / not manually checkable</em>.
+    </p>
 
     <section class="section" aria-labelledby="arch">
       <h2 id="arch">Architecture at a glance</h2>
-      <p class="lead">One document vault, one CRM flag. Zenoti is out of scope for this attribute.</p>
+      <p class="lead">Two image sides in Athena → two independent GHL options. Zenoti out of scope.</p>
 
-      <div class="arch" role="img" aria-label="Photo ID field architecture across AthenaNet and GoHighLevel; absent in Zenoti">
+      <div class="arch" role="img" aria-label="Insurance card front and back mapping">
         <div class="systems">
           <article class="sys athena">
             <p class="label">Clinical document vault</p>
             <h3>AthenaNet</h3>
-            <p class="field-path">Drivers License Image</p>
+            <p class="field-path">Policy Information → Front + Back images</p>
             <ul>
-              <li>Stores the actual photo ID / driver’s license image</li>
-              <li>Source of truth for “Photo ID on record?”</li>
-              <li>Admin Check List <code>photo</code> reads this presence</li>
+              <li>Front image of insurance card</li>
+              <li>Back image of insurance card</li>
+              <li>Each side is its own presence signal</li>
             </ul>
-            <span class="payload vault">Document · image payload</span>
+            <span class="payload vault">Document · two images</span>
           </article>
 
           <article class="sys absent">
@@ -570,31 +629,30 @@
             <h3>Zenoti</h3>
             <p class="field-path">— not present —</p>
             <ul>
-              <li>No Photo ID / driver’s license field</li>
+              <li>No insurance card image store</li>
               <li>Do not invent a Zenoti mirror</li>
-              <li>Admin Check List must not expect Zenoti for this column</li>
             </ul>
             <span class="payload absent">N/A · out of scope</span>
           </article>
 
           <article class="sys ghl">
-            <p class="label">CRM / call outcome flag</p>
+            <p class="label">CRM / call outcome flags</p>
             <h3>GoHighLevel</h3>
-            <p class="field-path">Call Outcomes → Other Important Documentation → Pt. Picture ID</p>
+            <p class="field-path">Call Outcomes → Insurance Card Front / Back</p>
             <ul>
-              <li>Multi-select / dropdown checkbox option (not a file upload)</li>
-              <li>Today: checked manually by staff</li>
-              <li>Target: auto-check when Athena Drivers License Image exists</li>
+              <li>Field <strong>Insurance Card Front</strong> → option <strong>Insurance ID Front</strong></li>
+              <li>Field <strong>Insurance Card Back</strong> → option <strong>Insurance ID Back</strong></li>
+              <li>Presence only — no card image upload in GHL</li>
             </ul>
-            <span class="payload flag">Presence flag · no image</span>
+            <span class="payload flag">Two presence flags · no images</span>
           </article>
         </div>
 
         <div class="flows">
           <div class="flow-row blocked">
             <div class="flow-node">
-              <strong>AthenaNet · Drivers License Image</strong>
-              <span>Document / image on chart</span>
+              <strong>AthenaNet · Policy Information images</strong>
+              <span>Front + Back documents</span>
             </div>
             <div class="flow-edge">
               <div class="dir" aria-hidden="true">╳</div>
@@ -602,131 +660,56 @@
             </div>
             <div class="flow-node">
               <strong>Zenoti</strong>
-              <span>Attribute does not exist — no sync target</span>
+              <span>Attribute does not exist</span>
             </div>
           </div>
 
           <div class="flow-row sync">
             <div class="flow-node">
-              <strong>AthenaNet · Drivers License Image = present</strong>
-              <span>Event / poll: image uploaded or already on file</span>
+              <strong>Athena · Front image present?</strong>
+              <span>true → check · false → clear</span>
             </div>
             <div class="flow-edge">
               <div class="dir" aria-hidden="true">→</div>
-              <div class="kind" style="color: var(--ok)">One-way status</div>
+              <div class="kind" style="color: var(--ok)">One-way · Front</div>
             </div>
             <div class="flow-node">
-              <strong>GHL · Other Important Documentation · Pt. Picture ID = checked</strong>
-              <span>Boolean option only — never push the image into GHL</span>
+              <strong>GHL · Insurance Card Front → Insurance ID Front</strong>
+              <span>Independent of back</span>
+            </div>
+          </div>
+
+          <div class="flow-row sync">
+            <div class="flow-node">
+              <strong>Athena · Back image present?</strong>
+              <span>true → check · false → clear</span>
+            </div>
+            <div class="flow-edge">
+              <div class="dir" aria-hidden="true">→</div>
+              <div class="kind" style="color: var(--ok)">One-way · Back</div>
+            </div>
+            <div class="flow-node">
+              <strong>GHL · Insurance Card Back → Insurance ID Back</strong>
+              <span>Independent of front</span>
             </div>
           </div>
         </div>
 
         <div class="hub-band">
           <p class="badge">GCP middleware hub · proposed contract</p>
-          <h3>Integration behavior for Photo ID</h3>
+          <h3>Integration behavior</h3>
           <p>
-            Derive <code>has_athena_drivers_license_image</code> from AthenaNet.
-            When true, set GHL Call Outcomes field
-            <code>Other Important Documentation</code> option
-            <code>Pt. Picture ID</code> = selected/checked (idempotent).
-            Do not create a Zenoti attribute. Do not copy image bytes to GHL.
-            Admin Check List <code>photo</code> = Athena presence only.
+            Derive <code>has_athena_insurance_card_front</code> and
+            <code>has_athena_insurance_card_back</code>.
+            Mirror into GHL Call Outcomes:
+            <code>Insurance Card Front → Insurance ID Front</code> and
+            <code>Insurance Card Back → Insurance ID Back</code>.
+            Admin Check List <code>ins_card</code> = yes only when <strong>both</strong> Athena images exist
+            (until/unless the ledger splits into two columns). Never copy image bytes to GHL or Zenoti.
           </p>
         </div>
       </div>
     </section>
-
-    <section class="section" aria-labelledby="matrix">
-      <h2 id="matrix">Field dictionary</h2>
-      <p class="lead">Exact labels for engineers and the Admin Check List column.</p>
-      <table class="map">
-        <thead>
-          <tr>
-            <th>Business concept</th>
-            <th>System</th>
-            <th>UI path / field name</th>
-            <th>Data type</th>
-            <th>Sync role</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Photo ID (document)</td>
-            <td>AthenaNet</td>
-            <td class="mono">Drivers License Image</td>
-            <td>Image / document</td>
-            <td><span class="chip oneway">Source</span> for GHL presence</td>
-          </tr>
-          <tr>
-            <td>Photo ID</td>
-            <td>Zenoti</td>
-            <td class="mono">—</td>
-            <td>—</td>
-            <td><span class="chip block">Not present</span></td>
-          </tr>
-          <tr>
-            <td>Photo ID collected? (CRM)</td>
-            <td>GoHighLevel</td>
-            <td class="mono">Call Outcomes → Other Important Documentation → Pt. Picture ID</td>
-            <td>Multi-select checkbox option</td>
-            <td><span class="chip oneway">Sink</span> one-way from Athena</td>
-          </tr>
-          <tr>
-            <td>Admin Check List · Photo ID</td>
-            <td>Reporting app</td>
-            <td class="mono">photo</td>
-            <td>yes / no</td>
-            <td>Read Athena presence only (not Zenoti)</td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
-
-    <section class="section" aria-labelledby="rules">
-      <h2 id="rules">Engineer rules of the road</h2>
-      <div class="rules">
-        <article class="rule">
-          <span class="tag" style="color: var(--block)">Do not</span>
-          <h3>Invent a Zenoti Photo ID field</h3>
-          <p>
-            This attribute is Athena-only for storage. Reporting and sync must treat Zenoti
-            as N/A — not missing-because-blank.
-          </p>
-        </article>
-        <article class="rule">
-          <span class="tag" style="color: var(--block)">Do not</span>
-          <h3>Push the image into GHL</h3>
-          <p>
-            GHL only needs the <em>Pt. Picture ID</em> option checked. No DL image upload,
-            attachment, or binary replication into Call Outcomes.
-          </p>
-        </article>
-        <article class="rule">
-          <span class="tag" style="color: var(--ok)">Do</span>
-          <h3>Sync Athena presence → GHL option</h3>
-          <p>
-            When Athena Drivers License Image exists, select
-            Other Important Documentation → Pt. Picture ID. Keep the write idempotent if
-            staff already checked it manually.
-          </p>
-        </article>
-        <article class="rule">
-          <span class="tag" style="color: var(--athena)">Report</span>
-          <h3>Admin Check List systems label</h3>
-          <p>
-            Photo ID gap mix / ledger should cite <strong>AthenaNet</strong> only
-            (remove Zenoti from the systems string).
-          </p>
-        </article>
-      </div>
-    </section>
-
-    <p class="callout warn">
-      <strong>Classification:</strong>
-      <em>Document vault (Athena only)</em> + <em>One-way presence/status (→ GHL)</em> +
-      <em>Not present (Zenoti)</em>.
-    </p>
   </div>
 </body>
 </html>
