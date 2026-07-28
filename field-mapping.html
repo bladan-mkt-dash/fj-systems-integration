@@ -109,6 +109,66 @@
       font-size: 0.72rem;
     }
 
+
+    .taxonomy {
+      background: var(--white);
+      border: 1px solid var(--wire);
+      border-radius: 8px;
+      margin: 0 0 1.5rem;
+      padding: 1rem 1.05rem 1.15rem;
+    }
+
+    .taxonomy h2 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin: 0 0 0.45rem;
+    }
+
+    .tax-lead {
+      color: var(--ink-muted);
+      font-size: 0.8125rem;
+      margin: 0 0 0.85rem;
+      max-width: 72ch;
+    }
+
+    .tax-table {
+      background: var(--white);
+      border: 1px solid var(--wire);
+      border-collapse: collapse;
+      font-size: 0.78rem;
+      width: 100%;
+    }
+
+    .tax-table th, .tax-table td {
+      border-bottom: 1px solid var(--wire);
+      padding: 0.55rem 0.6rem;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .tax-table th {
+      background: #e8f0ec;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+
+    .tax-table tr:last-child td { border-bottom: none; }
+
+    .tax-table code {
+      font-family: ui-monospace, Consolas, monospace;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+
+    .tax-name {
+      color: var(--ink-muted);
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 600;
+      margin-top: 0.15rem;
+    }
+
     .note {
       background: #eef4f8;
       border: 1px solid #c5d6e3;
@@ -128,10 +188,59 @@
       <h1>Ledger field mapping registry</h1>
       <p>
         Cross-system map for Admin Check List / Record Ledger attributes:
-        where the field lives, whether Zenoti/GHL participate, and sync direction
-        (firewall · manual dual entry · one-way presence · two-way · not present).
+        where the field lives, whether Zenoti/GHL participate, and which
+        <a href="#sync-classes">hub sync class</a> applies.
+        Fill-if-empty is only one class — not the default for every field.
       </p>
     </header>
+
+    <section id="sync-classes" class="taxonomy" aria-labelledby="sync-classes-title">
+      <h2 id="sync-classes-title">Hub sync-class taxonomy</h2>
+      <p class="tax-lead">
+        Fill-if-empty is the <em>default for eligible demographics only</em> — not the only outbound pattern.
+        Every Admin Check List attribute and every hub write must declare one of these classes.
+        Architecture pages (golden record, hub, schematic) must not invent field behavior;
+        this registry wins.
+        Pack reading order:
+        <a href="index.html#document-authority">Goals → field contracts → ops guarantee → how → when</a>.
+      </p>
+      <table class="tax-table">
+        <thead>
+          <tr>
+            <th>Class</th>
+            <th>What the hub does</th>
+            <th>Examples</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>fill_if_empty</code><br /><span class="tax-name">Fill-if-empty demographics</span></td>
+            <td>Copy master value into blank eligible demographic fields across systems. Never overwrite a populated AthenaNet demographic via this class.</td>
+            <td>Name, DOB, phone, email, address/ZIP</td>
+          </tr>
+          <tr>
+            <td><code>isolated_vault</code><br /><span class="tax-name">Isolated payment vault</span></td>
+            <td>No token/payload copy across AthenaNet ↔ Zenoti (or via GHL). Same card may exist in both only via separate manual capture.</td>
+            <td><a href="field-mapping-credit-card.html">Card On File / Saved Card</a></td>
+          </tr>
+          <tr>
+            <td><code>forced_presence_mirror</code><br /><span class="tax-name">Forced presence mirror</span></td>
+            <td>One-way set/clear of GHL Call Outcomes options from source presence (absence clears). Not fill-if-empty; integration-owned — hidden/unclickable after go-live.</td>
+            <td><a href="field-mapping-credit-card.html">CC Athena|Zenoti</a> · <a href="field-mapping-photo-id.html">Pt. Picture ID</a> · <a href="field-mapping-insurance-card.html">Insurance ID Front/Back</a> · <a href="field-mapping-hmo-referral.html">HMO Submitted?</a></td>
+          </tr>
+          <tr>
+            <td><code>athena_only_read</code><br /><span class="tax-name">Athena-only read</span></td>
+            <td>No outbound sync. Admin Check List / ops reporting reads Athena (via BigQuery) only.</td>
+            <td><a href="field-mapping-insurance-eligibility.html">Eligibility</a> · <a href="field-mapping-follow-up-appt.html">Follow-up Appt</a> · CC Agreement flags</td>
+          </tr>
+          <tr>
+            <td><code>two_path_cancel</code><br /><span class="tax-name">Two-path cancel / allowed Athena write</span></td>
+            <td>Product-allowed write that may change Athena when another system is authoritative (stamped source). Not fill-if-empty. Includes Zenoti Suspended → GHL one-way.</td>
+            <td><a href="field-mapping-active-membership.html">Active Membership</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
 
     <table>
       <thead>
@@ -150,7 +259,7 @@
           <td class="mono">Card On File + Agreement (Expiring Soon|Expired)</td>
           <td class="mono">Saved Card → Payments</td>
           <td class="mono">Credit Card → Credit Card Athena | Credit Card Zenoti</td>
-          <td>Firewall vaults + dual one-way presence (Athena→GHL, Zenoti→GHL)</td>
+          <td><code>isolated_vault</code> + dual <code>forced_presence_mirror</code></td>
           <td><span class="chip done">Mapped</span></td>
         </tr>
         <tr>
@@ -158,7 +267,7 @@
           <td class="mono">Drivers License Image</td>
           <td><span class="chip na">Not present</span></td>
           <td class="mono">Call Outcomes → Other Important Documentation → Pt. Picture ID</td>
-          <td>Athena document + one-way → GHL</td>
+          <td>Athena document + <code>forced_presence_mirror</code> → GHL</td>
           <td><span class="chip done">Mapped</span></td>
         </tr>
         <tr>
@@ -166,7 +275,7 @@
           <td class="mono">Policy Information → Front + Back images</td>
           <td><span class="chip na">Not present</span></td>
           <td class="mono">Insurance Card Front → Insurance ID Front · Insurance Card Back → Insurance ID Back</td>
-          <td>Dual Athena images + dual one-way → GHL (locked)</td>
+          <td>Dual Athena images + dual <code>forced_presence_mirror</code> (locked)</td>
           <td><span class="chip done">Mapped</span></td>
         </tr>
         <tr>
@@ -174,7 +283,7 @@
           <td class="mono">Eligible | Unverified</td>
           <td><span class="chip na">No sync</span></td>
           <td><span class="chip na">No sync</span></td>
-          <td>Athena-only · read for Admin Check List</td>
+          <td><code>athena_only_read</code></td>
           <td><span class="chip done">Mapped</span></td>
         </tr>
         <tr>
@@ -182,7 +291,7 @@
           <td class="mono">Authorization → Add Incoming Authorizations</td>
           <td><span class="chip na">No sync</span></td>
           <td class="mono">Call Outcomes → Incoming Referral Required → Submitted? (If Required)</td>
-          <td>Athena → GHL one-way · locked/hidden</td>
+          <td><code>forced_presence_mirror</code> · locked/hidden</td>
           <td><span class="chip done">Mapped</span></td>
         </tr>
         <tr>
@@ -190,7 +299,7 @@
           <td class="mono">Membership Status = Active</td>
           <td class="mono">Memberships → Active (1) / Inactive → Cancelled</td>
           <td class="mono">Membership Cancellation Data + Membership Suspended</td>
-          <td>Two-path cancel + Zenoti Suspended → GHL</td>
+          <td><code>two_path_cancel</code> (+ Suspended → GHL mirror)</td>
           <td><span class="chip done">Mapped</span></td>
         </tr>
         <tr>
@@ -198,15 +307,15 @@
           <td class="mono">Follow-up Appt (date or None)</td>
           <td><span class="chip na">No sync</span></td>
           <td><span class="chip na">No sync</span></td>
-          <td>Athena-only · read for Admin Check List</td>
+          <td><code>athena_only_read</code></td>
           <td><span class="chip done">Mapped</span></td>
         </tr>
       </tbody>
     </table>
 
     <p class="note">
-      <strong>Standing GHL rule:</strong> Every one-way Athena → GHL sink lives under
-      Call Outcomes and is <em>hidden or unclickable</em> after go-live (integration-owned)
+      <strong>Standing GHL rule:</strong> Every <code>forced_presence_mirror</code> sink under
+      Call Outcomes is <em>hidden or unclickable</em> after go-live (integration-owned)
       so staff cannot create mismatches against Athena. Credit Card also includes a
       Zenoti → GHL option under the same field, likewise system-driven.
       Detail pages include engineer rules and hub contracts. Cleaner final version later.

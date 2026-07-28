@@ -23,11 +23,72 @@
     ul { padding-left: 1.25rem; }
     li { margin-bottom: 0.65rem; }
     a { color: #264540; font-weight: 600; }
+    .authority {
+      background: #eef4f1;
+      border: 1px solid #c5d9c8;
+      border-radius: 8px;
+      margin: 1.25rem 0 0.25rem;
+      padding: 0.9rem 1rem 1rem;
+    }
+    .authority h2 { margin-top: 0; }
+    .authority p { margin: 0 0 0.65rem; }
+    .authority ol {
+      color: #3d524c;
+      font-size: 0.875rem;
+      margin: 0;
+      padding-left: 1.25rem;
+    }
+    .authority li { margin-bottom: 0.45rem; }
+    .authority .note {
+      color: #5a6e68;
+      font-size: 0.8125rem;
+      margin: 0.75rem 0 0;
+    }
   </style>
 </head>
 <body>
   <h1>Five Journeys — Systems Integrations</h1>
   <p>Goals, operations report, integration maps, and build checklist for review.</p>
+
+  <section class="authority" id="document-authority" aria-labelledby="authority-title">
+    <h2 id="authority-title">How to read this pack (authority order)</h2>
+    <p>
+      If two pages seem to disagree, use the higher item on this list.
+      Product “what should happen for each patient field” beats architecture diagrams.
+    </p>
+    <ol>
+      <li><strong>Goals</strong> (this page) — what success looks like for the practice.</li>
+      <li>
+        <strong>Field contracts</strong>
+        (<a href="field-mapping.html">(field mapping registry</a>
+        and each field detail page) — the product rules for each Admin Check List attribute
+        (where it lives, how it syncs, what counts as a gap).
+      </li>
+      <li>
+        <strong>Ops guarantee</strong>
+        (<a href="operations-reporting-layer.html">(operations reporting layer)</a>
+        — the Admin Check List must be delivered; sync alone is not enough.
+      </li>
+      <li>
+        <strong>How it is wired</strong>
+        (golden record, hub flow, GCP schematic, calendar sync) — implementation shape,
+        not a place to invent field behavior.
+      </li>
+      <li>
+        <strong>When it is built</strong>
+        <a href="build-checklist.html">(build checklist</a>
+        and <a href="build-gantt.html">gantt)</a> — phases and readiness, after the rules above.
+      </li>
+    </ol>
+    <p class="note">
+      For builders and AI coding agents: treat the field maps as the source of truth for sync.
+      Do not invent credit-card, membership, or Call Outcomes behavior from the architecture
+      pictures alone. Later, the registry should also exist as a machine-readable file (JSON)
+      with short Given / When / Then acceptance checks per field — plain-language test scripts
+      such as “Given no Athena card, When the report runs, Then show a Missing CC Athena gap.”
+      You do not need to write those yourself; they are derived from the field maps at build time.
+    </p>
+  </section>
 
   <h2>Goals</h2>
   <ul>
@@ -63,7 +124,7 @@
     <li><a href="integration-hub-flow.html">Four-system hub flow</a></li>
     <li><a href="integration-schematic.html">Full GCP integration schematic</a></li>
     <li><a href="staff-calendar-sync-flow.html">Appointment sync — Health Coach &amp; Nutritionist calendars (supporting)</a></li>
-    <li><a href="field-mapping.html">Field mapping registry — Ledger attributes across Athena · Zenoti · GHL</a></li>
+    <li><a href="field-mapping.html">Field mapping registry — Ledger attributes + hub sync-class taxonomy</a></li>
     <li><a href="field-mapping-credit-card.html">Field mapping — Credit Card (vault firewall &amp; dual one-way status)</a></li>
     <li><a href="field-mapping-photo-id.html">Field mapping — Photo ID (Athena document → GHL Pt. Picture ID)</a></li>
     <li><a href="field-mapping-insurance-card.html">Field mapping — Insurance Card Pic (Athena Front/Back → GHL)</a></li>

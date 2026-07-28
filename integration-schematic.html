@@ -422,12 +422,9 @@
       <p>
         <strong>Core:</strong> AthenaNet, Zenoti, and GoHighLevel feed a GCP HIPAA-aligned hub;
         BigQuery holds the golden record and ops history; the staff reporting app (Admin Check List)
-        reads BigQuery only — enter once, propagate empty <em>eligible demographic</em> fields,
-        never overwrite AthenaNet demographics once set via fill-if-empty.
-        <strong>Exceptions:</strong> AthenaNet/Zenoti payment card vaults are firewalled (no token
-        fill — <a href="field-mapping-credit-card.html">Credit Card map</a>); membership cancel
-        may explicitly update Athena when the GHL form path is authoritative
-        (<a href="field-mapping-active-membership.html">Active Membership map</a>).
+        reads BigQuery only — enter once, then apply the declared sync class per field.
+        Hub sync classes (SoT: <a href="field-mapping.html#sync-classes">field mapping registry</a>): <code>fill_if_empty</code> (eligible demographics only) · <code>isolated_vault</code> (payment firewall) · <code>forced_presence_mirror</code> (Call Outcomes set/clear) · <code>athena_only_read</code> · <code>two_path_cancel</code> (allowed Athena write). Fill-if-empty is <strong>not</strong> the only outbound pattern.
+        Never overwrite AthenaNet demographics once set via <code>fill_if_empty</code>.
         <strong>Supporting:</strong> Woo identity + eComm sales (POS vs eComm kept distinct);
         Zenoti↔Woo inventory sync stays outside GCP.
       </p>
@@ -577,11 +574,12 @@
       Schematic for architecture review. External systems push or are polled by
       the Middleware Hub; normalized data lands in BigQuery; the Custom Reporting App queries
       BigQuery for analytics and operations reports; IAP and Cloud Logging govern staff access.
-      <strong>Core:</strong> identity sync + fill-empty demographics (payment vaults excluded);
+      <strong>Core:</strong> identity sync + outbound by sync class
+      (<code>fill_if_empty</code>, <code>isolated_vault</code>, <code>forced_presence_mirror</code>,
+      <code>athena_only_read</code>, <code>two_path_cancel</code>);
       appointments in BigQuery; Admin Check List from warehouse views.
-      Field sync classes live in the
-      <a href="field-mapping.html">field mapping registry</a>
-      (including Credit Card firewall and membership cancel allowed Athena writes).
+      Taxonomy SoT:
+      <a href="field-mapping.html#sync-classes">field mapping registry § sync classes</a>.
       <strong>Supporting — Woo:</strong> inventory Zenoti↔Woo outside GCP; Woo identity when unifying store customers;
       Zenoti POS and Woo eComm under one roof, kept distinguishable.
       <strong>Not fully specified on this schematic:</strong> end-to-end cancel/termination/decline

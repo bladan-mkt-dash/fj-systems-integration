@@ -368,6 +368,11 @@
         <p class="lead">
           Codify which fields matter, which system is authoritative, and how gaps are classified.
           Without this matrix, sync can succeed while the Admin Check List still has nothing to report.
+          Outbound behavior uses the
+          <a href="field-mapping.html#sync-classes">hub sync-class taxonomy</a>
+          (<code>fill_if_empty</code> · <code>isolated_vault</code> ·
+          <code>forced_presence_mirror</code> · <code>athena_only_read</code> ·
+          <code>two_path_cancel</code>) — do not assume every gap is a fill-if-empty miss.
         </p>
         <table class="matrix">
           <thead>
@@ -404,16 +409,33 @@
               <td>Missing / Conflict</td>
             </tr>
             <tr>
-              <td>Credit card on file</td>
-              <td><span class="sys zenoti">Zenoti</span> (primary)</td>
-              <td>GHL flags if used</td>
-              <td><span class="tag">Missing</span> if neither operable card on file</td>
+              <td>Credit card — Athena vault</td>
+              <td><span class="sys athena">AthenaNet</span> Card On File</td>
+              <td>GHL Call Outcomes → Credit Card → Credit Card Athena (presence mirror only)</td>
+              <td><span class="tag">Missing</span> if Athena Card On File absent — independent of Zenoti</td>
+            </tr>
+            <tr>
+              <td>Credit card — Zenoti vault</td>
+              <td><span class="sys zenoti">Zenoti</span> Saved Card → Payments</td>
+              <td>GHL Call Outcomes → Credit Card → Credit Card Zenoti (presence mirror only)</td>
+              <td><span class="tag">Missing</span> if Zenoti Saved Card absent — independent of Athena</td>
+            </tr>
+            <tr>
+              <td>Credit card agreement</td>
+              <td><span class="sys athena">AthenaNet</span> Credit Card Agreement flags</td>
+              <td>—</td>
+              <td><span class="tag">Missing</span> / action if <em>Expiring Soon</em> or <em>Expired</em>; N/A if no Athena Card On File. Not the same as card exp date.</td>
             </tr>
           </tbody>
         </table>
         <p class="lead" style="margin:0.75rem 0 0;">
+          Payment vaults are firewalled — do <strong>not</strong> classify “has a card in either system” as complete.
+          See <a href="field-mapping-credit-card.html">Credit Card field map</a>.
+        </p>
+        <p class="lead" style="margin:0.75rem 0 0;">
           Output table: <strong>demographics_gap_fact</strong> —
-          patient_id, field, status (missing|conflict), systems_checked, priority, detected_at.
+          patient_id, field (<code>cc_athena</code> | <code>cc_zenoti</code> | <code>cc_agreement</code> | …),
+          status (missing|conflict|expiring_soon|expired), systems_checked, priority, detected_at.
         </p>
       </section>
 

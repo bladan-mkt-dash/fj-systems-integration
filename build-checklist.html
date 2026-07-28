@@ -282,6 +282,11 @@
       <strong>How to read this:</strong>
       Items are ordered by dependency. Sub-items must be true before the parent is done.
       “Depends on” points at prior checklist numbers.
+      This checklist is the <em>when</em> layer — phases and readiness — not the place to invent
+      field sync rules. Document authority:
+      <a href="index.html#document-authority">Goals → field contracts → ops guarantee → how → when</a>
+      (field behavior SoT:
+      <a href="field-mapping.html">field mapping registry</a>).
       Architecture context:
       <a href="operations-reporting-layer.html">Operations reporting layer</a>,
       <a href="admin-check-list.html">Admin Check List wireframe</a>.
@@ -323,12 +328,18 @@
               <ul class="sub">
                 <li>AthenaNet is the golden source of truth for patient clinical demographics.</li>
                 <li>Staff enter shared patient data once (in AthenaNet, Zenoti, or GHL); the hub matches the person and updates the master record in BigQuery.</li>
-                <li>Empty <em>eligible demographic</em> fields in other systems are filled automatically from that master record (including filling blank AthenaNet demographic fields from Zenoti/GHL).</li>
-                <li>Once a demographic field already has a value in AthenaNet, fill-if-empty never overwrites it — only a manual AthenaNet edit can change it (except explicit product-allowed writes below).</li>
-                <li><strong>Exception — payment vaults:</strong> AthenaNet Card On File and Zenoti Saved Card are firewalled; the hub must not copy/fill payment tokens across those systems (<a href="field-mapping-credit-card.html">Credit Card field map</a>).</li>
-                <li><strong>Exception — membership cancel:</strong> when online-form cancel is authoritative in GHL, the hub may update Athena Membership Status out of Active (stamped source; not fill-if-empty). See <a href="field-mapping-active-membership.html">Active Membership field map</a>.</li>
+                <li>Hub outbound behavior is governed by the
+                  <a href="field-mapping.html#sync-classes">sync-class taxonomy</a>:
+                  <code>fill_if_empty</code> · <code>isolated_vault</code> ·
+                  <code>forced_presence_mirror</code> · <code>athena_only_read</code> ·
+                  <code>two_path_cancel</code>. Fill-if-empty is <strong>not</strong> the only outbound pattern.</li>
+                <li><code>fill_if_empty</code>: empty <em>eligible demographic</em> fields in other systems are filled from the master record (including blank AthenaNet demographics from Zenoti/GHL). Once populated in AthenaNet, this class never overwrites — only a manual AthenaNet edit (or a product-allowed write under another class) can change it.</li>
+                <li><code>isolated_vault</code>: AthenaNet Card On File and Zenoti Saved Card are firewalled; no token/payload copy (<a href="field-mapping-credit-card.html">Credit Card map</a>).</li>
+                <li><code>forced_presence_mirror</code>: GHL Call Outcomes options are system set/clear from source presence (absence clears); hidden/unclickable after go-live.</li>
+                <li><code>athena_only_read</code>: no outbound sync; Admin Check List reads Athena via BigQuery (e.g. eligibility, follow-up, CC agreement).</li>
+                <li><code>two_path_cancel</code>: when online-form cancel is authoritative in GHL, the hub may update Athena Membership Status out of Active (stamped source). See <a href="field-mapping-active-membership.html">Active Membership map</a>.</li>
                 <li>Conflicting non-empty values across systems are not auto-“fixed”; they surface as Conflicts on the Admin Check List.</li>
-                <li>Sync classes for Admin Check List attributes are governed by the <a href="field-mapping.html">field mapping registry</a> — architecture pages must not invent field behavior.</li>
+                <li>Architecture pages must not invent field behavior — the <a href="field-mapping.html">field mapping registry</a> wins.</li>
               </ul>
             </li>
             <li>
@@ -371,7 +382,7 @@
           <span class="title">Define demographics completeness rules (business)</span>
           <span class="depends">Depends on 2</span>
           <ul class="sub">
-            <li>List required fields for Admin Check List (e.g. DOB, phone, email, address/ZIP, credit card on file).</li>
+            <li>Adopt <a href="field-mapping.html">field mapping registry</a> as SoT for Admin Check List attributes (e.g. DOB, phone, email, address/ZIP, <strong>cc_athena</strong>, <strong>cc_zenoti</strong>, <strong>cc_agreement</strong> — dual vaults + agreement flags, not a single “credit card on file”).</li>
             <li>For each field: authoritative system + other systems to check.</li>
             <li>Define Missing vs Conflict in plain language (examples from real messy records welcome).</li>
             <li>Define priority rules (e.g. High if visit within 7 days).</li>
@@ -467,6 +478,12 @@
           <span class="depends">Depends on 3–4, 8</span>
           <ul class="sub">
             <li>Practice summary counts + gap mix behave as specified for a fixed date range.</li>
+            <li>
+              Credit-card gaps follow Option A / field map: Missing when Athena Card On File absent;
+              Missing when Zenoti Saved Card absent (independent vaults);
+              Expiring Soon / Expired for Athena Credit Card Agreement (N/A if no Athena card).
+              Do <strong>not</strong> treat “card in either vault” as complete.
+            </li>
             <li>Provider lists: Follow-ups, Outstanding Copays, Upcoming Appointment Issues.</li>
             <li>Appointment Date Range filter semantics (what is in/out of scope).</li>
             <li>Remediation: assign / resolve / don’t resurface cleared items.</li>
@@ -583,9 +600,14 @@
           <span class="depends">Depends on 18, 10</span>
           <ul class="sub">
             <li>Identity match + master record in BQ.</li>
-            <li>Fill-if-empty outbound to GHL / Zenoti / AthenaNet for eligible demographics only (AthenaNet demographics never overwritten when populated via fill-if-empty).</li>
-            <li>Do <strong>not</strong> fill payment card tokens across AthenaNet ↔ Zenoti (firewall per Credit Card field map).</li>
-            <li>Membership cancel Path A (GHL form authoritative) is an explicit allowed Athena write — implement per Active Membership field map, not as fill-if-empty.</li>
+            <li>Implement outbound by
+              <a href="field-mapping.html#sync-classes">sync class</a> — not fill-if-empty alone:
+              <code>fill_if_empty</code> for eligible demographics;
+              <code>isolated_vault</code> (no token fill AthenaNet ↔ Zenoti);
+              <code>forced_presence_mirror</code> for Call Outcomes set/clear;
+              <code>athena_only_read</code> (no outbound);
+              <code>two_path_cancel</code> for membership Path A allowed Athena write.</li>
+            <li>AthenaNet demographics never overwritten when populated via <code>fill_if_empty</code>.</li>
             <li>Ambiguous-match handling per item 10.</li>
           </ul>
           <p class="dod"><strong>Done when</strong> pilot patients resolve to one golden ID and blank fields fill per rules; conflicts are detectable for later reporting.</p>
@@ -606,7 +628,7 @@
           <span class="title">Phase D — Operations reporting / Admin Check List v1</span>
           <span class="depends">Depends on 20, 11, 3–4</span>
           <ul class="sub">
-            <li>Implement demographics gap detection (Missing / Conflict) from completeness contract.</li>
+            <li>Implement demographics gap detection (Missing / Conflict) from completeness contract — including independent <code>cc_athena</code>, <code>cc_zenoti</code>, and <code>cc_agreement</code> statuses.</li>
             <li>Appointment-issue pipeline joined to upcoming visits + provider.</li>
             <li>Follow-up and copay facts per business rules.</li>
             <li>Daily (or agreed cadence) snapshot; Appointment Date Range filter.</li>

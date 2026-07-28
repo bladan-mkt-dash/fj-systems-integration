@@ -378,14 +378,10 @@
       <h1>Four-System Integration Hub</h1>
       <p>
         <strong>Core:</strong> staff enter shared patient data once (AthenaNet, Zenoti, or GHL);
-        the Middleware Hub matches identity, updates BigQuery, and fills empty
-        <em>eligible demographic</em> fields across systems (AthenaNet demographics never
-        overwritten once populated by fill-if-empty).
-        <strong>Exceptions:</strong> payment card vaults are firewalled (no token fill between
-        AthenaNet and Zenoti — see
-        <a href="field-mapping-credit-card.html">Credit Card map</a>); membership cancel may
-        perform an explicit Athena write when the form/GHL path is authoritative (see
-        <a href="field-mapping-active-membership.html">Active Membership map</a>).
+        the Middleware Hub matches identity, updates BigQuery, and applies the declared
+        <em>sync class</em> per field.
+        Hub sync classes (SoT: <a href="field-mapping.html#sync-classes">field mapping registry</a>): <code>fill_if_empty</code> (eligible demographics only) · <code>isolated_vault</code> (payment firewall) · <code>forced_presence_mirror</code> (Call Outcomes set/clear) · <code>athena_only_read</code> · <code>two_path_cancel</code> (allowed Athena write). Fill-if-empty is <strong>not</strong> the only outbound pattern.
+        AthenaNet demographics are never overwritten once populated by <code>fill_if_empty</code>.
         The Custom Reporting App reads BigQuery only — including the Admin Check List.
         <strong>Supporting:</strong> Woo identity / POS–eComm sales when needed; inventory Zenoti↔Woo
         stays outside GCP.
@@ -448,7 +444,7 @@
 
         <div class="layer-box middleware">
           <p class="layer-title">Middleware Hub</p>
-          <p class="layer-desc">Ingest &amp; translate — identity sync + fill-empty demographics (payment vaults excluded); appointments; Zenoti POS + Woo eComm (kept distinct)</p>
+          <p class="layer-desc">Ingest &amp; translate — identity sync; outbound by sync class (fill-if-empty demographics · vault firewall · presence mirrors · two-path cancel); appointments; Zenoti POS + Woo eComm (kept distinct)</p>
         </div>
 
         <p class="internal-flow">↓ Sync to warehouse</p>

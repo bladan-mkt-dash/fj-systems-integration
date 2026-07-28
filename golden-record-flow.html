@@ -406,15 +406,13 @@
       <p>
         <strong>Core path for easier data entry:</strong> when any team updates a patient or lead,
         webhooks hit the GCP Middleware Hub. The hub matches identity, updates the master record in BigQuery,
-        and fills empty fields across GHL, Zenoti, and AthenaNet for <em>eligible demographics</em>
-        (see exceptions below).
-        Existing AthenaNet values are never overwritten by fill-if-empty — only by an explicit
-        product-allowed write (e.g. membership cancel) or a manual Athena edit.
-        <strong>This flow remediates blanks — it does not publish the Admin Check List.</strong>
+        then applies the correct <em>sync class</em> per field — not fill-if-empty for everything.
+        Hub sync classes (SoT: <a href="field-mapping.html#sync-classes">field mapping registry</a>): <code>fill_if_empty</code> (eligible demographics only) · <code>isolated_vault</code> (payment firewall) · <code>forced_presence_mirror</code> (Call Outcomes set/clear) · <code>athena_only_read</code> · <code>two_path_cancel</code> (allowed Athena write). Fill-if-empty is <strong>not</strong> the only outbound pattern.
+        Existing AthenaNet demographic values are never overwritten by <code>fill_if_empty</code> —
+        only by an explicit product-allowed write (e.g. <code>two_path_cancel</code>) or a manual Athena edit.
+        <strong>This flow remediates blanks where the class allows — it does not publish the Admin Check List.</strong>
         Remaining gaps, conflicts, and appointment-scoped issues are reported by the
         <a href="operations-reporting-layer.html">Operations reporting layer</a>.
-        Field sync classes are defined in the
-        <a href="field-mapping.html">field mapping registry</a>.
       </p>
     </header>
 
@@ -479,8 +477,8 @@
               <li>
                 <span class="step-num">3</span>
                 <div class="step-body">
-                  <strong>Queues outbound synchronization</strong>
-                  <span>Fills empty fields in GHL, Zenoti, and AthenaNet. Never overwrites data already present in AthenaNet — only manual edits there can change it. Does not auto-resolve conflicting non-empty values (those surface as Conflict in operations reporting).</span>
+                  <strong>Queues outbound synchronization by sync class</strong>
+                  <span><code>fill_if_empty</code> for eligible demographics; <code>forced_presence_mirror</code> set/clear into GHL Call Outcomes; <code>isolated_vault</code> never copies payment tokens; <code>two_path_cancel</code> may write Athena when product-allowed. Never overwrites populated Athena demographics via fill-if-empty. Conflicts are not auto-fixed (operations reporting).</span>
                 </div>
               </li>
             </ol>
@@ -517,16 +515,19 @@
         <div class="outcome-card athena">
           <p class="system">AthenaNet</p>
           <p class="main-outcome">Fill empty fields only</p>
-          <span class="outcome-note">e.g. first name, phone, email — populated from Zenoti or GHL when blank; existing values never overwritten by fill-if-empty. Payment card tokens are excluded (see exceptions).</span>
+          <span class="outcome-note">e.g. first name, phone, email — <code>fill_if_empty</code> only. Payment tokens use <code>isolated_vault</code>; Call Outcomes use <code>forced_presence_mirror</code>; see <a href="field-mapping.html#sync-classes">taxonomy</a>.</span>
         </div>
       </div>
     </div>
 
     <div class="callout">
-      <strong>Bi-directional inbound — fill-if-empty outbound to Athena</strong>
+      <strong>Bi-directional inbound — outbound by sync class</strong>
       Any team can be the source of a change: marketing in GHL, front desk in Zenoti, or
       clinical in AthenaNet. The hub resolves identity, writes the golden record once, then
-      propagates <em>eligible</em> demographics to every system.
+      applies the declared sync class per field (see
+      <a href="field-mapping.html#sync-classes">taxonomy</a>). Eligible demographics use
+      <code>fill_if_empty</code>; ledger attributes often use mirrors, vaults, Athena-only reads,
+      or two-path cancel instead.
       <p class="athena-rule">
         AthenaNet fill-if-empty rule: empty <em>demographic</em> fields are filled automatically
         (e.g. first name or phone entered in Zenoti writes to a blank field in Athena).
@@ -534,7 +535,7 @@
         only a manual edit in Athena can change it.
       </p>
       <p class="athena-rule">
-        <strong>Exception — payment vaults (firewall):</strong>
+        <strong>Class <code>isolated_vault</code> — payment firewall:</strong>
         AthenaNet <em>Card On File</em> and Zenoti <em>Saved Card → Payments</em> are isolated
         payment instruments. The hub must <strong>not</strong> copy card tokens or “fill”
         Athena Card On File from Zenoti/GHL (or the reverse). Same plastic card may exist in
@@ -543,13 +544,24 @@
         <a href="field-mapping-credit-card.html">Credit Card field map</a>.
       </p>
       <p class="athena-rule">
-        <strong>Exception — membership cancel (allowed Athena write):</strong>
+        <strong>Class <code>two_path_cancel</code> — allowed Athena write:</strong>
         When a cancel is authoritative in GHL (online form path), the hub <strong>may</strong>
         update Athena Membership Status out of Active, with a stamped cancel source to prevent
         echo loops. Phone cancels remain Athena-authoritative and fan out to Zenoti/GHL.
         See the
         <a href="field-mapping-active-membership.html">Active Membership field map</a>.
         This is not fill-if-empty; it is an explicit product-allowed write.
+      </p>
+      <p class="athena-rule">
+        <strong>Class <code>forced_presence_mirror</code>:</strong>
+        Source presence (Athena document/flag, or Zenoti Saved Card for the CC option) forces
+        set/clear of the matching GHL Call Outcomes option. Absence clears. Not fill-if-empty;
+        fields are integration-owned (hidden/unclickable after go-live).
+      </p>
+      <p class="athena-rule">
+        <strong>Class <code>athena_only_read</code>:</strong>
+        No hub outbound write. Values such as insurance eligibility, follow-up appointment, and
+        CC agreement flags are read from Athena into BigQuery for the Admin Check List only.
       </p>
       <p class="single-entry">
         Once implemented, staff enter shared <em>demographic</em> data in only one system — no
