@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Field Mapping — HMO Referral (Athena → GHL)</title>
+  <title>Field Mapping — Active Membership (two-way cancel paths)</title>
   <style>
     :root {
       --ink: #1a2e2a;
@@ -523,16 +523,17 @@
       <a href="field-mapping-photo-id.html">Photo ID</a>
       <a href="field-mapping-insurance-card.html">Insurance Card</a>
       <a href="field-mapping-insurance-eligibility.html">Eligibility</a>
-      <a class="active" href="field-mapping-hmo-referral.html">HMO Referral</a>
-      <a href="field-mapping-active-membership.html">Active Membership</a>
+      <a href="field-mapping-hmo-referral.html">HMO Referral</a>
+      <a class="active" href="field-mapping-active-membership.html">Active Membership</a>
     </nav>
 
     <header>
-      <p class="eyebrow">Integration product · field mapping · HMO referral</p>
-      <h1>HMO Referral — Cross-System Field Map</h1>
+      <p class="eyebrow">Integration product · field mapping · membership status</p>
+      <h1>Active Membership — Cross-System Field Map</h1>
       <p class="subtitle">
-        Athena is the source of truth for incoming authorizations. When an incoming
-        authorization is entered, mirror presence one-way into GHL. Zenoti is out of scope.
+        Highest-priority ops field. Cancellation can start from the online form (GHL already
+        receives that sink) or from a phone request entered in Athena. Both paths must leave
+        Athena, Zenoti, and GHL aligned — without dropping today’s admin cancel workflow.
       </p>
     </header>
 
@@ -551,57 +552,127 @@
         </thead>
         <tbody>
           <tr>
-            <td>HMO referral / incoming authorization</td>
+            <td>Membership status (active)</td>
             <td>AthenaNet</td>
-            <td class="mono">Authorization → Add Incoming Authorizations</td>
-            <td>Manual authorization entry</td>
-            <td><span class="chip oneway">Source (golden)</span> entered manually in Athena</td>
+            <td class="mono">Membership Status = Active</td>
+            <td>Status enum</td>
+            <td><span class="chip oneway">Golden for phone cancels</span> Active when membership is active</td>
           </tr>
           <tr>
-            <td>HMO referral</td>
+            <td>Membership status (active)</td>
             <td>Zenoti</td>
-            <td class="mono">—</td>
-            <td>—</td>
-            <td><span class="chip block">No sync</span> nothing to update</td>
+            <td class="mono">Memberships → Active (count shows 1 when active)</td>
+            <td>Active membership count / list</td>
+            <td><span class="chip oneway">Peer vault</span> Active contains 1 when membership active</td>
           </tr>
           <tr>
-            <td>Incoming referral submitted? (CRM)</td>
+            <td>Membership status (inactive)</td>
+            <td>Zenoti</td>
+            <td class="mono">Memberships → Inactive → Suspended | Cancelled</td>
+            <td>Inactive reason label</td>
+            <td>On cancel, Active loses 1; membership appears under Suspended or Cancelled</td>
+          </tr>
+          <tr>
+            <td>Membership cancelled?</td>
             <td>GoHighLevel</td>
-            <td class="mono">Call Outcomes → Incoming Referral Required → Submitted? (If Required)</td>
-            <td>Dropdown checkbox option</td>
-            <td><span class="chip oneway">Sink</span> one-way from Athena · locked/hidden</td>
+            <td class="mono">Membership Cancellation Data → Membership Cancelled (True | False)</td>
+            <td>Radio / dropdown boolean</td>
+            <td><span class="chip oneway">Two-path sink</span> form already writes here; phone path mirrors from Athena</td>
           </tr>
           <tr>
-            <td>Admin Check List · HMO referral</td>
+            <td>Membership cancellation date</td>
+            <td>GoHighLevel</td>
+            <td class="mono">Membership Cancellation Data → Membership Cancellation Date</td>
+            <td>Date</td>
+            <td>Transferred from Athena on phone-path cancel; form path already populates GHL</td>
+          </tr>
+          <tr>
+            <td>Admin Check List · Active membership</td>
             <td>Reporting app</td>
-            <td class="mono">referral</td>
-            <td>yes / no / N/A</td>
-            <td>Read Athena (and N/A when referral not required)</td>
+            <td class="mono">membership</td>
+            <td>yes / no</td>
+            <td>Prefer aligned read across Athena Active + Zenoti Active count</td>
           </tr>
         </tbody>
       </table>
     </section>
 
     <p class="callout ok">
-      <strong>Flow:</strong>
-      Staff enter the incoming authorization manually in Athena under
-      <em>Authorization → Add Incoming Authorizations</em>.
-      When that authorization exists, set GHL
-      <em>Call Outcomes → Incoming Referral Required → Submitted? (If Required)</em> = checked.
-      If no authorization is on file, keep that GHL option unchecked/cleared.
+      <strong>Today (keep):</strong>
+      Patient submits online cancel form → GHL receives Membership Cancellation Data
+      (sink already implemented) → email notifies admin → staff cancel membership in all systems.
+      Ideal state: keep the form → GHL capability, and add hub sinks so Athena and Zenoti are
+      updated from that cancel event (not email-only manual chase).
+    </p>
+
+    <p class="callout ok">
+      <strong>Phone path (add):</strong>
+      Patient requests cancel by phone → staff update Athena Membership Status (leave Active) →
+      hub sinks to Zenoti (Active count drops; membership under Inactive) and to GHL
+      (<em>Membership Cancelled = True</em> + <em>Membership Cancellation Date</em> from Athena).
+    </p>
+
+    <div class="flows" style="margin:1rem 0 1.25rem">
+      <div class="flow-row sync">
+        <div class="flow-node">
+          <strong>Path A · Online form</strong>
+          <span>Form → GHL Membership Cancellation Data (existing)</span>
+        </div>
+        <div class="flow-edge">
+          <div class="dir" aria-hidden="true">→</div>
+          <div class="kind" style="color: var(--ok)">Then hub</div>
+        </div>
+        <div class="flow-node">
+          <strong>Athena + Zenoti cancel</strong>
+          <span>Target: auto-update both vaults from GHL cancel event</span>
+        </div>
+      </div>
+      <div class="flow-row sync">
+        <div class="flow-node">
+          <strong>Path B · Phone request</strong>
+          <span>Staff set cancel in Athena Membership Status</span>
+        </div>
+        <div class="flow-edge">
+          <div class="dir" aria-hidden="true">→</div>
+          <div class="kind" style="color: var(--ok)">One-way fan-out</div>
+        </div>
+        <div class="flow-node">
+          <strong>Zenoti Inactive + GHL Cancelled/Date</strong>
+          <span>Date transferred from Athena; Cancelled = True</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="callout warn">
+      <strong>Two-way depending on trigger:</strong>
+      Form-originated cancels authoritative in GHL first, then push to Athena/Zenoti.
+      Phone-originated cancels authoritative in Athena first, then push to Zenoti/GHL.
+      Do not create an endless loop — hub should stamp cancel source and skip echo writes.
     </p>
 
     <p class="callout block">
-      <strong>Post-integration UX (GHL):</strong>
-      This option is <strong>hidden or unclickable</strong> (integration-owned), same standing rule
-      as every other one-way Athena → GHL sink. Staff must not toggle it.
+      <strong>Open assumption (Zenoti Inactive reason):</strong>
+      Phone/form cancel maps Zenoti Inactive label to <em>Cancelled</em> by default
+      (not Suspended), unless ops specifies otherwise. Confirm before build.
     </p>
 
     <p class="callout block">
-      <strong>Integration contract:</strong>
-      Hub reads Athena incoming-authorization presence → writes/clears GHL
-      <code>Call Outcomes → Incoming Referral Required → Submitted? (If Required)</code>.
-      No Zenoti write. Do not push authorization document payloads into GHL — presence only.
+      <strong>UX note:</strong>
+      Membership Cancellation Data is <em>not</em> under Call Outcomes and must remain writable
+      by the existing form integration. Do not apply the Call Outcomes “hide/lock” rule to these
+      GHL fields. Athena→GHL phone-path writes should still overwrite to stay consistent.
+    </p>
+
+    <p class="callout ok">
+      <strong>Integration contract (proposed):</strong>
+      Derive <code>membership_active_athena</code>, <code>membership_active_zenoti</code>,
+      <code>ghl_membership_cancelled</code>, <code>ghl_membership_cancellation_date</code>.
+      On Path A (GHL cancel True): set Athena Membership Status out of Active; move Zenoti
+      membership Active→Inactive/Cancelled; preserve admin email as backup notification.
+      On Path B (Athena leaves Active): set Zenoti Inactive/Cancelled; set GHL
+      Membership Cancelled=True and copy cancellation date from Athena.
+      Admin Check List <code>membership</code> = yes only when Athena shows Active and Zenoti
+      Active count includes the membership (surface Conflict if they disagree).
     </p>
   </div>
 </body>
