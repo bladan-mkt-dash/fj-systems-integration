@@ -678,6 +678,9 @@
       One-way sink: Zenoti Inactive → Suspended present ⇒ set GHL radio
       <em>Membership Suspended → Membership Suspended</em>; if no longer Suspended, clear it.
     </p>
+
+    <p class="callout warn">
+      <strong>Two-way depending on trigger:</strong>
       Form-originated cancels authoritative in GHL first, then push to Athena/Zenoti.
       Phone-originated cancels authoritative in Athena first, then push to Zenoti/GHL.
       Do not create an endless loop — hub should stamp cancel source and skip echo writes.
@@ -691,20 +694,21 @@
 
     <p class="callout block">
       <strong>UX note:</strong>
-      Membership Cancellation Data is <em>not</em> under Call Outcomes and must remain writable
-      by the existing form integration. Do not apply the Call Outcomes “hide/lock” rule to these
-      GHL fields. Athena→GHL phone-path writes should still overwrite to stay consistent.
+      Membership Cancellation Data must remain writable by the existing form integration.
+      The new <em>Membership Suspended</em> radio is a one-way Zenoti→GHL mirror (system-driven
+      set/clear). Do not apply the Call Outcomes hide/lock rule to Membership Cancellation Data.
     </p>
 
     <p class="callout ok">
       <strong>Integration contract (proposed):</strong>
       Derive <code>membership_active_athena</code>, <code>membership_active_zenoti</code>,
-      <code>ghl_membership_cancelled</code>, <code>ghl_membership_cancellation_date</code>.
+      <code>zenoti_membership_suspended</code>, <code>ghl_membership_cancelled</code>,
+      <code>ghl_membership_cancellation_date</code>, <code>ghl_membership_suspended</code>.
       On Path A (GHL cancel True): set Athena Membership Status out of Active; move Zenoti
       membership Active→Inactive/<strong>Cancelled</strong>; preserve admin email as backup notification.
       On Path B (Athena leaves Active): set Zenoti Inactive/<strong>Cancelled</strong>; set GHL
       Membership Cancelled=True and copy cancellation date from Athena.
-      Never auto-write Zenoti <em>Suspended</em> — suspensions are manual only.
+      On Path C (Zenoti Suspended): set/clear GHL Membership Suspended option; never write Suspended into Zenoti.
       Admin Check List <code>membership</code> = yes only when Athena shows Active and Zenoti
       Active count includes the membership (surface Conflict if they disagree).
     </p>
