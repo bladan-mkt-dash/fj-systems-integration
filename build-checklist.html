@@ -323,9 +323,12 @@
               <ul class="sub">
                 <li>AthenaNet is the golden source of truth for patient clinical demographics.</li>
                 <li>Staff enter shared patient data once (in AthenaNet, Zenoti, or GHL); the hub matches the person and updates the master record in BigQuery.</li>
-                <li>Empty fields in other systems are filled automatically from that master record (including filling blank AthenaNet fields from Zenoti/GHL).</li>
-                <li>Once a field already has a value in AthenaNet, the hub never overwrites it — only a manual AthenaNet edit can change it.</li>
+                <li>Empty <em>eligible demographic</em> fields in other systems are filled automatically from that master record (including filling blank AthenaNet demographic fields from Zenoti/GHL).</li>
+                <li>Once a demographic field already has a value in AthenaNet, fill-if-empty never overwrites it — only a manual AthenaNet edit can change it (except explicit product-allowed writes below).</li>
+                <li><strong>Exception — payment vaults:</strong> AthenaNet Card On File and Zenoti Saved Card are firewalled; the hub must not copy/fill payment tokens across those systems (<a href="field-mapping-credit-card.html">Credit Card field map</a>).</li>
+                <li><strong>Exception — membership cancel:</strong> when online-form cancel is authoritative in GHL, the hub may update Athena Membership Status out of Active (stamped source; not fill-if-empty). See <a href="field-mapping-active-membership.html">Active Membership field map</a>.</li>
                 <li>Conflicting non-empty values across systems are not auto-“fixed”; they surface as Conflicts on the Admin Check List.</li>
+                <li>Sync classes for Admin Check List attributes are governed by the <a href="field-mapping.html">field mapping registry</a> — architecture pages must not invent field behavior.</li>
               </ul>
             </li>
             <li>
@@ -580,7 +583,9 @@
           <span class="depends">Depends on 18, 10</span>
           <ul class="sub">
             <li>Identity match + master record in BQ.</li>
-            <li>Fill-if-empty outbound to GHL / Zenoti / AthenaNet (AthenaNet never overwritten when populated).</li>
+            <li>Fill-if-empty outbound to GHL / Zenoti / AthenaNet for eligible demographics only (AthenaNet demographics never overwritten when populated via fill-if-empty).</li>
+            <li>Do <strong>not</strong> fill payment card tokens across AthenaNet ↔ Zenoti (firewall per Credit Card field map).</li>
+            <li>Membership cancel Path A (GHL form authoritative) is an explicit allowed Athena write — implement per Active Membership field map, not as fill-if-empty.</li>
             <li>Ambiguous-match handling per item 10.</li>
           </ul>
           <p class="dod"><strong>Done when</strong> pilot patients resolve to one golden ID and blank fields fill per rules; conflicts are detectable for later reporting.</p>
@@ -616,6 +621,9 @@
           <span class="depends">Depends on 20; may start after or overlapping late D if prioritized</span>
           <ul class="sub">
             <li>Propagate cancel/termination across connected systems per Goal 2.</li>
+            <li>Membership cancel/suspend follows
+              <a href="field-mapping-active-membership.html">Active Membership field map</a>
+              (form path may write Athena; phone path Athena→Zenoti/GHL; Zenoti Suspended→GHL one-way; hub never writes Zenoti Suspended).</li>
             <li>Propagate Zenoti declines per Goal 3.</li>
             <li>Ensure BQ appointment / membership state stays consistent with Admin Check List.</li>
           </ul>

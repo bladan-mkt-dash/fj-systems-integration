@@ -406,11 +406,15 @@
       <p>
         <strong>Core path for easier data entry:</strong> when any team updates a patient or lead,
         webhooks hit the GCP Middleware Hub. The hub matches identity, updates the master record in BigQuery,
-        and fills empty fields across GHL, Zenoti, and AthenaNet.
-        Existing AthenaNet values are never overwritten unless edited manually there.
+        and fills empty fields across GHL, Zenoti, and AthenaNet for <em>eligible demographics</em>
+        (see exceptions below).
+        Existing AthenaNet values are never overwritten by fill-if-empty — only by an explicit
+        product-allowed write (e.g. membership cancel) or a manual Athena edit.
         <strong>This flow remediates blanks — it does not publish the Admin Check List.</strong>
         Remaining gaps, conflicts, and appointment-scoped issues are reported by the
         <a href="operations-reporting-layer.html">Operations reporting layer</a>.
+        Field sync classes are defined in the
+        <a href="field-mapping.html">field mapping registry</a>.
       </p>
     </header>
 
@@ -513,7 +517,7 @@
         <div class="outcome-card athena">
           <p class="system">AthenaNet</p>
           <p class="main-outcome">Fill empty fields only</p>
-          <span class="outcome-note">e.g. credit card, first name — populated from Zenoti or GHL when blank; existing values never overwritten</span>
+          <span class="outcome-note">e.g. first name, phone, email — populated from Zenoti or GHL when blank; existing values never overwritten by fill-if-empty. Payment card tokens are excluded (see exceptions).</span>
         </div>
       </div>
     </div>
@@ -522,17 +526,37 @@
       <strong>Bi-directional inbound — fill-if-empty outbound to Athena</strong>
       Any team can be the source of a change: marketing in GHL, front desk in Zenoti, or
       clinical in AthenaNet. The hub resolves identity, writes the golden record once, then
-      propagates data to every system.
+      propagates <em>eligible</em> demographics to every system.
       <p class="athena-rule">
-        AthenaNet rule: empty fields are filled automatically (e.g. credit card entered in
-        Zenoti writes to a blank field in Athena). Once a field has data in AthenaNet, it is
-        never overwritten by the hub — only a manual edit in Athena can change it.
+        AthenaNet fill-if-empty rule: empty <em>demographic</em> fields are filled automatically
+        (e.g. first name or phone entered in Zenoti writes to a blank field in Athena).
+        Once a demographic field has data in AthenaNet, fill-if-empty never overwrites it —
+        only a manual edit in Athena can change it.
+      </p>
+      <p class="athena-rule">
+        <strong>Exception — payment vaults (firewall):</strong>
+        AthenaNet <em>Card On File</em> and Zenoti <em>Saved Card → Payments</em> are isolated
+        payment instruments. The hub must <strong>not</strong> copy card tokens or “fill”
+        Athena Card On File from Zenoti/GHL (or the reverse). Same plastic card may exist in
+        both only via separate manual capture. Presence flags may still mirror one-way into
+        GHL Call Outcomes per the
+        <a href="field-mapping-credit-card.html">Credit Card field map</a>.
+      </p>
+      <p class="athena-rule">
+        <strong>Exception — membership cancel (allowed Athena write):</strong>
+        When a cancel is authoritative in GHL (online form path), the hub <strong>may</strong>
+        update Athena Membership Status out of Active, with a stamped cancel source to prevent
+        echo loops. Phone cancels remain Athena-authoritative and fan out to Zenoti/GHL.
+        See the
+        <a href="field-mapping-active-membership.html">Active Membership field map</a>.
+        This is not fill-if-empty; it is an explicit product-allowed write.
       </p>
       <p class="single-entry">
-        Once implemented, staff enter shared data in only one system — no double or triple
-        entry. A credit card, first name, or phone captured at the wellness center desk in Zenoti can
-        flow into an empty AthenaNet record automatically. GHL and Zenoti stay in sync
-        for missing fields; AthenaNet is protected once populated.
+        Once implemented, staff enter shared <em>demographic</em> data in only one system — no
+        double or triple entry for those fields. A first name or phone captured at the wellness
+        center desk in Zenoti can flow into an empty AthenaNet record automatically. GHL and
+        Zenoti stay in sync for missing eligible fields; AthenaNet demographics are protected
+        once populated.
         Sync success still leaves a reporting need: fields that remain blank, or disagree across
         systems, must appear on the Admin Check List via the operations reporting layer — not
         assumed fixed by this map alone.

@@ -378,9 +378,15 @@
       <h1>Four-System Integration Hub</h1>
       <p>
         <strong>Core:</strong> staff enter shared patient data once (AthenaNet, Zenoti, or GHL);
-        the Middleware Hub matches identity, updates BigQuery, and fills empty fields across systems
-        (AthenaNet never overwritten once populated). The Custom Reporting App reads BigQuery only —
-        including the Admin Check List.
+        the Middleware Hub matches identity, updates BigQuery, and fills empty
+        <em>eligible demographic</em> fields across systems (AthenaNet demographics never
+        overwritten once populated by fill-if-empty).
+        <strong>Exceptions:</strong> payment card vaults are firewalled (no token fill between
+        AthenaNet and Zenoti — see
+        <a href="field-mapping-credit-card.html">Credit Card map</a>); membership cancel may
+        perform an explicit Athena write when the form/GHL path is authoritative (see
+        <a href="field-mapping-active-membership.html">Active Membership map</a>).
+        The Custom Reporting App reads BigQuery only — including the Admin Check List.
         <strong>Supporting:</strong> Woo identity / POS–eComm sales when needed; inventory Zenoti↔Woo
         stays outside GCP.
       </p>
@@ -442,7 +448,7 @@
 
         <div class="layer-box middleware">
           <p class="layer-title">Middleware Hub</p>
-          <p class="layer-desc">Ingest &amp; translate — identity sync + fill-empty fields; appointments; Zenoti POS + Woo eComm (kept distinct)</p>
+          <p class="layer-desc">Ingest &amp; translate — identity sync + fill-empty demographics (payment vaults excluded); appointments; Zenoti POS + Woo eComm (kept distinct)</p>
         </div>
 
         <p class="internal-flow">↓ Sync to warehouse</p>
@@ -467,12 +473,20 @@
     </div>
 
     <p class="caption">
-      <strong>Core on this map:</strong> enter once → hub → BigQuery golden record → fill empty fields across systems;
+      <strong>Core on this map:</strong> enter once → hub → BigQuery golden record → fill empty
+      <em>eligible demographic</em> fields across systems;
       staff ops dashboards (Admin Check List) read BigQuery only.
+      Payment card tokens do not fill across AthenaNet ↔ Zenoti; membership cancel uses dedicated
+      field-map rules (may write Athena when GHL form cancel is authoritative).
       <strong>Supporting — Woo:</strong> inventory Zenoti↔Woo stays outside GCP; Woo identity when a shopper is also a patient;
       Zenoti POS + Woo eComm sales under one roof, kept distinguishable.
       <br /><br />
-      <strong>Not on this map:</strong> cancellation / termination sync and Zenoti decline propagation (Goals 2–3) need dedicated flows.
+      <strong>Related maps:</strong>
+      <a href="field-mapping.html">Field mapping registry</a> ·
+      <a href="field-mapping-credit-card.html">Credit Card</a> ·
+      <a href="field-mapping-active-membership.html">Active Membership</a>.
+      Full cancel/termination/decline product scope (Goals 2–3) still needs Phase E delivery;
+      do not invent field behavior from this hub diagram alone.
       This hub alone does not guarantee the Admin Check List — see
       <a href="operations-reporting-layer.html">Operations reporting layer</a>.
     </p>
