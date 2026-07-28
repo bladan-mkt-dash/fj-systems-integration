@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Field Mapping — Insurance Eligibility (in progress)</title>
+  <title>Field Mapping — Insurance Eligibility (Athena-only)</title>
   <style>
     :root {
       --ink: #1a2e2a;
@@ -526,12 +526,12 @@
     </nav>
 
     <header>
-      <p class="eyebrow">Integration product · field mapping · insurance eligibility · draft</p>
+      <p class="eyebrow">Integration product · field mapping · insurance eligibility</p>
       <h1>Insurance Eligibility — Cross-System Field Map</h1>
       <p class="subtitle">
-        Draft map: eligibility is only meaningful when an insurance card/policy is present in
-        Athena (not Self Pay). Confirmed Athena values so far: <strong>Eligible</strong> or
-        <strong>Unverified</strong>. GHL / Zenoti paths still needed.
+        Athena-only attribute. When an insurance card/policy is on file, eligibility is
+        <strong>Eligible</strong> or <strong>Unverified</strong>. No information travels to
+        Zenoti or GoHighLevel.
       </p>
     </header>
 
@@ -559,55 +559,52 @@
           <tr>
             <td>Insurance eligibility</td>
             <td>AthenaNet</td>
-            <td class="mono">TBD — exact Athena UI label</td>
-            <td>Enum: Eligible | Unverified</td>
-            <td><span class="chip oneway">Source (golden)</span> only when card/policy present</td>
+            <td class="mono">Insurance Eligibility (Eligible | Unverified)</td>
+            <td>Enum</td>
+            <td><span class="chip oneway">Athena-only · golden</span> no outbound sync</td>
           </tr>
           <tr>
             <td>Insurance eligibility</td>
             <td>Zenoti</td>
-            <td class="mono">TBD</td>
+            <td class="mono">—</td>
             <td>—</td>
-            <td><span class="chip block">Open</span></td>
+            <td><span class="chip block">No sync</span> nothing to update</td>
           </tr>
           <tr>
-            <td>Insurance eligibility (CRM)</td>
+            <td>Insurance eligibility</td>
             <td>GoHighLevel</td>
-            <td class="mono">TBD — Call Outcomes field/option?</td>
+            <td class="mono">—</td>
             <td>—</td>
-            <td><span class="chip block">Open</span></td>
+            <td><span class="chip block">No sync</span> nothing to update</td>
           </tr>
           <tr>
             <td>Admin Check List · Insurance eligibility</td>
             <td>Reporting app</td>
             <td class="mono">eligibility</td>
-            <td>yes / no (rollup)</td>
-            <td>Likely yes when Athena = Eligible; Unverified = gap — confirm</td>
+            <td>yes / no</td>
+            <td>Read Athena only — yes when Eligible; Unverified = gap (when card present)</td>
           </tr>
         </tbody>
       </table>
     </section>
 
     <p class="callout ok">
-      <strong>Confirmed rule:</strong>
+      <strong>Confirmed rules:</strong>
       If the Insurance Card is present in Athena, Insurance Eligibility is either
       <em>Eligible</em> or <em>Unverified</em>.
+      <strong>No information needs to travel</strong> to Zenoti or GHL for this field.
     </p>
 
     <p class="callout warn">
-      <strong>Implied from Self Pay gate:</strong>
+      <strong>Self Pay gate:</strong>
       When Athena has no policy (Self Pay), eligibility is not applicable — do not treat as
-      Eligible, and any GHL eligibility mirror (once defined) should stay blank/unchecked.
-      Zenoti: no-op unless a Zenoti field is later identified.
+      Eligible on the Admin Check List. Still nothing to write to Zenoti or GHL.
     </p>
 
     <p class="callout block">
-      <strong>Still needed to finish this map:</strong>
-      (1) Exact Athena field path/label for eligibility,
-      (2) whether Zenoti has this field or Not present,
-      (3) GHL Call Outcomes field name + options,
-      (4) whether GHL is a one-way locked mirror from Athena,
-      (5) Admin Check List: does <code>eligibility = yes</code> mean only Eligible (Unverified = gap)?
+      <strong>Integration contract:</strong>
+      Hub may <em>read</em> Athena eligibility for Admin Check List / BigQuery reporting.
+      Hub must <em>not</em> write eligibility (or any derived flag) into Zenoti or GHL.
     </p>
   </div>
 </body>
