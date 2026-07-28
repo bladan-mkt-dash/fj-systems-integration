@@ -494,9 +494,11 @@
       <p class="eyebrow">Integration product · field mapping · payment instrument</p>
       <h1>Credit Card — Cross-System Field Map</h1>
       <p class="subtitle">
-        Canonical example for a data engineer: same business concept in three systems,
-        two payment vaults that must never share card data, and one presence flag that
-        should auto-update when Athena has a card on file.
+        Same business concept in three systems: two isolated payment vaults (Athena / Zenoti)
+        that never share card data, plus a GHL multi-select under
+        <strong>Call Outcomes → Credit Card</strong> with two system-driven options —
+        <em>Credit Card Athena</em> and <em>Credit Card Zenoti</em> — that mirror vault presence
+        one-way and cannot be checked manually.
       </p>
     </header>
 
@@ -508,24 +510,26 @@
       but only via separate manual capture from the patient.
     </p>
 
-    <p class="callout warn">
-      <strong>Confirm auto-check target:</strong>
-      You described the checkbox in <strong>GoHighLevel → Call Outcomes</strong>, and named
-      “Zenoti” as the auto-check destination. This diagram treats the intended one-way sync as
-      <strong>Athena Card On File → GHL Call Outcomes checkbox</strong>. Say if Zenoti also needs
-      a separate presence signal (distinct from the Saved Card vault).
+    <p class="callout ok">
+      <strong>GHL path (confirmed):</strong>
+      Folder/section <code>Call Outcomes</code> → field <code>Credit Card</code> → dropdown options
+      <code>Credit Card Athena</code> and <code>Credit Card Zenoti</code>.
+      Compact notation: <code>Credit Card → Credit Card Athena</code> /
+      <code>Credit Card → Credit Card Zenoti</code>.
+      Both options are <strong>integration-owned</strong> — staff must not check them manually;
+      the hub sets/clears each option from the matching vault’s presence.
     </p>
 
     <div class="legend" aria-label="Flow legend">
       <span><span class="chip block">No sync / firewall</span> Card payload never crosses systems</span>
       <span><span class="chip manual">Manual dual entry</span> Staff enter card in each vault</span>
-      <span><span class="chip oneway">One-way</span> Presence / boolean only</span>
-      <span><span class="chip status">Status flag</span> No PAN / token / CVV</span>
+      <span><span class="chip oneway">One-way</span> Presence mirror into GHL options</span>
+      <span><span class="chip status">System-driven</span> GHL options not manually editable</span>
     </div>
 
     <section class="section" aria-labelledby="arch">
       <h2 id="arch">Architecture at a glance</h2>
-      <p class="lead">Three fields, two vaults, one boolean. Direction of arrows is the contract.</p>
+      <p class="lead">Two vaults, two independent GHL options. Each arrow is one-way presence only.</p>
 
       <div class="arch" role="img" aria-label="Credit card field architecture across AthenaNet, Zenoti, and GoHighLevel">
         <div class="systems">
@@ -535,7 +539,7 @@
             <p class="field-path">Card On File</p>
             <ul>
               <li>Stores a chargeable payment method for Athena billing</li>
-              <li>Source of truth for “has clinical card?” presence</li>
+              <li>Drives GHL option <em>Credit Card Athena</em></li>
               <li>Never receives Zenoti card tokens</li>
             </ul>
             <span class="payload vault">Payment vault · tokenized card</span>
@@ -547,22 +551,23 @@
             <p class="field-path">Saved Card → Payments</p>
             <ul>
               <li>Stores a chargeable payment method for Zenoti POS / membership</li>
-              <li>Tracked separately on Admin Check List</li>
+              <li>Drives GHL option <em>Credit Card Zenoti</em></li>
               <li>Never receives Athena card tokens</li>
             </ul>
             <span class="payload vault">Payment vault · tokenized card</span>
           </article>
 
           <article class="sys ghl">
-            <p class="label">CRM / call outcome flag</p>
+            <p class="label">CRM / call outcome multi-select</p>
             <h3>GoHighLevel</h3>
-            <p class="field-path">Call Outcomes → Credit Card (checkbox)</p>
+            <p class="field-path">Call Outcomes → Credit Card → Credit Card Athena | Credit Card Zenoti</p>
             <ul>
-              <li>Boolean only — no card entry UI</li>
-              <li>Today: checked manually by staff</li>
-              <li>Target: auto-checked when Athena has Card On File</li>
+              <li>Field name: <strong>Credit Card</strong> (under Call Outcomes)</li>
+              <li>Options: <strong>Credit Card Athena</strong>, <strong>Credit Card Zenoti</strong></li>
+              <li>No card entry — presence flags only; <strong>not manually checkable</strong></li>
+              <li>Each option blank or checked solely from its source vault</li>
             </ul>
-            <span class="payload flag">Presence flag · no card data</span>
+            <span class="payload flag">Two presence flags · no card data</span>
           </article>
         </div>
 
@@ -592,23 +597,38 @@
               <div class="kind" style="color: var(--warn)">Manual dual entry</div>
             </div>
             <div class="flow-node">
-              <strong>Enter in Athena <em>and</em> Zenoti</strong>
-              <span>Same card physically; two independent captures</span>
+              <strong>Enter in Athena <em>and/or</em> Zenoti</strong>
+              <span>Same card physically; two independent captures when both needed</span>
             </div>
           </div>
 
           <div class="flow-row sync">
             <div class="flow-node">
-              <strong>AthenaNet · Card On File = present</strong>
-              <span>Event / poll: card added or already on file</span>
+              <strong>AthenaNet · Card On File present?</strong>
+              <span>true → check · false → clear</span>
             </div>
             <div class="flow-edge">
               <div class="dir" aria-hidden="true">→</div>
-              <div class="kind" style="color: var(--ok)">One-way status</div>
+              <div class="kind" style="color: var(--ok)">One-way · Athena</div>
             </div>
             <div class="flow-node">
-              <strong>GHL · Call Outcomes · Credit Card = checked</strong>
-              <span>Boolean only — never push PAN/token into GHL</span>
+              <strong>GHL · Credit Card → Credit Card Athena</strong>
+              <span>System-driven option — never staff-toggled</span>
+            </div>
+          </div>
+
+          <div class="flow-row sync">
+            <div class="flow-node">
+              <strong>Zenoti · Saved Card present?</strong>
+              <span>true → check · false → clear</span>
+            </div>
+            <div class="flow-edge">
+              <div class="dir" aria-hidden="true">→</div>
+              <div class="kind" style="color: var(--ok)">One-way · Zenoti</div>
+            </div>
+            <div class="flow-node">
+              <strong>GHL · Credit Card → Credit Card Zenoti</strong>
+              <span>Independent of Athena option</span>
             </div>
           </div>
         </div>
@@ -617,11 +637,12 @@
           <p class="badge">GCP middleware hub · proposed contract</p>
           <h3>Integration behavior for this field family</h3>
           <p>
-            Emit / store a derived boolean <code>has_athena_card_on_file</code> (and separately
-            <code>has_zenoti_saved_card</code> for Admin Check List). On Athena card-present = true,
-            set GHL Call Outcomes Credit Card checkbox = true. Do <strong>not</strong> implement
-            fill-if-empty of payment tokens between Athena and Zenoti — this field is an
-            explicit exception to the general golden-record fill-empty rule.
+            Derive <code>has_athena_card_on_file</code> and <code>has_zenoti_saved_card</code>.
+            Mirror into GHL field <code>Credit Card</code> (Call Outcomes folder):
+            set/clear option <code>Credit Card Athena</code> from Athena presence;
+            set/clear option <code>Credit Card Zenoti</code> from Zenoti presence.
+            Options may be blank/checked independently. Lock or overwrite manual edits —
+            these options are integration-owned. Never move PAN/token between vaults or into GHL.
           </p>
         </div>
       </div>
@@ -646,21 +667,28 @@
             <td>AthenaNet</td>
             <td class="mono">Card On File</td>
             <td>Payment method / token</td>
-            <td><span class="chip oneway">Source</span> for GHL presence; vault isolated</td>
+            <td><span class="chip oneway">Source</span> → GHL Credit Card Athena</td>
           </tr>
           <tr>
             <td>Credit card (wellness vault)</td>
             <td>Zenoti</td>
             <td class="mono">Saved Card → Payments</td>
             <td>Payment method / token</td>
-            <td><span class="chip block">Isolated vault</span> no inbound/outbound card sync</td>
+            <td><span class="chip oneway">Source</span> → GHL Credit Card Zenoti; vault isolated from Athena</td>
           </tr>
           <tr>
-            <td>Credit card collected? (CRM)</td>
+            <td>Credit card on file in Athena? (CRM)</td>
             <td>GoHighLevel</td>
-            <td class="mono">Call Outcomes → Credit Card</td>
-            <td>Checkbox boolean</td>
-            <td><span class="chip oneway">Sink</span> one-way from Athena presence</td>
+            <td class="mono">Call Outcomes → Credit Card → Credit Card Athena</td>
+            <td>Multi-select option (system-driven)</td>
+            <td><span class="chip oneway">Sink</span> one-way from Athena; not manual</td>
+          </tr>
+          <tr>
+            <td>Credit card on file in Zenoti? (CRM)</td>
+            <td>GoHighLevel</td>
+            <td class="mono">Call Outcomes → Credit Card → Credit Card Zenoti</td>
+            <td>Multi-select option (system-driven)</td>
+            <td><span class="chip oneway">Sink</span> one-way from Zenoti; not manual</td>
           </tr>
           <tr>
             <td>Admin Check List · CC Athena</td>
@@ -703,11 +731,19 @@
         </article>
         <article class="rule">
           <span class="tag" style="color: var(--ok)">Do</span>
-          <h3>Sync presence to GHL</h3>
+          <h3>Mirror each vault into its GHL option</h3>
           <p>
-            When Athena Card On File becomes present, set GHL Call Outcomes Credit Card
-            checkbox = checked. Prefer idempotent upsert of the boolean; do not store
-            last4 / brand / token in GHL unless a future requirement says otherwise.
+            Athena present ⇔ select <em>Credit Card Athena</em>; Athena absent ⇔ clear it.
+            Zenoti present ⇔ select <em>Credit Card Zenoti</em>; Zenoti absent ⇔ clear it.
+            Keep writes idempotent. Do not store last4 / brand / token in GHL.
+          </p>
+        </article>
+        <article class="rule">
+          <span class="tag" style="color: var(--block)">Do not</span>
+          <h3>Allow manual GHL checks</h3>
+          <p>
+            Staff must not toggle these options by hand. Treat them as integration-owned
+            (hide, lock, or overwrite on next sync). Manual edits are invalid state.
           </p>
         </article>
         <article class="rule">
@@ -715,7 +751,16 @@
           <h3>Keep Admin Check List dual columns</h3>
           <p>
             <code>cc_athena</code> and <code>cc_zenoti</code> stay independent.
-            Missing in one vault is still a gap even if the other vault is complete.
+            Missing in one vault is still a gap even if the other vault — and its GHL
+            option — is complete.
+          </p>
+        </article>
+        <article class="rule">
+          <span class="tag" style="color: var(--ghl)">Truth</span>
+          <h3>Independent option matrix</h3>
+          <p>
+            Valid GHL states: neither, Athena only, Zenoti only, or both.
+            Never infer Zenoti from Athena or the reverse.
           </p>
         </article>
       </div>
@@ -723,10 +768,9 @@
 
     <p class="callout ok">
       <strong>Pattern to reuse:</strong>
-      For the broader field map, classify every cross-system attribute as one of
-      <em>Isolated vault / no sync</em>, <em>Manual dual entry</em>,
-      <em>One-way presence/status</em>, <em>One-way fill-if-empty</em>, or
-      <em>Two-way</em>. Credit Card is the template for isolated vaults + one-way status.
+      Isolated vaults + <em>per-source one-way presence mirrors</em> into a multi-select field
+      (system-driven options, no manual override). Distinct from Photo ID, which has a single
+      Athena → GHL option and no Zenoti source.
     </p>
   </div>
 </body>
