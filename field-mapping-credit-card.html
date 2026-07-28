@@ -503,7 +503,8 @@
         that never share card data, plus a GHL multi-select under
         <strong>Call Outcomes → Credit Card</strong> with two system-driven options —
         <em>Credit Card Athena</em> and <em>Credit Card Zenoti</em> — that mirror vault presence
-        one-way and cannot be checked manually.
+        one-way and cannot be checked manually. Athena also surfaces
+        <strong>Credit Card Agreement</strong> flags (<em>Expiring Soon</em> / <em>Expired</em>) for the ledger.
       </p>
     </header>
 
@@ -523,6 +524,15 @@
       <code>Credit Card → Credit Card Zenoti</code>.
       Both options are <strong>integration-owned</strong> — staff must not check them manually;
       the hub sets/clears each option from the matching vault’s presence.
+    </p>
+
+
+    <p class="callout warn">
+      <strong>Credit Card Agreement (Athena):</strong>
+      Athena automatically flags agreements as <em>Expiring Soon</em> or <em>Expired</em>.
+      This date sometimes, but not always, coincides with the payment-card expiration date —
+      treat the agreement flag as its own ledger signal. No Zenoti/GHL sync for this attribute
+      unless added later. Admin Check List column <code>cc_agreement</code> reads these flags.
     </p>
 
     <div class="legend" aria-label="Flow legend">
@@ -694,6 +704,20 @@
             <td class="mono">Call Outcomes → Credit Card → Credit Card Zenoti</td>
             <td>Multi-select option (system-driven)</td>
             <td><span class="chip oneway">Sink</span> one-way from Zenoti; not manual</td>
+          </tr>
+          <tr>
+            <td>Credit card agreement status</td>
+            <td>AthenaNet</td>
+            <td class="mono">Credit Card Agreement → Expiring Soon | Expired</td>
+            <td>Athena auto flag</td>
+            <td><span class="chip oneway">Athena-only · ledger</span> may differ from card exp date; report both flags</td>
+          </tr>
+          <tr>
+            <td>Admin Check List · CC Agreement</td>
+            <td>Reporting app</td>
+            <td class="mono">cc_agreement</td>
+            <td>ok | expiring_soon | expired | n/a</td>
+            <td>Read Athena flags; gap when Expiring Soon or Expired (N/A if no Card On File)</td>
           </tr>
           <tr>
             <td>Admin Check List · CC Athena</td>

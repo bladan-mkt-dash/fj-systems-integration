@@ -497,6 +497,8 @@
       <span><span class="pill miss">No</span> Missing</span>
       <span><span class="pill na">N/A</span> Not applicable</span>
       <span><span class="pill miss">None</span> No follow-up booked</span>
+      <span><span class="pill" style="background:#f7f0e8;color:#8a5a2b">Expiring Soon</span> CC Agreement</span>
+      <span><span class="pill miss">Expired</span> CC Agreement</span>
     </div>
 
     <section class="section" aria-labelledby="practice-summary">
@@ -552,6 +554,7 @@
         { key: "eligibility", short: "Eligibility" },
         { key: "referral", short: "HMO referral" },
         { key: "cc_athena", short: "CC Athena" },
+        { key: "cc_agreement", short: "CC Agreement", kind: "agreement" },
         { key: "cc_zenoti", short: "CC Zenoti" },
         { key: "membership", short: "Membership" },
       ];
@@ -611,12 +614,27 @@
         return '<span class="pill na">N/A</span>';
       }
 
+      function agreementPill(val) {
+        const v = String(val || "").toLowerCase();
+        if (v === "expired") return '<span class="pill miss">Expired</span>';
+        if (v === "expiring_soon")
+          return '<span class="pill" style="background:#f7f0e8;color:#8a5a2b">Expiring Soon</span>';
+        if (v === "ok") return '<span class="pill ok">OK</span>';
+        return '<span class="pill na">N/A</span>';
+      }
+
       function gapsFor(p) {
-        return FIELDS.filter(function (f) {
-          return String(p[f.key]).toLowerCase() === "no";
-        }).map(function (f) {
-          return f.short;
+        const gaps = [];
+        FIELDS.forEach(function (f) {
+          if (f.kind === "agreement") {
+            const v = String(p[f.key] || "").toLowerCase();
+            if (v === "expired") gaps.push("CC Agreement Expired");
+            else if (v === "expiring_soon") gaps.push("CC Agreement Expiring Soon");
+            return;
+          }
+          if (String(p[f.key]).toLowerCase() === "no") gaps.push(f.short);
         });
+        return gaps;
       }
 
       function render() {
@@ -650,6 +668,9 @@
                 "</td>" +
                 followCell +
                 FIELDS.map(function (f) {
+                  if (f.kind === "agreement") {
+                    return '<td class="field">' + agreementPill(p[f.key]) + "</td>";
+                  }
                   return '<td class="field">' + pill(p[f.key]) + "</td>";
                 }).join("") +
                 gapCell +
@@ -678,6 +699,7 @@
             '<th class="field">Insurance<br />(eligibility / active)</th>' +
             '<th class="field">Referral on File<br />(if HMO)</th>' +
             '<th class="field">Credit Card<br />Athena</th>' +
+            '<th class="field">CC Agreement<br />(Athena)</th>' +
             '<th class="field">Credit Card<br />Zenoti</th>' +
             '<th class="field">Active<br />Membership</th>' +
             "<th>Still missing</th>" +
@@ -712,9 +734,9 @@
           if (row.classList.contains("has-gaps")) gaps += 1;
           const fields = row.querySelectorAll("td.field .pill");
           if (
-            fields.length >= 6 &&
+            fields.length >= 7 &&
             (fields[4].classList.contains("miss") ||
-              fields[5].classList.contains("miss"))
+              fields[6].classList.contains("miss"))
           ) {
             missingCcCount += 1;
           }

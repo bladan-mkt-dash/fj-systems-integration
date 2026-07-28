@@ -571,6 +571,7 @@
         { key: "eligibility", label: "Insurance eligibility", systems: "AthenaNet", priority: "High" },
         { key: "referral", label: "HMO referral", systems: "AthenaNet → GHL", priority: "High" },
         { key: "cc_athena", label: "Credit card (Athena)", systems: "AthenaNet → GHL Credit Card Athena", priority: "High — upcoming visit" },
+        { key: "cc_agreement", label: "Credit card agreement", systems: "AthenaNet", priority: "High — upcoming visit" },
         { key: "cc_zenoti", label: "Credit card (Zenoti)", systems: "Zenoti → GHL Credit Card Zenoti", priority: "High — upcoming visit" },
         { key: "membership", label: "Active membership", systems: "AthenaNet · Zenoti · GHL", priority: "Medium" },
       ];
@@ -622,6 +623,13 @@
       function demoGaps(p) {
         const gaps = [];
         FIELD_META.forEach(function (f) {
+          if (f.key === "cc_agreement") {
+            const v = String(p.cc_agreement || "").toLowerCase();
+            if (v === "expired") gaps.push("Credit card agreement (Expired)");
+            else if (v === "expiring_soon")
+              gaps.push("Credit card agreement (Expiring Soon)");
+            return;
+          }
           if (String(p[f.key]).toLowerCase() === "no") gaps.push(f.label);
         });
         return gaps;
@@ -696,6 +704,11 @@
               followupsNeeded += 1;
             }
             FIELD_META.forEach(function (f) {
+              if (f.key === "cc_agreement") {
+                const v = String(p.cc_agreement || "").toLowerCase();
+                if (v === "expired" || v === "expiring_soon") gapCounts[f.key] += 1;
+                return;
+              }
               if (String(p[f.key]).toLowerCase() === "no") gapCounts[f.key] += 1;
             });
           });

@@ -17,7 +17,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "Follow-up already completed",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "expiring_soon"
         },
         {
           "name": "Avery Soto",
@@ -31,7 +32,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "No return visit booked after June visit",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "expiring_soon"
         },
         {
           "name": "Morgan Pell",
@@ -45,7 +47,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "expiring_soon"
         },
         {
           "name": "Quinn Adler",
@@ -59,7 +62,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "Follow-up already occurred (past)",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Casey Brink",
@@ -73,7 +77,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "Left without scheduling return",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Amelia Hart",
@@ -87,7 +92,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "Ask front desk for ID scan at check-in",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Noah Ellery",
@@ -101,7 +107,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Serena Vogt",
@@ -115,7 +122,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "Today visit \u2014 follow-up not booked at checkout",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Jordan Blake",
@@ -129,7 +137,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Priya Nandakumar",
@@ -143,7 +152,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "LVM \u2014 upload request sent",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Marcus Ellison",
@@ -157,7 +167,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "Verify before visit; Zenoti card OK",
-          "copay": 35
+          "copay": 35,
+          "cc_agreement": "n/a"
         },
         {
           "name": "Helena Ortiz",
@@ -171,7 +182,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "HMO referral confirmed",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Theo Langford",
@@ -185,7 +197,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "no",
           "membership": "yes",
           "notes": "New patient packet incomplete",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "n/a"
         },
         {
           "name": "Sloane Mercer",
@@ -199,7 +212,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Nadia Quintero",
@@ -213,7 +227,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "Awaiting PCP referral fax",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Evan Cho",
@@ -227,7 +242,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "no",
           "membership": "no",
           "notes": "Membership renewal pending",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Iris Vanderbilt",
@@ -241,7 +257,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Clara Mendez",
@@ -255,7 +272,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Brett Okonkwo",
@@ -269,7 +287,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "Return already on books",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Yuna Park",
@@ -283,7 +302,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         }
       ]
     },
@@ -302,7 +322,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "Follow-up already completed",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Reese Alvarez",
@@ -316,7 +337,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "No return visit booked after June visit",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Taylor Kim",
@@ -330,7 +352,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Jamie Vos",
@@ -344,7 +367,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "Checkout ended without booking follow-up",
-          "copay": 75
+          "copay": 75,
+          "cc_agreement": "n/a"
         },
         {
           "name": "Camille Brooks",
@@ -358,7 +382,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "Card declined in Athena \u2014 update needed",
-          "copay": 35
+          "copay": 35,
+          "cc_agreement": "n/a"
         },
         {
           "name": "Felix Romero",
@@ -372,7 +397,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Anika Shah",
@@ -386,7 +412,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "Today new consult \u2014 schedule return before leaving",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Derek Fontaine",
@@ -400,7 +427,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Lila Nguyen",
@@ -414,7 +442,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "no",
           "notes": "Email reminder sent",
-          "copay": 75
+          "copay": 75,
+          "cc_agreement": "ok"
         },
         {
           "name": "Owen Farrell",
@@ -428,7 +457,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "Eligibility re-check before visit",
-          "copay": 35
+          "copay": 35,
+          "cc_agreement": "ok"
         },
         {
           "name": "Beatrice Holm",
@@ -442,7 +472,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "expiring_soon"
         },
         {
           "name": "Samir Haddad",
@@ -456,7 +487,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "no",
           "membership": "yes",
           "notes": "No card on file in either system",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "n/a"
         },
         {
           "name": "Grace Pettigrew",
@@ -470,7 +502,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "Referral request logged",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Noah Kessler",
@@ -484,7 +517,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "expiring_soon"
         },
         {
           "name": "Darius Bloom",
@@ -498,7 +532,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Elena Voss",
@@ -512,7 +547,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Micah Trent",
@@ -526,7 +562,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "Long-interval follow-up not yet scheduled",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Sofia Almeida",
@@ -540,7 +577,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "Series completed last week",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         }
       ]
     },
@@ -559,7 +597,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "Completed care cycle",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "expiring_soon"
         },
         {
           "name": "Omar Haddadin",
@@ -573,7 +612,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "No follow-up after June labs review",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "expiring_soon"
         },
         {
           "name": "Bianca Rowe",
@@ -587,7 +627,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Julian Vargas",
@@ -601,7 +642,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Mei Lin Zhou",
@@ -615,7 +657,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "expired"
         },
         {
           "name": "Cole Brennan",
@@ -629,7 +672,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "Today PE \u2014 still need insurance card image",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Aisha Rahman",
@@ -643,7 +687,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Peter Lindholm",
@@ -657,7 +702,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "no",
           "membership": "yes",
           "notes": "Zenoti card expired",
-          "copay": 50
+          "copay": 50,
+          "cc_agreement": "ok"
         },
         {
           "name": "Gia Conti",
@@ -671,7 +717,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Harvey Quinn",
@@ -685,7 +732,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Nora Eisenberg",
@@ -699,7 +747,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "Passport photo pending",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Luis Ortega",
@@ -713,7 +762,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "no",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Tessa Byrne",
@@ -727,7 +777,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Willa Croft",
@@ -741,7 +792,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "HMO paperwork in progress",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Andre Silva",
@@ -755,7 +807,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Priya Desai",
@@ -769,7 +822,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "Missed checkout scheduling",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         }
       ]
     },
@@ -788,7 +842,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "expiring_soon"
         },
         {
           "name": "Leila Hassan",
@@ -802,7 +857,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "Labs reviewed; no return booked",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Curtis Boone",
@@ -816,7 +872,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Diana Kowalski",
@@ -830,7 +887,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Ethan Brooks",
@@ -844,7 +902,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "no",
           "membership": "yes",
           "notes": "Today \u2014 capture card before discharge",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "n/a"
         },
         {
           "name": "Fatima Alvi",
@@ -858,7 +917,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "expiring_soon"
         },
         {
           "name": "Gabe Steiner",
@@ -872,7 +932,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Hannah Okafor",
@@ -886,7 +947,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "Eligibility hold",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "expiring_soon"
         },
         {
           "name": "Ivan Petrovic",
@@ -900,7 +962,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Jade Nguyen",
@@ -914,7 +977,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Kyle Morrison",
@@ -928,7 +992,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "Patient asked to call back to schedule",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Lana Esposito",
@@ -942,7 +1007,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Mateo Cruz",
@@ -956,7 +1022,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Nina Volkov",
@@ -970,7 +1037,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Oscar Delgado",
@@ -984,7 +1052,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Paula Rinaldi",
@@ -998,7 +1067,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "Yesterday visit; follow-up booked",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Quentin Marsh",
@@ -1012,7 +1082,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         }
       ]
     },
@@ -1031,7 +1102,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Simone Patel",
@@ -1045,7 +1117,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "PA visit without return plan",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Troy Nakamura",
@@ -1059,7 +1132,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Uma Sundaram",
@@ -1073,7 +1147,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "expired"
         },
         {
           "name": "Victor Hale",
@@ -1087,7 +1162,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "Today PA follow-through \u2014 need Photo ID",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "expiring_soon"
         },
         {
           "name": "Wendy Cho",
@@ -1101,7 +1177,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "Today acute visit \u2014 book chronic follow-up",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Xavier Boyle",
@@ -1115,7 +1192,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "expiring_soon"
         },
         {
           "name": "Yasmine Farouk",
@@ -1129,7 +1207,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "no",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Zane Cooper",
@@ -1143,7 +1222,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": 40
+          "copay": 40,
+          "cc_agreement": "n/a"
         },
         {
           "name": "Alice Moreau",
@@ -1157,7 +1237,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Benjamin Moss",
@@ -1171,7 +1252,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Cora Jennings",
@@ -1185,7 +1267,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Dev Kapoor",
@@ -1199,7 +1282,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Eva Lindstrom",
@@ -1213,7 +1297,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "expiring_soon"
         },
         {
           "name": "Frank Osei",
@@ -1227,7 +1312,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "expired"
         },
         {
           "name": "Gina Russo",
@@ -1241,7 +1327,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "No show follow-up never rebooked",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         }
       ]
     },
@@ -1260,7 +1347,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Ivy Chandler",
@@ -1274,7 +1362,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "NP consult \u2014 no return scheduled",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Jonas Weber",
@@ -1288,7 +1377,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "expired"
         },
         {
           "name": "Kara Bingham",
@@ -1302,7 +1392,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Leo Ashford",
@@ -1316,7 +1407,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "no",
           "notes": "Today NP visit \u2014 membership discussion open",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "expiring_soon"
         },
         {
           "name": "Mira Solano",
@@ -1330,7 +1422,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Nate Feldman",
@@ -1344,7 +1437,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Olive Parkes",
@@ -1358,7 +1452,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "Intake incomplete",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Paige Whitaker",
@@ -1372,7 +1467,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "no",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": 55
+          "copay": 55,
+          "cc_agreement": "ok"
         },
         {
           "name": "Ronin Steele",
@@ -1386,7 +1482,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "expired"
         },
         {
           "name": "Sable Quinn",
@@ -1400,7 +1497,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "Waiting on insurance response",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "expiring_soon"
         },
         {
           "name": "Trent Oswald",
@@ -1414,7 +1512,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Una Bergstrom",
@@ -1428,7 +1527,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Vera Santos",
@@ -1442,7 +1542,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "expiring_soon"
         },
         {
           "name": "Wade Kline",
@@ -1456,7 +1557,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Ximena Rojas",
@@ -1470,7 +1572,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "\u2014",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Yuri Antonov",
@@ -1484,7 +1587,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "Urgent visit; follow-up owed",
-          "copay": null
+          "copay": null,
+          "cc_agreement": "ok"
         },
         {
           "name": "Zelda Marks",
@@ -1498,7 +1602,8 @@ window.FJ_ADMIN_DATA = {
           "cc_zenoti": "yes",
           "membership": "yes",
           "notes": "Update Athena card on file",
-          "copay": 45
+          "copay": 45,
+          "cc_agreement": "n/a"
         }
       ]
     }
