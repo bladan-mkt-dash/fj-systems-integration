@@ -20,6 +20,7 @@
       --warn-bg: #f7f0e8;
       --drill: #2d5a7b;
       --drill-bg: #eef4f8;
+      --miss: #8a3b2b;
       --max-width: 880px;
     }
 
@@ -98,12 +99,27 @@
       border-radius: 4px;
       color: var(--ink-muted);
       font-size: 0.8125rem;
-      margin: 0 0 1.75rem;
+      margin: 0 0 1rem;
       padding: 0.75rem 0.9rem;
     }
 
     .note strong {
       color: var(--drill);
+    }
+
+    .alt-link {
+      background: var(--warn-bg);
+      border: 1px solid #e2d0b8;
+      border-radius: 4px;
+      color: var(--warn);
+      font-size: 0.8125rem;
+      margin: 0 0 1.5rem;
+      padding: 0.7rem 0.85rem;
+    }
+
+    .alt-link a {
+      color: var(--hub);
+      font-weight: 700;
     }
 
     .filters {
@@ -190,10 +206,6 @@
       margin: 0;
     }
 
-    tr.is-hidden {
-      display: none;
-    }
-
     .summary-grid {
       display: grid;
       gap: 0.75rem;
@@ -206,12 +218,6 @@
       border: 1px solid var(--wire);
       border-radius: 6px;
       padding: 0.85rem 0.9rem;
-    }
-
-    .summary-card.clickable {
-      box-shadow: inset 0 0 0 1px transparent;
-      cursor: default;
-      position: relative;
     }
 
     .summary-card .label {
@@ -253,10 +259,24 @@
       margin-bottom: 1.25rem;
     }
 
+    .block.is-empty {
+      display: none;
+    }
+
     .block h3 {
       font-size: 0.95rem;
       font-weight: 700;
       margin: 0 0 0.45rem;
+    }
+
+    .block .subhead {
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin: 0.75rem 0 0.35rem;
+    }
+
+    .block .subhead:first-of-type {
+      margin-top: 0.35rem;
     }
 
     table {
@@ -294,12 +314,14 @@
       display: inline-block;
       font-size: 0.75rem;
       font-weight: 600;
+      margin: 0.1rem 0.2rem 0.1rem 0;
       padding: 0.1rem 0.4rem;
     }
 
-    .issue-tag + .issue-tag {
-      margin-left: 0.25rem;
-      margin-top: 0.2rem;
+    .muted {
+      color: var(--wire-label);
+      font-size: 0.8rem;
+      font-style: italic;
     }
 
     .drilldowns {
@@ -330,17 +352,6 @@
     .drilldowns li {
       font-size: 0.8125rem;
       margin-bottom: 0.65rem;
-    }
-
-    .drilldowns li strong {
-      color: var(--ink);
-    }
-
-    .drilldowns code {
-      background: var(--drill-bg);
-      border-radius: 3px;
-      font-size: 0.75rem;
-      padding: 0.05rem 0.3rem;
     }
 
     .totals {
@@ -399,24 +410,29 @@
     <a class="back" href="index.html">← Back to systems integration</a>
 
     <header>
-      <p class="eyebrow">Integration product · wireframe</p>
+      <p class="eyebrow">Integration product · wireframe · ledger rollup</p>
       <h1>Admin Check List</h1>
       <p class="subtitle">
-        Daily Action Report — missing demographics and operational exceptions,
-        generated automatically from AthenaNet, Zenoti &amp; GoHighLevel.
+        Daily Action Report — a practice-wide rollup of the
+        <strong>Record Ledger</strong>: missing demographics, no follow-up booked,
+        and upcoming visit exceptions.
       </p>
       <p class="meta">
-        Sample layout based on the Five Journeys Daily Operations Dashboard · illustrative data ·
-        <strong>Target product:</strong> live, internal-only staff app (not public) · HIPAA-conscious access (IAP/RBAC);
-        wireframe below is design reference only
+        Counts sync to the same demo patient database as the Record Ledger · illustrative data ·
+        internal staff product target
       </p>
     </header>
 
     <p class="note">
-      <strong>Wireframe note:</strong>
-      Use <strong>Appointment Date Range</strong> to scope the checklist to visits in a window
-      (e.g. next 7 days). Top strip = 5 Journeys Practice–wide gaps; below = provider action lists.
-      Dotted underlines and blue “Drill →” hints mark suggested click-throughs.
+      <strong>Rollup note:</strong>
+      This page aggregates the <a href="admin-check-list-ledger.html">Record Ledger</a>
+      for the selected <strong>Appt Date</strong> range. Summary tiles, gap mix, provider action
+      lists, and daily totals all recompute from that shared dataset when you change the filter.
+    </p>
+
+    <p class="alt-link">
+      Need the patient-by-patient completeness grid?
+      Open the <a href="admin-check-list-ledger.html">Admin Check List — Record Ledger</a>.
     </p>
 
     <form class="filters" id="appt-range-filter" action="#" method="get">
@@ -439,34 +455,31 @@
         <button type="button" id="appt-reset">Reset</button>
         <button type="submit" class="primary" id="appt-apply">Apply</button>
       </div>
-      <p class="filter-status" id="filter-status" aria-live="polite">
-        Showing upcoming appointment issues for Jul 13–Jul 20, 2026 (demo filter).
-      </p>
+      <p class="filter-status" id="filter-status" aria-live="polite">Loading ledger rollup…</p>
     </form>
 
-    <!-- 5 Journeys Practice–wide missing demographics rollup -->
     <section class="section" aria-labelledby="demo-summary">
       <h2 id="demo-summary">Missing demographics — 5 Journeys Practice summary</h2>
       <div class="summary-grid">
-        <div class="summary-card clickable">
+        <div class="summary-card">
           <p class="label">Patients with gaps</p>
-          <p class="value">47</p>
-          <p class="hint">Drill → all incomplete records</p>
+          <p class="value" id="stat-gaps">—</p>
+          <p class="hint">Ledger rows with demographic gaps</p>
         </div>
-        <div class="summary-card clickable">
+        <div class="summary-card">
           <p class="label">Missing credit card</p>
-          <p class="value">18</p>
-          <p class="hint">Drill → by field type</p>
+          <p class="value" id="stat-cc">—</p>
+          <p class="hint">Athena and/or Zenoti</p>
         </div>
-        <div class="summary-card clickable">
-          <p class="label">Missing phone / email</p>
-          <p class="value">12</p>
-          <p class="hint">Drill → by field type</p>
+        <div class="summary-card">
+          <p class="label">No follow-up booked</p>
+          <p class="value" id="stat-followup">—</p>
+          <p class="hint">Follow-up Appt = None</p>
         </div>
-        <div class="summary-card clickable">
-          <p class="label">Appts in next 7 days</p>
-          <p class="value">23</p>
-          <p class="hint">Drill → urgency window</p>
+        <div class="summary-card">
+          <p class="label">Appts in range</p>
+          <p class="value" id="stat-appts">—</p>
+          <p class="hint">Same window as ledger filter</p>
         </div>
       </div>
 
@@ -481,206 +494,29 @@
               <th>Priority</th>
             </tr>
           </thead>
-          <tbody>
-            <tr class="clickable-row">
-              <td>Credit card on file</td>
-              <td>18</td>
-              <td>Zenoti · GHL</td>
-              <td>High — upcoming visit</td>
-            </tr>
-            <tr class="clickable-row">
-              <td>Mobile phone</td>
-              <td>7</td>
-              <td>AthenaNet · GHL</td>
-              <td>High</td>
-            </tr>
-            <tr class="clickable-row">
-              <td>Email</td>
-              <td>5</td>
-              <td>AthenaNet · GHL · Woo</td>
-              <td>Medium</td>
-            </tr>
-            <tr class="clickable-row">
-              <td>Date of birth</td>
-              <td>4</td>
-              <td>AthenaNet (golden)</td>
-              <td>High</td>
-            </tr>
-            <tr class="clickable-row">
-              <td>Address / ZIP</td>
-              <td>3</td>
-              <td>AthenaNet · Zenoti</td>
-              <td>Medium</td>
-            </tr>
-          </tbody>
+          <tbody id="gap-mix-body"></tbody>
         </table>
-        <p class="wire-label">Click a field row → filtered patient list for that gap type</p>
+        <p class="wire-label">Field counts match Record Ledger Yes/No columns for patients in range</p>
       </div>
     </section>
 
-    <!-- Provider sections mirroring the sample doc -->
     <section class="section" aria-labelledby="provider-actions">
       <h2 id="provider-actions">Provider action lists</h2>
-
-      <div class="block">
-        <h3>Dr. Edward Levitan</h3>
-
-        <p style="font-size:0.8rem;font-weight:700;margin:0.75rem 0 0.35rem;">Follow-Up Appointments Needed</p>
-        <table>
-          <thead>
-            <tr>
-              <th>Patient</th>
-              <th>Last Visit</th>
-              <th>Recommended Follow-Up</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="clickable-row">
-              <td>Camille Brooks</td>
-              <td>6/20/26</td>
-              <td>4 Weeks</td>
-            </tr>
-            <tr class="clickable-row">
-              <td>Derek Fontaine</td>
-              <td>5/12/26</td>
-              <td>8 Weeks</td>
-            </tr>
-          </tbody>
-        </table>
-        <p class="wire-label">Drill → open scheduling / last-visit chart context</p>
-
-        <p style="font-size:0.8rem;font-weight:700;margin:1rem 0 0.35rem;">Outstanding Copays</p>
-        <table>
-          <thead>
-            <tr>
-              <th>Patient</th>
-              <th>Amount Due</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="clickable-row">
-              <td>Owen Farrell</td>
-              <td>$35</td>
-            </tr>
-            <tr class="clickable-row">
-              <td>Lila Nguyen</td>
-              <td>$75</td>
-            </tr>
-          </tbody>
-        </table>
-        <p class="wire-label">Drill → billing detail / payment request</p>
-
-        <p style="font-size:0.8rem;font-weight:700;margin:1rem 0 0.35rem;">Upcoming Appointment Issues</p>
-        <table>
-          <thead>
-            <tr>
-              <th>Patient</th>
-              <th>Issue</th>
-              <th>Appt date</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="clickable-row" data-appt="2026-07-15">
-              <td>Amelia Hart</td>
-              <td><span class="issue-tag">Missing Credit Card (Athena / Zenoti)</span></td>
-              <td>7/15/26</td>
-            </tr>
-            <tr class="clickable-row" data-appt="2026-07-16">
-              <td>Marcus Ellison</td>
-              <td>
-                <span class="issue-tag">Missing Phone</span>
-                <span class="issue-tag">Missing Insurance Eligibility</span>
-              </td>
-              <td>7/16/26</td>
-            </tr>
-            <tr class="clickable-row" data-appt="2026-07-18">
-              <td>Priya Nandakumar</td>
-              <td><span class="issue-tag">Missing DOB in AthenaNet</span></td>
-              <td>7/18/26</td>
-            </tr>
-            <tr class="clickable-row" data-appt="2026-07-28">
-              <td>Theo Langford</td>
-              <td><span class="issue-tag">Missing Address</span></td>
-              <td>7/28/26</td>
-            </tr>
-          </tbody>
-        </table>
-        <p class="wire-label">Primary demographics checklist surface — drill → patient golden-record compare</p>
-      </div>
-
-      <div class="block">
-        <h3>Dr. Wendie Trubow</h3>
-        <p style="font-size:0.8rem;font-weight:700;margin:0.75rem 0 0.35rem;">Follow-Up Appointments Needed</p>
-        <table>
-          <thead>
-            <tr>
-              <th>Patient</th>
-              <th>Last Visit</th>
-              <th>Recommended Follow-Up</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="clickable-row">
-              <td>Helena Ortiz</td>
-              <td>6/02/26</td>
-              <td>6 Weeks</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <p style="font-size:0.8rem;font-weight:700;margin:1rem 0 0.35rem;">Upcoming Appointment Issues</p>
-        <table>
-          <thead>
-            <tr>
-              <th>Patient</th>
-              <th>Issue</th>
-              <th>Appt date</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="clickable-row" data-appt="2026-07-14">
-              <td>Evan Cho</td>
-              <td><span class="issue-tag">Missing Email</span></td>
-              <td>7/14/26</td>
-            </tr>
-            <tr class="clickable-row" data-appt="2026-08-02">
-              <td>Sloane Mercer</td>
-              <td>
-                <span class="issue-tag">Missing Credit Card</span>
-                <span class="issue-tag">Missing Insurance Eligibility</span>
-              </td>
-              <td>8/02/26</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div class="block">
-        <h3>Additional providers <span style="font-weight:500;color:var(--ink-muted);font-size:0.8rem;">(same pattern)</span></h3>
-        <p style="font-size:0.8125rem;color:var(--ink-muted);margin:0;">
-          Dr. Bernice Wong · Dr. Tamer Khafagy · Ashley Gerlach, NP · Erin Jankauskas, PA —
-          each with Follow-Up Appointments Needed and Upcoming Appointment Issues
-          (Outstanding Copays where applicable).
-        </p>
-      </div>
+      <div id="provider-actions-root"></div>
     </section>
 
     <section class="section" aria-labelledby="team-totals">
       <h2 id="team-totals">Daily team totals</h2>
       <div class="totals">
         <div class="panel">
-          <h3>Today’s counts</h3>
-          <ul>
-            <li>Follow-ups needed: <strong>14</strong></li>
-            <li>Outstanding copays: <strong>6</strong> ($412)</li>
-            <li>Upcoming appointment issues: <strong>23</strong></li>
-            <li>of which missing demographics: <strong>19</strong></li>
-          </ul>
+          <h3>Counts in selected range</h3>
+          <ul id="team-totals-list"></ul>
         </div>
         <div class="panel">
           <h3>Goal</h3>
           <ul>
             <li>Clear all <strong>High</strong> demographic gaps before next business day for patients with visits in 7 days.</li>
+            <li>Book follow-ups before checkout — drive down Follow-up Appt = <strong>None</strong>.</li>
             <li>Reduce recurring “Missing Credit Card” issues week over week.</li>
           </ul>
         </div>
@@ -693,59 +529,51 @@
       <ol>
         <li>
           <strong>By gap type</strong> —
-          Click “Missing Credit Card” (or any field in the 5 Journeys Practice summary) →
-          filtered patient list with next appointment, assigned provider, and which systems lack the value.
+          From gap mix → filtered ledger patients for that field.
         </li>
         <li>
-          <strong>Patient golden-record compare</strong> —
-          Click a patient name → side-by-side AthenaNet (golden) vs Zenoti vs GHL vs WooCommerce
-          for the incomplete fields, with “copy from source” affordances where safe.
+          <strong>Record Ledger</strong> —
+          Open the patient-level completeness grid for the same date window.
         </li>
         <li>
           <strong>Provider filter</strong> —
-          Jump from outline / provider heading → that provider’s action lists only
-          (matches the sample Doc’s per-provider structure).
+          Jump to that provider’s action lists (all six clinicians below).
         </li>
         <li>
           <strong>Appointment Date Range</strong> —
-          Primary list filter (From / To, plus Today · Next 7 / 14 / 30 day presets).
-          Scopes 5 Journeys Practice summary counts and provider “Upcoming Appointment Issues” to visits
-          in the selected window; follow-ups and copays can optionally respect the same range
-          or stay unscoped.
-        </li>
-        <li>
-          <strong>Urgency window</strong> —
-          Click “Appts in next 7 days” → same issues sorted by appointment proximity;
-          presets above are the same control, not a separate system.
-        </li>
-        <li>
-          <strong>Issue → workflow</strong> —
-          From an Upcoming Appointment Issue row → deep link into AthenaNet chart,
-          Zenoti profile, or GHL contact (system where the gap must be fixed).
-        </li>
-        <li>
-          <strong>Assignment &amp; audit</strong> —
-          Assign a gap to front-desk / admin, mark resolved, and keep a short history
-          so the daily report doesn’t resurface cleared items.
-        </li>
-        <li>
-          <strong>Cross-system conflict</strong> —
-          When values disagree (e.g. phone in GHL ≠ AthenaNet), surface as
-          <code>Conflict</code> rather than merely <code>Missing</code>, then drill to reconcile
-          against the golden record.
+          Same Appt Date control as the Record Ledger — summaries and lists stay in sync.
         </li>
       </ol>
     </aside>
   </div>
 
+  <script src="admin-check-data.js"></script>
   <script>
     (function () {
+      const data = window.FJ_ADMIN_DATA;
+      if (!data) {
+        document.getElementById("filter-status").textContent =
+          "Missing admin-check-data.js — shared ledger dataset failed to load.";
+        return;
+      }
+
       const form = document.getElementById("appt-range-filter");
       const fromInput = document.getElementById("appt-from");
       const toInput = document.getElementById("appt-to");
       const status = document.getElementById("filter-status");
       const presetButtons = form.querySelectorAll("[data-preset]");
-      const asOf = new Date(2026, 6, 13); // wireframe "today"
+      const asOfParts = data.asOf.split("-").map(Number);
+      const asOf = new Date(asOfParts[0], asOfParts[1] - 1, asOfParts[2]);
+
+      const FIELD_META = [
+        { key: "photo", label: "Photo ID", systems: "AthenaNet · Zenoti", priority: "High" },
+        { key: "ins_card", label: "Insurance card pic", systems: "AthenaNet · Zenoti", priority: "High — upcoming visit" },
+        { key: "eligibility", label: "Insurance eligibility", systems: "AthenaNet", priority: "High" },
+        { key: "referral", label: "HMO referral", systems: "AthenaNet", priority: "High" },
+        { key: "cc_athena", label: "Credit card (Athena)", systems: "AthenaNet", priority: "High — upcoming visit" },
+        { key: "cc_zenoti", label: "Credit card (Zenoti)", systems: "Zenoti · GHL", priority: "High — upcoming visit" },
+        { key: "membership", label: "Active membership", systems: "Zenoti", priority: "Medium" },
+      ];
 
       function iso(d) {
         const y = d.getFullYear();
@@ -769,34 +597,254 @@
         });
       }
 
+      function fmtShort(isoDate) {
+        const d = new Date(isoDate + "T12:00:00");
+        return (
+          d.getMonth() +
+          1 +
+          "/" +
+          String(d.getDate()).padStart(2, "0") +
+          "/" +
+          String(d.getFullYear()).slice(2)
+        );
+      }
+
       function setPresetActive(name) {
         presetButtons.forEach(function (btn) {
           btn.classList.toggle("active", btn.getAttribute("data-preset") === name);
         });
       }
 
+      function inRange(appt, from, to) {
+        return (!from || appt >= from) && (!to || appt <= to);
+      }
+
+      function demoGaps(p) {
+        const gaps = [];
+        FIELD_META.forEach(function (f) {
+          if (String(p[f.key]).toLowerCase() === "no") gaps.push(f.label);
+        });
+        return gaps;
+      }
+
+      function missingCc(p) {
+        return (
+          String(p.cc_athena).toLowerCase() === "no" ||
+          String(p.cc_zenoti).toLowerCase() === "no"
+        );
+      }
+
+      function issueTags(gaps) {
+        return gaps
+          .map(function (g) {
+            return '<span class="issue-tag">Missing ' + g + "</span>";
+          })
+          .join(" ");
+      }
+
+      function esc(s) {
+        return String(s)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;");
+      }
+
       function applyFilter() {
         const from = fromInput.value;
         const to = toInput.value;
-        let visible = 0;
-        let total = 0;
-        document.querySelectorAll("tr[data-appt]").forEach(function (row) {
-          total += 1;
-          const appt = row.getAttribute("data-appt");
-          const inRange = (!from || appt >= from) && (!to || appt <= to);
-          row.classList.toggle("is-hidden", !inRange);
-          if (inRange) visible += 1;
+
+        let appts = 0;
+        let withGaps = 0;
+        let ccMissing = 0;
+        let noFollowup = 0;
+        let issues = 0;
+        let followupsNeeded = 0;
+        let copayCount = 0;
+        let copaySum = 0;
+        const gapCounts = {};
+        FIELD_META.forEach(function (f) {
+          gapCounts[f.key] = 0;
         });
+
+        const providerHtml = [];
+
+        data.providers.forEach(function (block) {
+          const inWindow = block.patients.filter(function (p) {
+            return inRange(p.appt, from, to);
+          });
+
+          const followNeeded = inWindow.filter(function (p) {
+            return !p.followup;
+          });
+          const upcomingIssues = inWindow.filter(function (p) {
+            return demoGaps(p).length > 0;
+          });
+          const copays = inWindow.filter(function (p) {
+            return p.copay != null && p.copay > 0;
+          });
+
+          inWindow.forEach(function (p) {
+            appts += 1;
+            const gaps = demoGaps(p);
+            if (gaps.length) {
+              withGaps += 1;
+              issues += 1;
+            }
+            if (missingCc(p)) ccMissing += 1;
+            if (!p.followup) {
+              noFollowup += 1;
+              followupsNeeded += 1;
+            }
+            FIELD_META.forEach(function (f) {
+              if (String(p[f.key]).toLowerCase() === "no") gapCounts[f.key] += 1;
+            });
+          });
+
+          copays.forEach(function (p) {
+            copayCount += 1;
+            copaySum += Number(p.copay) || 0;
+          });
+
+          const empty =
+            followNeeded.length === 0 &&
+            upcomingIssues.length === 0 &&
+            copays.length === 0;
+
+          let inner = "<h3>" + esc(block.provider) + "</h3>";
+          if (empty) {
+            inner +=
+              '<p class="muted">No follow-up gaps, appointment issues, or copays in this Appt Date window.</p>';
+          } else {
+            if (followNeeded.length) {
+              inner += '<p class="subhead">Follow-Up Appointments Needed</p><table><thead><tr><th>Patient</th><th>Last visit (Appt Date)</th><th>Follow-up Appt</th></tr></thead><tbody>';
+              followNeeded
+                .slice()
+                .sort(function (a, b) {
+                  return a.appt < b.appt ? -1 : 1;
+                })
+                .forEach(function (p) {
+                  inner +=
+                    '<tr class="clickable-row"><td>' +
+                    esc(p.name) +
+                    "</td><td>" +
+                    fmtShort(p.appt) +
+                    '</td><td><span class="issue-tag">None</span></td></tr>';
+                });
+              inner += "</tbody></table>";
+              inner +=
+                '<p class="wire-label">Same patients as Record Ledger Follow-up Appt = None</p>';
+            }
+
+            if (copays.length) {
+              inner +=
+                '<p class="subhead">Outstanding Copays</p><table><thead><tr><th>Patient</th><th>Amount Due</th></tr></thead><tbody>';
+              copays.forEach(function (p) {
+                inner +=
+                  '<tr class="clickable-row"><td>' +
+                  esc(p.name) +
+                  "</td><td>$" +
+                  Number(p.copay).toFixed(0) +
+                  "</td></tr>";
+              });
+              inner += "</tbody></table>";
+            }
+
+            if (upcomingIssues.length) {
+              inner +=
+                '<p class="subhead">Upcoming Appointment Issues</p><table><thead><tr><th>Patient</th><th>Issue</th><th>Appt date</th></tr></thead><tbody>';
+              upcomingIssues
+                .slice()
+                .sort(function (a, b) {
+                  return a.appt < b.appt ? -1 : 1;
+                })
+                .forEach(function (p) {
+                  const gaps = demoGaps(p);
+                  inner +=
+                    '<tr class="clickable-row" data-appt="' +
+                    p.appt +
+                    '"><td>' +
+                    esc(p.name) +
+                    "</td><td>" +
+                    issueTags(gaps) +
+                    "</td><td>" +
+                    fmtShort(p.appt) +
+                    "</td></tr>";
+                });
+              inner += "</tbody></table>";
+              inner +=
+                '<p class="wire-label">Issues derived from Record Ledger missing Yes/No fields</p>';
+            }
+          }
+
+          providerHtml.push(
+            '<div class="block" data-provider-block>' + inner + "</div>"
+          );
+        });
+
+        document.getElementById("provider-actions-root").innerHTML =
+          providerHtml.join("\n");
+
+        document.getElementById("stat-gaps").textContent = String(withGaps);
+        document.getElementById("stat-cc").textContent = String(ccMissing);
+        document.getElementById("stat-followup").textContent = String(noFollowup);
+        document.getElementById("stat-appts").textContent = String(appts);
+
+        const mixBody = document.getElementById("gap-mix-body");
+        mixBody.innerHTML = FIELD_META.map(function (f) {
+          const count = gapCounts[f.key];
+          if (!count) return "";
+          return (
+            '<tr class="clickable-row"><td>' +
+            esc(f.label) +
+            "</td><td>" +
+            count +
+            "</td><td>" +
+            esc(f.systems) +
+            "</td><td>" +
+            esc(f.priority) +
+            "</td></tr>"
+          );
+        })
+          .filter(Boolean)
+          .join("");
+        if (!mixBody.innerHTML) {
+          mixBody.innerHTML =
+            '<tr><td colspan="4" class="muted">No demographic field gaps in this Appt Date window.</td></tr>';
+        }
+
+        document.getElementById("team-totals-list").innerHTML =
+          "<li>Follow-ups needed: <strong>" +
+          followupsNeeded +
+          "</strong></li>" +
+          "<li>Outstanding copays: <strong>" +
+          copayCount +
+          "</strong> ($" +
+          copaySum.toFixed(0) +
+          ")</li>" +
+          "<li>Upcoming appointment issues: <strong>" +
+          issues +
+          "</strong></li>" +
+          "<li>of which missing demographics: <strong>" +
+          withGaps +
+          "</strong></li>" +
+          "<li>Appointments in range: <strong>" +
+          appts +
+          "</strong></li>";
+
+        const totalPatients = data.providers.reduce(function (n, b) {
+          return n + b.patients.length;
+        }, 0);
+
         if (!from && !to) {
           status.textContent =
-            "No appointment date filter — showing all upcoming issues (" + total + ").";
+            "No Appt Date filter — rollup over all " + totalPatients + " ledger patients.";
         } else {
           status.textContent =
-            "Showing " +
-            visible +
+            "Ledger rollup: " +
+            appts +
             " of " +
-            total +
-            " upcoming appointment issues for " +
+            totalPatients +
+            " patients with Appt Date " +
             formatLabel(from || "…") +
             " – " +
             formatLabel(to || "…") +
