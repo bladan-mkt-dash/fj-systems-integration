@@ -566,9 +566,9 @@
           <tr>
             <td>Incoming referral submitted? (CRM)</td>
             <td>GoHighLevel</td>
-            <td class="mono">Incoming Referral Required → Submitted? (If Required)</td>
+            <td class="mono">Call Outcomes → Incoming Referral Required → Submitted? (If Required)</td>
             <td>Dropdown checkbox option</td>
-            <td><span class="chip oneway">Sink</span> one-way from Athena authorization present</td>
+            <td><span class="chip oneway">Sink</span> one-way from Athena · locked/hidden</td>
           </tr>
           <tr>
             <td>Admin Check List · HMO referral</td>
@@ -586,21 +586,20 @@
       Staff enter the incoming authorization manually in Athena under
       <em>Authorization → Add Incoming Authorizations</em>.
       When that authorization exists, set GHL
-      <em>Incoming Referral Required → Submitted? (If Required)</em> = checked.
+      <em>Call Outcomes → Incoming Referral Required → Submitted? (If Required)</em> = checked.
       If no authorization is on file, keep that GHL option unchecked/cleared.
     </p>
 
-    <p class="callout warn">
-      <strong>Confirm:</strong>
-      (1) Is <em>Incoming Referral Required</em> under the GHL Call Outcomes folder (like other flags)?
-      (2) Should this GHL option be hidden/unclickable after go-live (integration-owned), same as insurance/photo flags?
-      (3) Admin Check List already uses N/A when referral is not required — keep that semantics?
+    <p class="callout block">
+      <strong>Post-integration UX (GHL):</strong>
+      This option is <strong>hidden or unclickable</strong> (integration-owned), same standing rule
+      as every other one-way Athena → GHL sink. Staff must not toggle it.
     </p>
 
     <p class="callout block">
       <strong>Integration contract:</strong>
       Hub reads Athena incoming-authorization presence → writes/clears GHL
-      <code>Incoming Referral Required → Submitted? (If Required)</code>.
+      <code>Call Outcomes → Incoming Referral Required → Submitted? (If Required)</code>.
       No Zenoti write. Do not push authorization document payloads into GHL — presence only.
     </p>
   </div>
