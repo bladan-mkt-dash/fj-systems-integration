@@ -181,8 +181,8 @@
           <td><a href="field-mapping-hmo-referral.html">HMO referral</a></td>
           <td class="mono">Authorization → Add Incoming Authorizations</td>
           <td><span class="chip na">No sync</span></td>
-          <td class="mono">Incoming Referral Required → Submitted? (If Required)</td>
-          <td>Athena → GHL one-way presence</td>
+          <td class="mono">Call Outcomes → Incoming Referral Required → Submitted? (If Required)</td>
+          <td>Athena → GHL one-way · locked/hidden</td>
           <td><span class="chip done">Mapped</span></td>
         </tr>
         <tr>
@@ -205,8 +205,11 @@
     </table>
 
     <p class="note">
-      Credit Card and Photo ID detail pages include engineer rules, hub contracts, and
-      Admin Check List column keys. Continue with the next ledger field when ready.
+      <strong>Standing GHL rule:</strong> Every one-way Athena → GHL sink lives under
+      Call Outcomes and is <em>hidden or unclickable</em> after go-live (integration-owned)
+      so staff cannot create mismatches against Athena. Credit Card also includes a
+      Zenoti → GHL option under the same field, likewise system-driven.
+      Detail pages include engineer rules and hub contracts. Cleaner final version later.
     </p>
   </div>
 </body>
