@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Field Mapping — Credit Card (Athena · Zenoti · GHL)</title>
+  <title>Field Mapping â€” Credit Card (Athena Â· Zenoti Â· GHL)</title>
   <style>
     :root {
       --ink: #1a2e2a;
@@ -482,43 +482,44 @@
 </head>
 <body>
   <div class="page">
-    <a class="back" href="index.html">← Back to systems integration</a>
+    <a class="back" href="index.html">â† Back to systems integration</a>
 
     <nav class="nav-fields" aria-label="Field maps" style="display:flex;flex-wrap:wrap;gap:0.5rem;margin:0 0 1.25rem">
       <a href="field-mapping.html" style="background:#fff;border:1px solid #b8c9c3;border-radius:4px;color:#264540;font-size:0.75rem;font-weight:600;padding:0.35rem 0.55rem;text-decoration:none">All fields</a>
       <a href="field-mapping-credit-card.html" style="background:#264540;border:1px solid #264540;border-radius:4px;color:#fff;font-size:0.75rem;font-weight:600;padding:0.35rem 0.55rem;text-decoration:none">Credit Card</a>
       <a href="field-mapping-photo-id.html" style="background:#fff;border:1px solid #b8c9c3;border-radius:4px;color:#264540;font-size:0.75rem;font-weight:600;padding:0.35rem 0.55rem;text-decoration:none">Photo ID</a>
       <a href="field-mapping-insurance-card.html" style="background:#fff;border:1px solid #b8c9c3;border-radius:4px;color:#264540;font-size:0.75rem;font-weight:600;padding:0.35rem 0.55rem;text-decoration:none">Insurance Card</a>
+      <a href="field-mapping-insurance-eligibility.html" style="background:#fff;border:1px solid #b8c9c3;border-radius:4px;color:#264540;font-size:0.75rem;font-weight:600;padding:0.35rem 0.55rem;text-decoration:none">Eligibility</a>
     </nav>
 
     <header>
-      <p class="eyebrow">Integration product · field mapping · payment instrument</p>
-      <h1>Credit Card — Cross-System Field Map</h1>
+      <p class="eyebrow">Integration product Â· field mapping Â· payment instrument</p>
+      <h1>Credit Card â€” Cross-System Field Map</h1>
       <p class="subtitle">
         Same business concept in three systems: two isolated payment vaults (Athena / Zenoti)
         that never share card data, plus a GHL multi-select under
-        <strong>Call Outcomes → Credit Card</strong> with two system-driven options —
-        <em>Credit Card Athena</em> and <em>Credit Card Zenoti</em> — that mirror vault presence
+        <strong>Call Outcomes â†’ Credit Card</strong> with two system-driven options â€”
+        <em>Credit Card Athena</em> and <em>Credit Card Zenoti</em> â€” that mirror vault presence
         one-way and cannot be checked manually.
       </p>
     </header>
 
     <p class="callout block">
       <strong>Firewall (hard rule):</strong>
-      AthenaNet <em>Card On File</em> and Zenoti <em>Saved Card → Payments</em> are separate
+      AthenaNet <em>Card On File</em> and Zenoti <em>Saved Card â†’ Payments</em> are separate
       payment instruments. Having a card in one system does <strong>not</strong> grant permission
-      to charge, tokenize, or copy it into the other. Same plastic card may exist in both —
+      to charge, tokenize, or copy it into the other. Same plastic card may exist in both â€”
       but only via separate manual capture from the patient.
     </p>
 
     <p class="callout ok">
       <strong>GHL path (confirmed):</strong>
-      Folder/section <code>Call Outcomes</code> → field <code>Credit Card</code> → dropdown options
+      Folder/section <code>Call Outcomes</code> â†’ field <code>Credit Card</code> â†’ dropdown options
       <code>Credit Card Athena</code> and <code>Credit Card Zenoti</code>.
-      Compact notation: <code>Credit Card → Credit Card Athena</code> /
-      <code>Credit Card → Credit Card Zenoti</code>.
-      Both options are <strong>integration-owned</strong> — staff must not check them manually;
-      the hub sets/clears each option from the matching vault’s presence.
+      Compact notation: <code>Credit Card â†’ Credit Card Athena</code> /
+      <code>Credit Card â†’ Credit Card Zenoti</code>.
+      Both options are <strong>integration-owned</strong> â€” staff must not check them manually;
+      the hub sets/clears each option from the matching vaultâ€™s presence.
     </p>
 
     <div class="legend" aria-label="Flow legend">
@@ -543,47 +544,47 @@
               <li>Drives GHL option <em>Credit Card Athena</em></li>
               <li>Never receives Zenoti card tokens</li>
             </ul>
-            <span class="payload vault">Payment vault · tokenized card</span>
+            <span class="payload vault">Payment vault Â· tokenized card</span>
           </article>
 
           <article class="sys zenoti">
             <p class="label">Wellness / spa vault</p>
             <h3>Zenoti</h3>
-            <p class="field-path">Saved Card → Payments</p>
+            <p class="field-path">Saved Card â†’ Payments</p>
             <ul>
               <li>Stores a chargeable payment method for Zenoti POS / membership</li>
               <li>Drives GHL option <em>Credit Card Zenoti</em></li>
               <li>Never receives Athena card tokens</li>
             </ul>
-            <span class="payload vault">Payment vault · tokenized card</span>
+            <span class="payload vault">Payment vault Â· tokenized card</span>
           </article>
 
           <article class="sys ghl">
             <p class="label">CRM / call outcome multi-select</p>
             <h3>GoHighLevel</h3>
-            <p class="field-path">Call Outcomes → Credit Card → Credit Card Athena | Credit Card Zenoti</p>
+            <p class="field-path">Call Outcomes â†’ Credit Card â†’ Credit Card Athena | Credit Card Zenoti</p>
             <ul>
               <li>Field name: <strong>Credit Card</strong> (under Call Outcomes)</li>
               <li>Options: <strong>Credit Card Athena</strong>, <strong>Credit Card Zenoti</strong></li>
-              <li>No card entry — presence flags only; <strong>not manually checkable</strong></li>
+              <li>No card entry â€” presence flags only; <strong>not manually checkable</strong></li>
               <li>Each option blank or checked solely from its source vault</li>
             </ul>
-            <span class="payload flag">Two presence flags · no card data</span>
+            <span class="payload flag">Two presence flags Â· no card data</span>
           </article>
         </div>
 
         <div class="flows">
           <div class="flow-row blocked">
             <div class="flow-node">
-              <strong>AthenaNet · Card On File</strong>
+              <strong>AthenaNet Â· Card On File</strong>
               <span>Tokenized payment instrument</span>
             </div>
             <div class="flow-edge">
-              <div class="dir" aria-hidden="true">╳</div>
-              <div class="kind" style="color: var(--block)">Firewall · no payload</div>
+              <div class="dir" aria-hidden="true">â•³</div>
+              <div class="kind" style="color: var(--block)">Firewall Â· no payload</div>
             </div>
             <div class="flow-node">
-              <strong>Zenoti · Saved Card → Payments</strong>
+              <strong>Zenoti Â· Saved Card â†’ Payments</strong>
               <span>Separate tokenized payment instrument</span>
             </div>
           </div>
@@ -594,7 +595,7 @@
               <span>Front desk / clinical checkout</span>
             </div>
             <div class="flow-edge">
-              <div class="dir" aria-hidden="true">⇉</div>
+              <div class="dir" aria-hidden="true">â‡‰</div>
               <div class="kind" style="color: var(--warn)">Manual dual entry</div>
             </div>
             <div class="flow-node">
@@ -605,44 +606,44 @@
 
           <div class="flow-row sync">
             <div class="flow-node">
-              <strong>AthenaNet · Card On File present?</strong>
-              <span>true → check · false → clear</span>
+              <strong>AthenaNet Â· Card On File present?</strong>
+              <span>true â†’ check Â· false â†’ clear</span>
             </div>
             <div class="flow-edge">
-              <div class="dir" aria-hidden="true">→</div>
-              <div class="kind" style="color: var(--ok)">One-way · Athena</div>
+              <div class="dir" aria-hidden="true">â†’</div>
+              <div class="kind" style="color: var(--ok)">One-way Â· Athena</div>
             </div>
             <div class="flow-node">
-              <strong>GHL · Credit Card → Credit Card Athena</strong>
-              <span>System-driven option — never staff-toggled</span>
+              <strong>GHL Â· Credit Card â†’ Credit Card Athena</strong>
+              <span>System-driven option â€” never staff-toggled</span>
             </div>
           </div>
 
           <div class="flow-row sync">
             <div class="flow-node">
-              <strong>Zenoti · Saved Card present?</strong>
-              <span>true → check · false → clear</span>
+              <strong>Zenoti Â· Saved Card present?</strong>
+              <span>true â†’ check Â· false â†’ clear</span>
             </div>
             <div class="flow-edge">
-              <div class="dir" aria-hidden="true">→</div>
-              <div class="kind" style="color: var(--ok)">One-way · Zenoti</div>
+              <div class="dir" aria-hidden="true">â†’</div>
+              <div class="kind" style="color: var(--ok)">One-way Â· Zenoti</div>
             </div>
             <div class="flow-node">
-              <strong>GHL · Credit Card → Credit Card Zenoti</strong>
+              <strong>GHL Â· Credit Card â†’ Credit Card Zenoti</strong>
               <span>Independent of Athena option</span>
             </div>
           </div>
         </div>
 
         <div class="hub-band">
-          <p class="badge">GCP middleware hub · proposed contract</p>
+          <p class="badge">GCP middleware hub Â· proposed contract</p>
           <h3>Integration behavior for this field family</h3>
           <p>
             Derive <code>has_athena_card_on_file</code> and <code>has_zenoti_saved_card</code>.
             Mirror into GHL field <code>Credit Card</code> (Call Outcomes folder):
             set/clear option <code>Credit Card Athena</code> from Athena presence;
             set/clear option <code>Credit Card Zenoti</code> from Zenoti presence.
-            Options may be blank/checked independently. Lock or overwrite manual edits —
+            Options may be blank/checked independently. Lock or overwrite manual edits â€”
             these options are integration-owned. Never move PAN/token between vaults or into GHL.
           </p>
         </div>
@@ -668,38 +669,38 @@
             <td>AthenaNet</td>
             <td class="mono">Card On File</td>
             <td>Payment method / token</td>
-            <td><span class="chip oneway">Source</span> → GHL Credit Card Athena</td>
+            <td><span class="chip oneway">Source</span> â†’ GHL Credit Card Athena</td>
           </tr>
           <tr>
             <td>Credit card (wellness vault)</td>
             <td>Zenoti</td>
-            <td class="mono">Saved Card → Payments</td>
+            <td class="mono">Saved Card â†’ Payments</td>
             <td>Payment method / token</td>
-            <td><span class="chip oneway">Source</span> → GHL Credit Card Zenoti; vault isolated from Athena</td>
+            <td><span class="chip oneway">Source</span> â†’ GHL Credit Card Zenoti; vault isolated from Athena</td>
           </tr>
           <tr>
             <td>Credit card on file in Athena? (CRM)</td>
             <td>GoHighLevel</td>
-            <td class="mono">Call Outcomes → Credit Card → Credit Card Athena</td>
+            <td class="mono">Call Outcomes â†’ Credit Card â†’ Credit Card Athena</td>
             <td>Multi-select option (system-driven)</td>
             <td><span class="chip oneway">Sink</span> one-way from Athena; not manual</td>
           </tr>
           <tr>
             <td>Credit card on file in Zenoti? (CRM)</td>
             <td>GoHighLevel</td>
-            <td class="mono">Call Outcomes → Credit Card → Credit Card Zenoti</td>
+            <td class="mono">Call Outcomes â†’ Credit Card â†’ Credit Card Zenoti</td>
             <td>Multi-select option (system-driven)</td>
             <td><span class="chip oneway">Sink</span> one-way from Zenoti; not manual</td>
           </tr>
           <tr>
-            <td>Admin Check List · CC Athena</td>
+            <td>Admin Check List Â· CC Athena</td>
             <td>Reporting app</td>
             <td class="mono">cc_athena</td>
             <td>yes / no</td>
             <td>Read Athena presence only</td>
           </tr>
           <tr>
-            <td>Admin Check List · CC Zenoti</td>
+            <td>Admin Check List Â· CC Zenoti</td>
             <td>Reporting app</td>
             <td class="mono">cc_zenoti</td>
             <td>yes / no</td>
@@ -716,8 +717,8 @@
           <span class="tag" style="color: var(--block)">Do not</span>
           <h3>Copy or reuse card tokens</h3>
           <p>
-            No Athena → Zenoti or Zenoti → Athena payment-method write.
-            No “use Athena card to charge Zenoti” and no reverse. PCI / product
+            No Athena â†’ Zenoti or Zenoti â†’ Athena payment-method write.
+            No â€œuse Athena card to charge Zenotiâ€ and no reverse. PCI / product
             permission boundary, not just a data-quality preference.
           </p>
         </article>
@@ -725,8 +726,8 @@
           <span class="tag" style="color: var(--warn)">Do</span>
           <h3>Support dual manual capture</h3>
           <p>
-            Ops workflow assumes staff may collect the same card twice — once into
-            each vault — when the patient needs both Athena billing and Zenoti payment.
+            Ops workflow assumes staff may collect the same card twice â€” once into
+            each vault â€” when the patient needs both Athena billing and Zenoti payment.
             Integration must not invent a cross-vault shortcut.
           </p>
         </article>
@@ -734,8 +735,8 @@
           <span class="tag" style="color: var(--ok)">Do</span>
           <h3>Mirror each vault into its GHL option</h3>
           <p>
-            Athena present ⇔ select <em>Credit Card Athena</em>; Athena absent ⇔ clear it.
-            Zenoti present ⇔ select <em>Credit Card Zenoti</em>; Zenoti absent ⇔ clear it.
+            Athena present â‡” select <em>Credit Card Athena</em>; Athena absent â‡” clear it.
+            Zenoti present â‡” select <em>Credit Card Zenoti</em>; Zenoti absent â‡” clear it.
             Keep writes idempotent. Do not store last4 / brand / token in GHL.
           </p>
         </article>
@@ -752,8 +753,8 @@
           <h3>Keep Admin Check List dual columns</h3>
           <p>
             <code>cc_athena</code> and <code>cc_zenoti</code> stay independent.
-            Missing in one vault is still a gap even if the other vault — and its GHL
-            option — is complete.
+            Missing in one vault is still a gap even if the other vault â€” and its GHL
+            option â€” is complete.
           </p>
         </article>
         <article class="rule">
@@ -771,8 +772,9 @@
       <strong>Pattern to reuse:</strong>
       Isolated vaults + <em>per-source one-way presence mirrors</em> into a multi-select field
       (system-driven options, no manual override). Distinct from Photo ID, which has a single
-      Athena → GHL option and no Zenoti source.
+      Athena â†’ GHL option and no Zenoti source.
     </p>
   </div>
 </body>
 </html>
+

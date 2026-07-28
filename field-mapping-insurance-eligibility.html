@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Field Mapping — Insurance Card Pic (Athena · GHL)</title>
+  <title>Field Mapping — Insurance Eligibility (in progress)</title>
   <style>
     :root {
       --ink: #1a2e2a;
@@ -521,23 +521,23 @@
       <a href="field-mapping.html">All fields</a>
       <a href="field-mapping-credit-card.html">Credit Card</a>
       <a href="field-mapping-photo-id.html">Photo ID</a>
-      <a class="active" href="field-mapping-insurance-card.html">Insurance Card</a>
-      <a href="field-mapping-insurance-eligibility.html">Eligibility</a>
+      <a href="field-mapping-insurance-card.html">Insurance Card</a>
+      <a class="active" href="field-mapping-insurance-eligibility.html">Eligibility</a>
     </nav>
 
     <header>
-      <p class="eyebrow">Integration product · field mapping · insurance document</p>
-      <h1>Insurance Card Pic — Cross-System Field Map</h1>
+      <p class="eyebrow">Integration product · field mapping · insurance eligibility · draft</p>
+      <h1>Insurance Eligibility — Cross-System Field Map</h1>
       <p class="subtitle">
-        Nuanced ledger field: Athena stores <strong>front and back</strong> images under
-        Policy Information; Zenoti has no equivalent; GHL mirrors each side as a separate
-        Call Outcomes presence option.
+        Draft map: eligibility is only meaningful when an insurance card/policy is present in
+        Athena (not Self Pay). Confirmed Athena values so far: <strong>Eligible</strong> or
+        <strong>Unverified</strong>. GHL / Zenoti paths still needed.
       </p>
     </header>
 
     <section class="section" aria-labelledby="matrix">
       <h2 id="matrix">Field dictionary</h2>
-      <p class="lead">Working view for engineers — clean final version later.</p>
+      <p class="lead">Working view — cleaner final version later.</p>
       <table class="map">
         <thead>
           <tr>
@@ -550,215 +550,65 @@
         </thead>
         <tbody>
           <tr>
-            <td>Insurance policy status</td>
+            <td>Insurance policy / card gate</td>
             <td>AthenaNet</td>
-            <td class="mono">Policy Information → policy (default Self Pay when none on file)</td>
-            <td>Policy / Self Pay</td>
-            <td><span class="chip oneway">Gate</span> Self Pay ⇒ GHL Front/Back unchecked; Zenoti no-op</td>
+            <td class="mono">Policy Information (card/policy on file; else Self Pay)</td>
+            <td>Gate</td>
+            <td><span class="chip oneway">Prerequisite</span> Eligibility only when policy/card present</td>
           </tr>
           <tr>
-            <td>Insurance card front (document)</td>
+            <td>Insurance eligibility</td>
             <td>AthenaNet</td>
-            <td class="mono">Policy Information → Insurance card Front image</td>
-            <td>Image / document</td>
-            <td><span class="chip oneway">Source</span> for GHL Insurance ID Front</td>
+            <td class="mono">TBD — exact Athena UI label</td>
+            <td>Enum: Eligible | Unverified</td>
+            <td><span class="chip oneway">Source (golden)</span> only when card/policy present</td>
           </tr>
           <tr>
-            <td>Insurance card back (document)</td>
-            <td>AthenaNet</td>
-            <td class="mono">Policy Information → Insurance card Back image</td>
-            <td>Image / document</td>
-            <td><span class="chip oneway">Source</span> for GHL Insurance ID Back</td>
-          </tr>
-          <tr>
-            <td>Insurance card pic</td>
+            <td>Insurance eligibility</td>
             <td>Zenoti</td>
-            <td class="mono">—</td>
+            <td class="mono">TBD</td>
             <td>—</td>
-            <td><span class="chip block">Not present</span></td>
+            <td><span class="chip block">Open</span></td>
           </tr>
           <tr>
-            <td>Insurance card front collected? (CRM)</td>
+            <td>Insurance eligibility (CRM)</td>
             <td>GoHighLevel</td>
-            <td class="mono">Call Outcomes → Insurance Card Front → Insurance ID Front</td>
-            <td>Dropdown checkbox option</td>
-            <td><span class="chip oneway">Sink</span> one-way from Athena front · locked/hidden</td>
+            <td class="mono">TBD — Call Outcomes field/option?</td>
+            <td>—</td>
+            <td><span class="chip block">Open</span></td>
           </tr>
           <tr>
-            <td>Insurance card back collected? (CRM)</td>
-            <td>GoHighLevel</td>
-            <td class="mono">Call Outcomes → Insurance Card Back → Insurance ID Back</td>
-            <td>Dropdown checkbox option</td>
-            <td><span class="chip oneway">Sink</span> one-way from Athena back · locked/hidden</td>
-          </tr>
-          <tr>
-            <td>Admin Check List · Insurance card pic</td>
+            <td>Admin Check List · Insurance eligibility</td>
             <td>Reporting app</td>
-            <td class="mono">ins_card</td>
-            <td>yes / no</td>
-            <td>Read Athena only — complete when <strong>both</strong> front and back images exist (rollup)</td>
+            <td class="mono">eligibility</td>
+            <td>yes / no (rollup)</td>
+            <td>Likely yes when Athena = Eligible; Unverified = gap — confirm</td>
           </tr>
         </tbody>
       </table>
     </section>
 
     <p class="callout ok">
-      <strong>Pattern:</strong>
-      Dual Athena document images (front + back) + two independent one-way presence mirrors into GHL.
-      Zenoti N/A. No image bytes pushed to GHL.
-      <strong>Athena is golden record</strong> for these attributes — GHL options stay unchecked
-      (or are cleared) when Athena images are absent.
-    </p>
-
-    <p class="callout block">
-      <strong>Post-integration UX (GHL):</strong>
-      After go-live, <em>Insurance Card Front</em> / <em>Insurance Card Back</em> options must be
-      <strong>hidden or unclickable</strong> (integration-owned). Staff must not toggle them —
-      that would create mismatches against Athena. Only the hub sets/clears each option from
-      Athena Front/Back image presence.
-    </p>
-
-    <p class="callout ok">
       <strong>Confirmed rule:</strong>
       If the Insurance Card is present in Athena, Insurance Eligibility is either
-      <em>Eligible</em> or <em>Unverified</em>. See
-      <a href="field-mapping-insurance-eligibility.html">Insurance Eligibility map</a> (draft).
+      <em>Eligible</em> or <em>Unverified</em>.
     </p>
 
     <p class="callout warn">
-      <strong>Self Pay default (Athena Policy):</strong>
-      When there is <strong>no insurance policy on file</strong> in Athena, the policy field
-      defaults to <em>Self Pay</em>. For as long as that is true:
-      GHL <em>Insurance ID Front</em> and <em>Insurance ID Back</em> must stay
-      <strong>blank / unchecked</strong> (and be cleared if previously set), and there is
-      <strong>nothing to update in Zenoti</strong> for this attribute family.
+      <strong>Implied from Self Pay gate:</strong>
+      When Athena has no policy (Self Pay), eligibility is not applicable — do not treat as
+      Eligible, and any GHL eligibility mirror (once defined) should stay blank/unchecked.
+      Zenoti: no-op unless a Zenoti field is later identified.
     </p>
 
-    <section class="section" aria-labelledby="arch">
-      <h2 id="arch">Architecture at a glance</h2>
-      <p class="lead">Two image sides in Athena → two independent GHL options. Zenoti out of scope.</p>
-
-      <div class="arch" role="img" aria-label="Insurance card front and back mapping">
-        <div class="systems">
-          <article class="sys athena">
-            <p class="label">Clinical document vault</p>
-            <h3>AthenaNet</h3>
-            <p class="field-path">Policy Information → Front + Back images</p>
-            <ul>
-              <li>Front image of insurance card</li>
-              <li>Back image of insurance card</li>
-              <li>Each side is its own presence signal</li>
-            </ul>
-            <span class="payload vault">Document · two images</span>
-          </article>
-
-          <article class="sys absent">
-            <p class="label">Wellness / spa</p>
-            <h3>Zenoti</h3>
-            <p class="field-path">— not present —</p>
-            <ul>
-              <li>No insurance card image store</li>
-              <li>Do not invent a Zenoti mirror</li>
-            </ul>
-            <span class="payload absent">N/A · out of scope</span>
-          </article>
-
-          <article class="sys ghl">
-            <p class="label">CRM / call outcome flags</p>
-            <h3>GoHighLevel</h3>
-            <p class="field-path">Call Outcomes → Insurance Card Front / Back</p>
-            <ul>
-              <li>Field <strong>Insurance Card Front</strong> → option <strong>Insurance ID Front</strong></li>
-              <li>Field <strong>Insurance Card Back</strong> → option <strong>Insurance ID Back</strong></li>
-              <li>Presence only — no card image upload in GHL</li>
-              <li><strong>Hidden or unclickable</strong> after integration go-live</li>
-            </ul>
-            <span class="payload flag">Two presence flags · no images</span>
-          </article>
-        </div>
-
-        <div class="flows">
-          <div class="flow-row blocked">
-            <div class="flow-node">
-              <strong>Athena · no policy → Self Pay</strong>
-              <span>Default when insurance policy not on file</span>
-            </div>
-            <div class="flow-edge">
-              <div class="dir" aria-hidden="true">→</div>
-              <div class="kind" style="color: var(--block)">Gate · clear GHL</div>
-            </div>
-            <div class="flow-node">
-              <strong>GHL Front/Back unchecked · Zenoti no-op</strong>
-              <span>Do not set Insurance ID Front/Back while Self Pay</span>
-            </div>
-          </div>
-
-          <div class="flow-row blocked">
-            <div class="flow-node">
-              <strong>AthenaNet · Policy Information images</strong>
-              <span>Front + Back documents</span>
-            </div>
-            <div class="flow-edge">
-              <div class="dir" aria-hidden="true">╳</div>
-              <div class="kind" style="color: var(--block)">No Zenoti field</div>
-            </div>
-            <div class="flow-node">
-              <strong>Zenoti</strong>
-              <span>Attribute does not exist</span>
-            </div>
-          </div>
-
-          <div class="flow-row sync">
-            <div class="flow-node">
-              <strong>Athena · Front image present?</strong>
-              <span>true → check · false → clear</span>
-            </div>
-            <div class="flow-edge">
-              <div class="dir" aria-hidden="true">→</div>
-              <div class="kind" style="color: var(--ok)">One-way · Front</div>
-            </div>
-            <div class="flow-node">
-              <strong>GHL · Insurance Card Front → Insurance ID Front</strong>
-              <span>Independent of back</span>
-            </div>
-          </div>
-
-          <div class="flow-row sync">
-            <div class="flow-node">
-              <strong>Athena · Back image present?</strong>
-              <span>true → check · false → clear</span>
-            </div>
-            <div class="flow-edge">
-              <div class="dir" aria-hidden="true">→</div>
-              <div class="kind" style="color: var(--ok)">One-way · Back</div>
-            </div>
-            <div class="flow-node">
-              <strong>GHL · Insurance Card Back → Insurance ID Back</strong>
-              <span>Independent of front</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="hub-band">
-          <p class="badge">GCP middleware hub · proposed contract</p>
-          <h3>Integration behavior</h3>
-          <p>
-            Derive <code>has_athena_insurance_policy</code> (false when Athena defaults to
-            <strong>Self Pay</strong> / no policy on file), plus
-            <code>has_athena_insurance_card_front</code> and
-            <code>has_athena_insurance_card_back</code>.
-            If Self Pay / no policy: force-clear both GHL options and skip Zenoti (no-op).
-            If a policy exists: mirror Front/Back image presence into
-            <code>Insurance Card Front → Insurance ID Front</code> and
-            <code>Insurance Card Back → Insurance ID Back</code>
-            (set when present; <strong>clear when absent</strong>).
-            Configure GHL so these options are hidden or non-editable for staff.
-            Admin Check List <code>ins_card</code> = yes only when a policy exists <strong>and</strong>
-            both Athena images exist (until/unless the ledger splits). Never copy image bytes to GHL or Zenoti.
-          </p>
-        </div>
-      </div>
-    </section>
+    <p class="callout block">
+      <strong>Still needed to finish this map:</strong>
+      (1) Exact Athena field path/label for eligibility,
+      (2) whether Zenoti has this field or Not present,
+      (3) GHL Call Outcomes field name + options,
+      (4) whether GHL is a one-way locked mirror from Athena,
+      (5) Admin Check List: does <code>eligibility = yes</code> mean only Eligible (Unverified = gap)?
+    </p>
   </div>
 </body>
 </html>
