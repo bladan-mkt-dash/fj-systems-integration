@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Field Mapping — Credit Card (Athena · Zenoti · GHL)</title>
+  <style>
+    :root {
+      --ink: #1a2e2a;
+      --ink-muted: #3d524c;
+      --wire: #b8c9c3;
+      --wire-label: #6b7f78;
+      --white: #ffffff;
+      --surface: #fafbfb;
+      --hub: #264540;
+      --hub-bg: #edf6f2;
+      --athena: #2d5a7b;
+      --athena-bg: #eef4f8;
+      --zenoti: #4a6741;
+      --zenoti-bg: #eef4ef;
+      --ghl: #6b4c8a;
+      --ghl-bg: #f3eef8;
+      --block: #8a3b2b;
+      --block-bg: #f8ebe7;
+      --ok: #2f6b4f;
+      --ok-bg: #e7f3ec;
+      --warn: #8a5a2b;
+      --warn-bg: #f7f0e8;
+      --gcp: #1a3a52;
+      --gcp-bg: #f4f8fb;
+      --gcp-border: #2d5a7b;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--surface);
+      color: var(--ink);
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+      line-height: 1.45;
+      margin: 0;
+      min-height: 100vh;
+      padding: 2rem 1.25rem 3.5rem;
+    }
+
+    .page {
+      margin: 0 auto;
+      max-width: 1040px;
+    }
+
+    .back {
+      color: var(--hub);
+      display: inline-block;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+      text-decoration: none;
+    }
+
+    .back:hover {
+      text-decoration: underline;
+    }
+
+    header {
+      margin-bottom: 1.5rem;
+    }
+
+    header .eyebrow {
+      color: var(--wire-label);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      margin: 0 0 0.45rem;
+      text-transform: uppercase;
+    }
+
+    header h1 {
+      font-size: 1.45rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin: 0 0 0.4rem;
+    }
+
+    header .subtitle {
+      color: var(--ink-muted);
+      font-size: 0.875rem;
+      margin: 0;
+      max-width: 72ch;
+    }
+
+    .callout {
+      border-radius: 6px;
+      font-size: 0.8125rem;
+      margin: 0 0 1.25rem;
+      padding: 0.75rem 0.9rem;
+    }
+
+    .callout.warn {
+      background: var(--warn-bg);
+      border: 1px solid #e2d0b8;
+      color: var(--warn);
+    }
+
+    .callout.block {
+      background: var(--block-bg);
+      border: 1px solid #e0b8ae;
+      color: var(--block);
+    }
+
+    .callout.ok {
+      background: var(--ok-bg);
+      border: 1px solid #b8d4c4;
+      color: var(--ok);
+    }
+
+    .callout strong {
+      color: inherit;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.55rem 1.1rem;
+      margin: 0 0 1.5rem;
+    }
+
+    .legend span {
+      align-items: center;
+      color: var(--ink-muted);
+      display: inline-flex;
+      font-size: 0.75rem;
+      font-weight: 600;
+      gap: 0.4rem;
+    }
+
+    .chip {
+      border-radius: 3px;
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      padding: 0.18rem 0.45rem;
+      text-transform: uppercase;
+    }
+
+    .chip.block {
+      background: var(--block-bg);
+      border: 1px solid #d9a89c;
+      color: var(--block);
+    }
+
+    .chip.oneway {
+      background: var(--ok-bg);
+      border: 1px solid #a8c9b6;
+      color: var(--ok);
+    }
+
+    .chip.manual {
+      background: var(--warn-bg);
+      border: 1px solid #e0c8a8;
+      color: var(--warn);
+    }
+
+    .chip.status {
+      background: var(--ghl-bg);
+      border: 1px solid #c9b5db;
+      color: var(--ghl);
+    }
+
+    .section {
+      margin-bottom: 2rem;
+    }
+
+    .section > h2 {
+      border-bottom: 2px solid var(--hub);
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin: 0 0 0.85rem;
+      padding-bottom: 0.35rem;
+    }
+
+    .section > p.lead {
+      color: var(--ink-muted);
+      font-size: 0.8125rem;
+      margin: -0.35rem 0 1rem;
+    }
+
+    /* Architecture diagram */
+    .arch {
+      background: var(--white);
+      border: 1px solid var(--wire);
+      border-radius: 10px;
+      overflow: hidden;
+      padding: 1.15rem 1.1rem 1.25rem;
+    }
+
+    .systems {
+      display: grid;
+      gap: 0.85rem;
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .sys {
+      border: 1px solid var(--wire);
+      border-radius: 8px;
+      border-top-width: 4px;
+      padding: 0.85rem 0.9rem;
+    }
+
+    .sys.athena {
+      background: var(--athena-bg);
+      border-top-color: var(--athena);
+    }
+
+    .sys.zenoti {
+      background: var(--zenoti-bg);
+      border-top-color: var(--zenoti);
+    }
+
+    .sys.ghl {
+      background: var(--ghl-bg);
+      border-top-color: var(--ghl);
+    }
+
+    .sys .label {
+      color: var(--wire-label);
+      font-size: 0.625rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      margin: 0 0 0.25rem;
+      text-transform: uppercase;
+    }
+
+    .sys h3 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin: 0 0 0.55rem;
+    }
+
+    .sys.athena h3 { color: var(--athena); }
+    .sys.zenoti h3 { color: var(--zenoti); }
+    .sys.ghl h3 { color: var(--ghl); }
+
+    .field-path {
+      background: var(--white);
+      border: 1px dashed var(--wire);
+      border-radius: 5px;
+      font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 600;
+      margin: 0 0 0.55rem;
+      padding: 0.45rem 0.55rem;
+    }
+
+    .sys ul {
+      color: var(--ink-muted);
+      font-size: 0.75rem;
+      margin: 0;
+      padding-left: 1.05rem;
+    }
+
+    .sys li + li {
+      margin-top: 0.25rem;
+    }
+
+    .payload {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      margin-top: 0.65rem;
+      padding: 0.2rem 0.4rem;
+      border-radius: 3px;
+    }
+
+    .payload.vault {
+      background: #fff;
+      border: 1px solid #c5a8a0;
+      color: var(--block);
+    }
+
+    .payload.flag {
+      background: #fff;
+      border: 1px solid #c9b5db;
+      color: var(--ghl);
+    }
+
+    .flows {
+      display: grid;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    .flow-row {
+      align-items: stretch;
+      border-radius: 8px;
+      display: grid;
+      gap: 0.65rem;
+      grid-template-columns: 1.1fr auto 1.1fr;
+      padding: 0.75rem 0.85rem;
+    }
+
+    .flow-row.blocked {
+      background: var(--block-bg);
+      border: 1.5px solid #d9a89c;
+    }
+
+    .flow-row.manual {
+      background: var(--warn-bg);
+      border: 1.5px solid #e0c8a8;
+    }
+
+    .flow-row.sync {
+      background: var(--ok-bg);
+      border: 1.5px solid #a8c9b6;
+    }
+
+    .flow-node {
+      font-size: 0.78rem;
+    }
+
+    .flow-node strong {
+      display: block;
+      font-size: 0.8rem;
+      margin-bottom: 0.15rem;
+    }
+
+    .flow-node span {
+      color: var(--ink-muted);
+      display: block;
+      font-size: 0.72rem;
+    }
+
+    .flow-edge {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-width: 7.5rem;
+      text-align: center;
+    }
+
+    .flow-edge .dir {
+      font-size: 1.15rem;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 0.25rem;
+    }
+
+    .flow-edge .kind {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .hub-band {
+      background: var(--gcp-bg);
+      border: 2px solid var(--gcp-border);
+      border-radius: 10px;
+      margin-top: 1rem;
+      padding: 0.85rem 1rem;
+    }
+
+    .hub-band .badge {
+      color: var(--gcp);
+      font-size: 0.625rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      margin: 0 0 0.45rem;
+      text-transform: uppercase;
+    }
+
+    .hub-band h3 {
+      color: var(--hub);
+      font-size: 0.9rem;
+      margin: 0 0 0.45rem;
+    }
+
+    .hub-band p {
+      color: var(--ink-muted);
+      font-size: 0.78rem;
+      margin: 0;
+    }
+
+    .hub-band code {
+      background: var(--white);
+      border: 1px solid var(--wire);
+      border-radius: 3px;
+      font-size: 0.72rem;
+      padding: 0.05rem 0.3rem;
+    }
+
+    table.map {
+      background: var(--white);
+      border: 1px solid var(--wire);
+      border-collapse: collapse;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      overflow: hidden;
+      width: 100%;
+    }
+
+    table.map th,
+    table.map td {
+      border-bottom: 1px solid var(--wire);
+      padding: 0.55rem 0.65rem;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    table.map th {
+      background: #c5d9c8;
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    table.map tr:last-child td {
+      border-bottom: none;
+    }
+
+    table.map .mono {
+      font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+      font-size: 0.72rem;
+      font-weight: 600;
+    }
+
+    .rules {
+      display: grid;
+      gap: 0.75rem;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .rule {
+      background: var(--white);
+      border: 1px solid var(--wire);
+      border-radius: 8px;
+      padding: 0.85rem 0.95rem;
+    }
+
+    .rule h3 {
+      font-size: 0.85rem;
+      margin: 0 0 0.4rem;
+    }
+
+    .rule p {
+      color: var(--ink-muted);
+      font-size: 0.78rem;
+      margin: 0;
+    }
+
+    .rule .tag {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.4rem;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 800px) {
+      .systems,
+      .rules {
+        grid-template-columns: 1fr;
+      }
+
+      .flow-row {
+        grid-template-columns: 1fr;
+      }
+
+      .flow-edge {
+        flex-direction: row;
+        gap: 0.45rem;
+        justify-content: flex-start;
+        min-width: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <a class="back" href="index.html">← Back to systems integration</a>
+
+    <header>
+      <p class="eyebrow">Integration product · field mapping · payment instrument</p>
+      <h1>Credit Card — Cross-System Field Map</h1>
+      <p class="subtitle">
+        Canonical example for a data engineer: same business concept in three systems,
+        two payment vaults that must never share card data, and one presence flag that
+        should auto-update when Athena has a card on file.
+      </p>
+    </header>
+
+    <p class="callout block">
+      <strong>Firewall (hard rule):</strong>
+      AthenaNet <em>Card On File</em> and Zenoti <em>Saved Card → Payments</em> are separate
+      payment instruments. Having a card in one system does <strong>not</strong> grant permission
+      to charge, tokenize, or copy it into the other. Same plastic card may exist in both —
+      but only via separate manual capture from the patient.
+    </p>
+
+    <p class="callout warn">
+      <strong>Confirm auto-check target:</strong>
+      You described the checkbox in <strong>GoHighLevel → Call Outcomes</strong>, and named
+      “Zenoti” as the auto-check destination. This diagram treats the intended one-way sync as
+      <strong>Athena Card On File → GHL Call Outcomes checkbox</strong>. Say if Zenoti also needs
+      a separate presence signal (distinct from the Saved Card vault).
+    </p>
+
+    <div class="legend" aria-label="Flow legend">
+      <span><span class="chip block">No sync / firewall</span> Card payload never crosses systems</span>
+      <span><span class="chip manual">Manual dual entry</span> Staff enter card in each vault</span>
+      <span><span class="chip oneway">One-way</span> Presence / boolean only</span>
+      <span><span class="chip status">Status flag</span> No PAN / token / CVV</span>
+    </div>
+
+    <section class="section" aria-labelledby="arch">
+      <h2 id="arch">Architecture at a glance</h2>
+      <p class="lead">Three fields, two vaults, one boolean. Direction of arrows is the contract.</p>
+
+      <div class="arch" role="img" aria-label="Credit card field architecture across AthenaNet, Zenoti, and GoHighLevel">
+        <div class="systems">
+          <article class="sys athena">
+            <p class="label">Clinical / billing vault</p>
+            <h3>AthenaNet</h3>
+            <p class="field-path">Card On File</p>
+            <ul>
+              <li>Stores a chargeable payment method for Athena billing</li>
+              <li>Source of truth for “has clinical card?” presence</li>
+              <li>Never receives Zenoti card tokens</li>
+            </ul>
+            <span class="payload vault">Payment vault · tokenized card</span>
+          </article>
+
+          <article class="sys zenoti">
+            <p class="label">Wellness / spa vault</p>
+            <h3>Zenoti</h3>
+            <p class="field-path">Saved Card → Payments</p>
+            <ul>
+              <li>Stores a chargeable payment method for Zenoti POS / membership</li>
+              <li>Tracked separately on Admin Check List</li>
+              <li>Never receives Athena card tokens</li>
+            </ul>
+            <span class="payload vault">Payment vault · tokenized card</span>
+          </article>
+
+          <article class="sys ghl">
+            <p class="label">CRM / call outcome flag</p>
+            <h3>GoHighLevel</h3>
+            <p class="field-path">Call Outcomes → Credit Card (checkbox)</p>
+            <ul>
+              <li>Boolean only — no card entry UI</li>
+              <li>Today: checked manually by staff</li>
+              <li>Target: auto-checked when Athena has Card On File</li>
+            </ul>
+            <span class="payload flag">Presence flag · no card data</span>
+          </article>
+        </div>
+
+        <div class="flows">
+          <div class="flow-row blocked">
+            <div class="flow-node">
+              <strong>AthenaNet · Card On File</strong>
+              <span>Tokenized payment instrument</span>
+            </div>
+            <div class="flow-edge">
+              <div class="dir" aria-hidden="true">╳</div>
+              <div class="kind" style="color: var(--block)">Firewall · no payload</div>
+            </div>
+            <div class="flow-node">
+              <strong>Zenoti · Saved Card → Payments</strong>
+              <span>Separate tokenized payment instrument</span>
+            </div>
+          </div>
+
+          <div class="flow-row manual">
+            <div class="flow-node">
+              <strong>Patient presents card</strong>
+              <span>Front desk / clinical checkout</span>
+            </div>
+            <div class="flow-edge">
+              <div class="dir" aria-hidden="true">⇉</div>
+              <div class="kind" style="color: var(--warn)">Manual dual entry</div>
+            </div>
+            <div class="flow-node">
+              <strong>Enter in Athena <em>and</em> Zenoti</strong>
+              <span>Same card physically; two independent captures</span>
+            </div>
+          </div>
+
+          <div class="flow-row sync">
+            <div class="flow-node">
+              <strong>AthenaNet · Card On File = present</strong>
+              <span>Event / poll: card added or already on file</span>
+            </div>
+            <div class="flow-edge">
+              <div class="dir" aria-hidden="true">→</div>
+              <div class="kind" style="color: var(--ok)">One-way status</div>
+            </div>
+            <div class="flow-node">
+              <strong>GHL · Call Outcomes · Credit Card = checked</strong>
+              <span>Boolean only — never push PAN/token into GHL</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hub-band">
+          <p class="badge">GCP middleware hub · proposed contract</p>
+          <h3>Integration behavior for this field family</h3>
+          <p>
+            Emit / store a derived boolean <code>has_athena_card_on_file</code> (and separately
+            <code>has_zenoti_saved_card</code> for Admin Check List). On Athena card-present = true,
+            set GHL Call Outcomes Credit Card checkbox = true. Do <strong>not</strong> implement
+            fill-if-empty of payment tokens between Athena and Zenoti — this field is an
+            explicit exception to the general golden-record fill-empty rule.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="matrix">
+      <h2 id="matrix">Field dictionary</h2>
+      <p class="lead">Exact labels and what an engineer should treat as the API/business attribute.</p>
+      <table class="map">
+        <thead>
+          <tr>
+            <th>Business concept</th>
+            <th>System</th>
+            <th>UI path / field name</th>
+            <th>Data type</th>
+            <th>Sync role</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Credit card (clinical vault)</td>
+            <td>AthenaNet</td>
+            <td class="mono">Card On File</td>
+            <td>Payment method / token</td>
+            <td><span class="chip oneway">Source</span> for GHL presence; vault isolated</td>
+          </tr>
+          <tr>
+            <td>Credit card (wellness vault)</td>
+            <td>Zenoti</td>
+            <td class="mono">Saved Card → Payments</td>
+            <td>Payment method / token</td>
+            <td><span class="chip block">Isolated vault</span> no inbound/outbound card sync</td>
+          </tr>
+          <tr>
+            <td>Credit card collected? (CRM)</td>
+            <td>GoHighLevel</td>
+            <td class="mono">Call Outcomes → Credit Card</td>
+            <td>Checkbox boolean</td>
+            <td><span class="chip oneway">Sink</span> one-way from Athena presence</td>
+          </tr>
+          <tr>
+            <td>Admin Check List · CC Athena</td>
+            <td>Reporting app</td>
+            <td class="mono">cc_athena</td>
+            <td>yes / no</td>
+            <td>Read Athena presence only</td>
+          </tr>
+          <tr>
+            <td>Admin Check List · CC Zenoti</td>
+            <td>Reporting app</td>
+            <td class="mono">cc_zenoti</td>
+            <td>yes / no</td>
+            <td>Read Zenoti presence only (independent)</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section" aria-labelledby="rules">
+      <h2 id="rules">Engineer rules of the road</h2>
+      <div class="rules">
+        <article class="rule">
+          <span class="tag" style="color: var(--block)">Do not</span>
+          <h3>Copy or reuse card tokens</h3>
+          <p>
+            No Athena → Zenoti or Zenoti → Athena payment-method write.
+            No “use Athena card to charge Zenoti” and no reverse. PCI / product
+            permission boundary, not just a data-quality preference.
+          </p>
+        </article>
+        <article class="rule">
+          <span class="tag" style="color: var(--warn)">Do</span>
+          <h3>Support dual manual capture</h3>
+          <p>
+            Ops workflow assumes staff may collect the same card twice — once into
+            each vault — when the patient needs both Athena billing and Zenoti payment.
+            Integration must not invent a cross-vault shortcut.
+          </p>
+        </article>
+        <article class="rule">
+          <span class="tag" style="color: var(--ok)">Do</span>
+          <h3>Sync presence to GHL</h3>
+          <p>
+            When Athena Card On File becomes present, set GHL Call Outcomes Credit Card
+            checkbox = checked. Prefer idempotent upsert of the boolean; do not store
+            last4 / brand / token in GHL unless a future requirement says otherwise.
+          </p>
+        </article>
+        <article class="rule">
+          <span class="tag" style="color: var(--athena)">Report</span>
+          <h3>Keep Admin Check List dual columns</h3>
+          <p>
+            <code>cc_athena</code> and <code>cc_zenoti</code> stay independent.
+            Missing in one vault is still a gap even if the other vault is complete.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <p class="callout ok">
+      <strong>Pattern to reuse:</strong>
+      For the broader field map, classify every cross-system attribute as one of
+      <em>Isolated vault / no sync</em>, <em>Manual dual entry</em>,
+      <em>One-way presence/status</em>, <em>One-way fill-if-empty</em>, or
+      <em>Two-way</em>. Credit Card is the template for isolated vaults + one-way status.
+    </p>
+  </div>
+</body>
+</html>
