@@ -440,8 +440,9 @@
       <p class="eyebrow">Integration product · wireframe · ledger variant</p>
       <h1>Admin Check List — Record Ledger</h1>
       <p class="subtitle">
-        Provider-scoped completeness ledger: each patient appears once, with a collected vs
-        missing view of chart / payment / membership fields drawn from AthenaNet &amp; Zenoti.
+        Provider-scoped completeness ledger across the practice panel: each patient appears once
+        under a single provider, with collected vs missing chart / payment / membership fields
+        drawn from AthenaNet &amp; Zenoti — plus Follow-up Appt after each visit.
       </p>
       <p class="meta">
         Layout inspired by the Q3 admin workbook pattern · illustrative data only · fictitious names ·
@@ -501,7 +502,7 @@
       <div class="summary-grid">
         <div class="summary-card">
           <p class="label">Unique patients</p>
-          <p class="value" id="stat-patients">27</p>
+          <p class="value" id="stat-patients">105</p>
         </div>
         <div class="summary-card">
           <p class="label">Fully collected</p>
@@ -525,7 +526,7 @@
       <div class="provider-head">
         <h3>Dr. Wendie Trubow</h3>
         <span class="period">Q3 2026</span>
-        <span class="count" data-provider-count>15 unique patients · 9 with gaps</span>
+        <span class="count" data-provider-count>20 unique patients · 7 with gaps</span>
       </div>
       <div class="table-wrap">
         <table class="ledger">
@@ -546,11 +547,10 @@
             </tr>
           </thead>
           <tbody>
-
             <tr class="complete" data-appt="2026-06-03">
               <td class="patient-name">Riley Chen</td>
               <td class="appt">6/03/26</td>
-              <td class="appt">7/15/26</td>
+              <td class="appt">6/23/26</td>
               <td class="field"><span class="pill ok">Yes</span></td>
               <td class="field"><span class="pill ok">Yes</span></td>
               <td class="field"><span class="pill ok">Yes</span></td>
@@ -589,6 +589,20 @@
               <td class="gaps none">All collected</td>
               <td class="notes">—</td>
             </tr>
+            <tr class="complete" data-appt="2026-06-25">
+              <td class="patient-name">Brett Okonkwo</td>
+              <td class="appt">6/25/26</td>
+              <td class="appt">7/21/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">Return already on books</td>
+            </tr>
             <tr class="has-gaps" data-appt="2026-07-02">
               <td class="patient-name">Quinn Adler</td>
               <td class="appt">7/02/26</td>
@@ -617,10 +631,23 @@
               <td class="gaps none">All collected</td>
               <td class="notes">Left without scheduling return</td>
             </tr>
-
-            <tr class="has-gaps" data-appt="2026-07-15">
+            <tr class="complete" data-appt="2026-07-11">
+              <td class="patient-name">Yuna Park</td>
+              <td class="appt">7/11/26</td>
+              <td class="appt">8/10/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="has-gaps" data-appt="2026-07-13">
               <td class="patient-name">Amelia Hart</td>
-              <td class="appt">7/15/26</td>
+              <td class="appt">7/13/26</td>
               <td class="appt">8/20/26</td>
               <td class="field"><span class="pill miss">No</span></td>
               <td class="field"><span class="pill ok">Yes</span></td>
@@ -631,6 +658,34 @@
               <td class="field"><span class="pill ok">Yes</span></td>
               <td class="gaps">Photo ID</td>
               <td class="notes">Ask front desk for ID scan at check-in</td>
+            </tr>
+            <tr class="complete" data-appt="2026-07-13">
+              <td class="patient-name">Noah Ellery</td>
+              <td class="appt">7/13/26</td>
+              <td class="appt">8/24/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="complete" data-appt="2026-07-13">
+              <td class="patient-name">Serena Vogt</td>
+              <td class="appt">7/13/26</td>
+              <td class="followup"><span class="pill miss">None</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">Today visit — follow-up not booked at checkout</td>
             </tr>
             <tr class="complete" data-appt="2026-07-16">
               <td class="patient-name">Jordan Blake</td>
@@ -699,7 +754,7 @@
               <td class="field"><span class="pill miss">No</span></td>
               <td class="field"><span class="pill miss">No</span></td>
               <td class="field"><span class="pill ok">Yes</span></td>
-              <td class="gaps">Photo ID · Ins. card · CC Athena · CC Zenoti</td>
+              <td class="gaps">Photo ID · Insurance card pic · CC Athena · CC Zenoti</td>
               <td class="notes">New patient packet incomplete</td>
             </tr>
             <tr class="complete" data-appt="2026-07-27">
@@ -758,11 +813,25 @@
               <td class="gaps none">All collected</td>
               <td class="notes">—</td>
             </tr>
+            <tr class="complete" data-appt="2026-08-09">
+              <td class="patient-name">Clara Mendez</td>
+              <td class="appt">8/09/26</td>
+              <td class="appt">9/21/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
           </tbody>
         </table>
       </div>
       <p class="wire-label">
-        One row per patient — even if they have multiple visits in the quarter, the ledger does not repeat the name.
+        One patient ↔ one provider in this demo set. Filter by Appt Date; Follow-up Appt is informational.
       </p>
       </div>
 
@@ -770,7 +839,7 @@
       <div class="provider-head">
         <h3>Dr. Edward Levitan</h3>
         <span class="period">Q3 2026</span>
-        <span class="count" data-provider-count>12 unique patients · 8 with gaps</span>
+        <span class="count" data-provider-count>18 unique patients · 8 with gaps</span>
       </div>
       <div class="table-wrap">
         <table class="ledger">
@@ -791,7 +860,6 @@
             </tr>
           </thead>
           <tbody>
-
             <tr class="complete" data-appt="2026-06-05">
               <td class="patient-name">Harper Diaz</td>
               <td class="appt">6/05/26</td>
@@ -820,10 +888,38 @@
               <td class="gaps">Eligibility</td>
               <td class="notes">No return visit booked after June visit</td>
             </tr>
+            <tr class="complete" data-appt="2026-06-21">
+              <td class="patient-name">Sofia Almeida</td>
+              <td class="appt">6/21/26</td>
+              <td class="appt">7/12/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">Series completed last week</td>
+            </tr>
             <tr class="complete" data-appt="2026-06-26">
               <td class="patient-name">Taylor Kim</td>
               <td class="appt">6/26/26</td>
               <td class="appt">8/18/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="complete" data-appt="2026-07-01">
+              <td class="patient-name">Darius Bloom</td>
+              <td class="appt">7/01/26</td>
+              <td class="appt">7/15/26</td>
               <td class="field"><span class="pill ok">Yes</span></td>
               <td class="field"><span class="pill ok">Yes</span></td>
               <td class="field"><span class="pill ok">Yes</span></td>
@@ -848,10 +944,23 @@
               <td class="gaps">CC Athena</td>
               <td class="notes">Checkout ended without booking follow-up</td>
             </tr>
-
-            <tr class="has-gaps" data-appt="2026-07-14">
+            <tr class="has-gaps" data-appt="2026-07-13">
+              <td class="patient-name">Anika Shah</td>
+              <td class="appt">7/13/26</td>
+              <td class="followup"><span class="pill miss">None</span></td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps">Photo ID</td>
+              <td class="notes">Today new consult — schedule return before leaving</td>
+            </tr>
+            <tr class="has-gaps" data-appt="2026-07-13">
               <td class="patient-name">Camille Brooks</td>
-              <td class="appt">7/14/26</td>
+              <td class="appt">7/13/26</td>
               <td class="appt">8/12/26</td>
               <td class="field"><span class="pill ok">Yes</span></td>
               <td class="field"><span class="pill ok">Yes</span></td>
@@ -862,6 +971,34 @@
               <td class="field"><span class="pill ok">Yes</span></td>
               <td class="gaps">CC Athena</td>
               <td class="notes">Card declined in Athena — update needed</td>
+            </tr>
+            <tr class="complete" data-appt="2026-07-13">
+              <td class="patient-name">Felix Romero</td>
+              <td class="appt">7/13/26</td>
+              <td class="appt">8/17/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="complete" data-appt="2026-07-14">
+              <td class="patient-name">Elena Voss</td>
+              <td class="appt">7/14/26</td>
+              <td class="appt">8/22/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
             </tr>
             <tr class="complete" data-appt="2026-07-17">
               <td class="patient-name">Derek Fontaine</td>
@@ -902,7 +1039,7 @@
               <td class="field"><span class="pill ok">Yes</span></td>
               <td class="field"><span class="pill ok">Yes</span></td>
               <td class="field"><span class="pill ok">Yes</span></td>
-              <td class="gaps">Ins. card · Eligibility</td>
+              <td class="gaps">Insurance card pic · Eligibility</td>
               <td class="notes">Eligibility re-check before visit</td>
             </tr>
             <tr class="complete" data-appt="2026-07-29">
@@ -961,12 +1098,1095 @@
               <td class="gaps none">All collected</td>
               <td class="notes">—</td>
             </tr>
+            <tr class="complete" data-appt="2026-08-11">
+              <td class="patient-name">Micah Trent</td>
+              <td class="appt">8/11/26</td>
+              <td class="followup"><span class="pill miss">None</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">Long-interval follow-up not yet scheduled</td>
+            </tr>
           </tbody>
         </table>
       </div>
       <p class="wire-label">
-        Same field set as the admin workbook: Photo ID, Insurance Card Pic, Eligibility, HMO Referral,
-        Credit Card (Athena / Zenoti), Active Membership — plus a rolled-up “Still missing” column.
+        One patient ↔ one provider in this demo set. Filter by Appt Date; Follow-up Appt is informational.
+      </p>
+      </div>
+
+      <div class="provider-block" data-provider-block>
+      <div class="provider-head">
+        <h3>Dr. Bernice Wong</h3>
+        <span class="period">Q3 2026</span>
+        <span class="count" data-provider-count>16 unique patients · 6 with gaps</span>
+      </div>
+      <div class="table-wrap">
+        <table class="ledger">
+          <thead>
+            <tr>
+              <th>Patient</th>
+              <th>Appt Date</th>
+              <th>Follow-up Appt</th>
+              <th class="field">Photo ID<br />(on record)</th>
+              <th class="field">Insurance<br />Card Pic</th>
+              <th class="field">Insurance<br />(eligibility / active)</th>
+              <th class="field">Referral on File<br />(if HMO)</th>
+              <th class="field">Credit Card<br />Athena</th>
+              <th class="field">Credit Card<br />Zenoti</th>
+              <th class="field">Active<br />Membership</th>
+              <th>Still missing</th>
+              <th>Checkout notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="complete" data-appt="2026-05-29">
+              <td class="patient-name">Keira Lawson</td>
+              <td class="appt">5/29/26</td>
+              <td class="appt">6/28/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">Completed care cycle</td>
+            </tr>
+            <tr class="complete" data-appt="2026-06-15">
+              <td class="patient-name">Omar Haddadin</td>
+              <td class="appt">6/15/26</td>
+              <td class="followup"><span class="pill miss">None</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">No follow-up after June labs review</td>
+            </tr>
+            <tr class="complete" data-appt="2026-06-29">
+              <td class="patient-name">Bianca Rowe</td>
+              <td class="appt">6/29/26</td>
+              <td class="appt">7/19/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="complete" data-appt="2026-07-06">
+              <td class="patient-name">Tessa Byrne</td>
+              <td class="appt">7/06/26</td>
+              <td class="appt">7/27/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="complete" data-appt="2026-07-10">
+              <td class="patient-name">Priya Desai</td>
+              <td class="appt">7/10/26</td>
+              <td class="followup"><span class="pill miss">None</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">Missed checkout scheduling</td>
+            </tr>
+            <tr class="has-gaps" data-appt="2026-07-13">
+              <td class="patient-name">Cole Brennan</td>
+              <td class="appt">7/13/26</td>
+              <td class="followup"><span class="pill miss">None</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps">Insurance card pic</td>
+              <td class="notes">Today PE — still need insurance card image</td>
+            </tr>
+            <tr class="complete" data-appt="2026-07-13">
+              <td class="patient-name">Julian Vargas</td>
+              <td class="appt">7/13/26</td>
+              <td class="appt">8/13/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="complete" data-appt="2026-07-13">
+              <td class="patient-name">Mei Lin Zhou</td>
+              <td class="appt">7/13/26</td>
+              <td class="appt">8/11/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="complete" data-appt="2026-07-15">
+              <td class="patient-name">Aisha Rahman</td>
+              <td class="appt">7/15/26</td>
+              <td class="appt">8/26/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="complete" data-appt="2026-07-16">
+              <td class="patient-name">Andre Silva</td>
+              <td class="appt">7/16/26</td>
+              <td class="appt">8/30/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="has-gaps" data-appt="2026-07-19">
+              <td class="patient-name">Peter Lindholm</td>
+              <td class="appt">7/19/26</td>
+              <td class="followup"><span class="pill miss">None</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps">CC Zenoti</td>
+              <td class="notes">Zenoti card expired</td>
+            </tr>
+            <tr class="has-gaps" data-appt="2026-07-22">
+              <td class="patient-name">Gia Conti</td>
+              <td class="appt">7/22/26</td>
+              <td class="appt">9/06/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps">Eligibility</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="complete" data-appt="2026-07-25">
+              <td class="patient-name">Harvey Quinn</td>
+              <td class="appt">7/25/26</td>
+              <td class="appt">9/11/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="has-gaps" data-appt="2026-07-31">
+              <td class="patient-name">Nora Eisenberg</td>
+              <td class="appt">7/31/26</td>
+              <td class="followup"><span class="pill miss">None</span></td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps">Photo ID</td>
+              <td class="notes">Passport photo pending</td>
+            </tr>
+            <tr class="has-gaps" data-appt="2026-08-03">
+              <td class="patient-name">Luis Ortega</td>
+              <td class="appt">8/03/26</td>
+              <td class="appt">9/19/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="gaps">Membership</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="has-gaps" data-appt="2026-08-07">
+              <td class="patient-name">Willa Croft</td>
+              <td class="appt">8/07/26</td>
+              <td class="appt">10/01/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps">HMO referral</td>
+              <td class="notes">HMO paperwork in progress</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="wire-label">
+        One patient ↔ one provider in this demo set. Filter by Appt Date; Follow-up Appt is informational.
+      </p>
+      </div>
+
+      <div class="provider-block" data-provider-block>
+      <div class="provider-head">
+        <h3>Dr. Tamer Khafagy</h3>
+        <span class="period">Q3 2026</span>
+        <span class="count" data-provider-count>17 unique patients · 5 with gaps</span>
+      </div>
+      <div class="table-wrap">
+        <table class="ledger">
+          <thead>
+            <tr>
+              <th>Patient</th>
+              <th>Appt Date</th>
+              <th>Follow-up Appt</th>
+              <th class="field">Photo ID<br />(on record)</th>
+              <th class="field">Insurance<br />Card Pic</th>
+              <th class="field">Insurance<br />(eligibility / active)</th>
+              <th class="field">Referral on File<br />(if HMO)</th>
+              <th class="field">Credit Card<br />Athena</th>
+              <th class="field">Credit Card<br />Zenoti</th>
+              <th class="field">Active<br />Membership</th>
+              <th>Still missing</th>
+              <th>Checkout notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="complete" data-appt="2026-05-24">
+              <td class="patient-name">Ronan Pierce</td>
+              <td class="appt">5/24/26</td>
+              <td class="appt">6/23/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="complete" data-appt="2026-06-08">
+              <td class="patient-name">Leila Hassan</td>
+              <td class="appt">6/08/26</td>
+              <td class="followup"><span class="pill miss">None</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">Labs reviewed; no return booked</td>
+            </tr>
+            <tr class="complete" data-appt="2026-06-22">
+              <td class="patient-name">Curtis Boone</td>
+              <td class="appt">6/22/26</td>
+              <td class="appt">7/18/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="complete" data-appt="2026-07-04">
+              <td class="patient-name">Mateo Cruz</td>
+              <td class="appt">7/04/26</td>
+              <td class="appt">7/24/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="complete" data-appt="2026-07-12">
+              <td class="patient-name">Paula Rinaldi</td>
+              <td class="appt">7/12/26</td>
+              <td class="appt">8/09/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">Yesterday visit; follow-up booked</td>
+            </tr>
+            <tr class="complete" data-appt="2026-07-13">
+              <td class="patient-name">Diana Kowalski</td>
+              <td class="appt">7/13/26</td>
+              <td class="appt">8/16/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="has-gaps" data-appt="2026-07-13">
+              <td class="patient-name">Ethan Brooks</td>
+              <td class="appt">7/13/26</td>
+              <td class="followup"><span class="pill miss">None</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps">CC Athena · CC Zenoti</td>
+              <td class="notes">Today — capture card before discharge</td>
+            </tr>
+            <tr class="complete" data-appt="2026-07-13">
+              <td class="patient-name">Fatima Alvi</td>
+              <td class="appt">7/13/26</td>
+              <td class="appt">8/19/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="complete" data-appt="2026-07-15">
+              <td class="patient-name">Oscar Delgado</td>
+              <td class="appt">7/15/26</td>
+              <td class="appt">8/23/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="complete" data-appt="2026-07-17">
+              <td class="patient-name">Gabe Steiner</td>
+              <td class="appt">7/17/26</td>
+              <td class="appt">8/31/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="has-gaps" data-appt="2026-07-21">
+              <td class="patient-name">Hannah Okafor</td>
+              <td class="appt">7/21/26</td>
+              <td class="followup"><span class="pill miss">None</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps">Eligibility</td>
+              <td class="notes">Eligibility hold</td>
+            </tr>
+            <tr class="has-gaps" data-appt="2026-07-23">
+              <td class="patient-name">Quentin Marsh</td>
+              <td class="appt">7/23/26</td>
+              <td class="appt">9/07/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps">HMO referral</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="complete" data-appt="2026-07-26">
+              <td class="patient-name">Ivan Petrovic</td>
+              <td class="appt">7/26/26</td>
+              <td class="appt">9/09/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="has-gaps" data-appt="2026-07-28">
+              <td class="patient-name">Jade Nguyen</td>
+              <td class="appt">7/28/26</td>
+              <td class="appt">9/13/26</td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps">Photo ID</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="complete" data-appt="2026-08-02">
+              <td class="patient-name">Kyle Morrison</td>
+              <td class="appt">8/02/26</td>
+              <td class="followup"><span class="pill miss">None</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">Patient asked to call back to schedule</td>
+            </tr>
+            <tr class="complete" data-appt="2026-08-06">
+              <td class="patient-name">Lana Esposito</td>
+              <td class="appt">8/06/26</td>
+              <td class="appt">9/26/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="has-gaps" data-appt="2026-08-10">
+              <td class="patient-name">Nina Volkov</td>
+              <td class="appt">8/10/26</td>
+              <td class="appt">10/03/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps">Insurance card pic</td>
+              <td class="notes">—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="wire-label">
+        One patient ↔ one provider in this demo set. Filter by Appt Date; Follow-up Appt is informational.
+      </p>
+      </div>
+
+      <div class="provider-block" data-provider-block>
+      <div class="provider-head">
+        <h3>Erin Jankauskas, PA</h3>
+        <span class="period">Q3 2026</span>
+        <span class="count" data-provider-count>16 unique patients · 4 with gaps</span>
+      </div>
+      <div class="table-wrap">
+        <table class="ledger">
+          <thead>
+            <tr>
+              <th>Patient</th>
+              <th>Appt Date</th>
+              <th>Follow-up Appt</th>
+              <th class="field">Photo ID<br />(on record)</th>
+              <th class="field">Insurance<br />Card Pic</th>
+              <th class="field">Insurance<br />(eligibility / active)</th>
+              <th class="field">Referral on File<br />(if HMO)</th>
+              <th class="field">Credit Card<br />Athena</th>
+              <th class="field">Credit Card<br />Zenoti</th>
+              <th class="field">Active<br />Membership</th>
+              <th>Still missing</th>
+              <th>Checkout notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="complete" data-appt="2026-06-01">
+              <td class="patient-name">Ruth Abernathy</td>
+              <td class="appt">6/01/26</td>
+              <td class="appt">7/01/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="complete" data-appt="2026-06-13">
+              <td class="patient-name">Simone Patel</td>
+              <td class="appt">6/13/26</td>
+              <td class="followup"><span class="pill miss">None</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">PA visit without return plan</td>
+            </tr>
+            <tr class="complete" data-appt="2026-06-27">
+              <td class="patient-name">Troy Nakamura</td>
+              <td class="appt">6/27/26</td>
+              <td class="appt">7/22/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="complete" data-appt="2026-07-05">
+              <td class="patient-name">Gina Russo</td>
+              <td class="appt">7/05/26</td>
+              <td class="followup"><span class="pill miss">None</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">No show follow-up never rebooked</td>
+            </tr>
+            <tr class="complete" data-appt="2026-07-09">
+              <td class="patient-name">Eva Lindstrom</td>
+              <td class="appt">7/09/26</td>
+              <td class="appt">7/29/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="complete" data-appt="2026-07-13">
+              <td class="patient-name">Uma Sundaram</td>
+              <td class="appt">7/13/26</td>
+              <td class="appt">8/14/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="has-gaps" data-appt="2026-07-13">
+              <td class="patient-name">Victor Hale</td>
+              <td class="appt">7/13/26</td>
+              <td class="appt">8/15/26</td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps">Photo ID</td>
+              <td class="notes">Today PA follow-through — need Photo ID</td>
+            </tr>
+            <tr class="complete" data-appt="2026-07-13">
+              <td class="patient-name">Wendy Cho</td>
+              <td class="appt">7/13/26</td>
+              <td class="followup"><span class="pill miss">None</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">Today acute visit — book chronic follow-up</td>
+            </tr>
+            <tr class="complete" data-appt="2026-07-13">
+              <td class="patient-name">Xavier Boyle</td>
+              <td class="appt">7/13/26</td>
+              <td class="appt">8/18/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="has-gaps" data-appt="2026-07-16">
+              <td class="patient-name">Yasmine Farouk</td>
+              <td class="appt">7/16/26</td>
+              <td class="appt">8/29/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="gaps">Membership</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="complete" data-appt="2026-07-18">
+              <td class="patient-name">Frank Osei</td>
+              <td class="appt">7/18/26</td>
+              <td class="appt">9/03/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="has-gaps" data-appt="2026-07-20">
+              <td class="patient-name">Zane Cooper</td>
+              <td class="appt">7/20/26</td>
+              <td class="followup"><span class="pill miss">None</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps">CC Athena</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="complete" data-appt="2026-07-24">
+              <td class="patient-name">Alice Moreau</td>
+              <td class="appt">7/24/26</td>
+              <td class="appt">9/08/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="complete" data-appt="2026-07-27">
+              <td class="patient-name">Benjamin Moss</td>
+              <td class="appt">7/27/26</td>
+              <td class="appt">9/14/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="has-gaps" data-appt="2026-08-01">
+              <td class="patient-name">Cora Jennings</td>
+              <td class="appt">8/01/26</td>
+              <td class="followup"><span class="pill miss">None</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps">Insurance card pic · Eligibility</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="complete" data-appt="2026-08-08">
+              <td class="patient-name">Dev Kapoor</td>
+              <td class="appt">8/08/26</td>
+              <td class="appt">9/29/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="wire-label">
+        One patient ↔ one provider in this demo set. Filter by Appt Date; Follow-up Appt is informational.
+      </p>
+      </div>
+
+      <div class="provider-block" data-provider-block>
+      <div class="provider-head">
+        <h3>Ashley Gerlach, NP</h3>
+        <span class="period">Q3 2026</span>
+        <span class="count" data-provider-count>18 unique patients · 6 with gaps</span>
+      </div>
+      <div class="table-wrap">
+        <table class="ledger">
+          <thead>
+            <tr>
+              <th>Patient</th>
+              <th>Appt Date</th>
+              <th>Follow-up Appt</th>
+              <th class="field">Photo ID<br />(on record)</th>
+              <th class="field">Insurance<br />Card Pic</th>
+              <th class="field">Insurance<br />(eligibility / active)</th>
+              <th class="field">Referral on File<br />(if HMO)</th>
+              <th class="field">Credit Card<br />Athena</th>
+              <th class="field">Credit Card<br />Zenoti</th>
+              <th class="field">Active<br />Membership</th>
+              <th>Still missing</th>
+              <th>Checkout notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="complete" data-appt="2026-05-30">
+              <td class="patient-name">Hector Morales</td>
+              <td class="appt">5/30/26</td>
+              <td class="appt">6/25/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="complete" data-appt="2026-06-16">
+              <td class="patient-name">Ivy Chandler</td>
+              <td class="appt">6/16/26</td>
+              <td class="followup"><span class="pill miss">None</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">NP consult — no return scheduled</td>
+            </tr>
+            <tr class="complete" data-appt="2026-06-30">
+              <td class="patient-name">Jonas Weber</td>
+              <td class="appt">6/30/26</td>
+              <td class="appt">7/20/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="complete" data-appt="2026-07-07">
+              <td class="patient-name">Vera Santos</td>
+              <td class="appt">7/07/26</td>
+              <td class="appt">7/28/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="complete" data-appt="2026-07-11">
+              <td class="patient-name">Yuri Antonov</td>
+              <td class="appt">7/11/26</td>
+              <td class="followup"><span class="pill miss">None</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">Urgent visit; follow-up owed</td>
+            </tr>
+            <tr class="complete" data-appt="2026-07-13">
+              <td class="patient-name">Kara Bingham</td>
+              <td class="appt">7/13/26</td>
+              <td class="appt">8/13/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="has-gaps" data-appt="2026-07-13">
+              <td class="patient-name">Leo Ashford</td>
+              <td class="appt">7/13/26</td>
+              <td class="followup"><span class="pill miss">None</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="gaps">Membership</td>
+              <td class="notes">Today NP visit — membership discussion open</td>
+            </tr>
+            <tr class="complete" data-appt="2026-07-13">
+              <td class="patient-name">Mira Solano</td>
+              <td class="appt">7/13/26</td>
+              <td class="appt">8/17/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="complete" data-appt="2026-07-14">
+              <td class="patient-name">Wade Kline</td>
+              <td class="appt">7/14/26</td>
+              <td class="appt">8/21/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="complete" data-appt="2026-07-15">
+              <td class="patient-name">Nate Feldman</td>
+              <td class="appt">7/15/26</td>
+              <td class="appt">8/25/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="has-gaps" data-appt="2026-07-19">
+              <td class="patient-name">Olive Parkes</td>
+              <td class="appt">7/19/26</td>
+              <td class="followup"><span class="pill miss">None</span></td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps">Photo ID · Insurance card pic</td>
+              <td class="notes">Intake incomplete</td>
+            </tr>
+            <tr class="has-gaps" data-appt="2026-07-21">
+              <td class="patient-name">Zelda Marks</td>
+              <td class="appt">7/21/26</td>
+              <td class="appt">9/04/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps">CC Athena</td>
+              <td class="notes">Update Athena card on file</td>
+            </tr>
+            <tr class="has-gaps" data-appt="2026-07-22">
+              <td class="patient-name">Paige Whitaker</td>
+              <td class="appt">7/22/26</td>
+              <td class="appt">9/05/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps">CC Zenoti</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="complete" data-appt="2026-07-25">
+              <td class="patient-name">Ronin Steele</td>
+              <td class="appt">7/25/26</td>
+              <td class="appt">9/12/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="has-gaps" data-appt="2026-07-30">
+              <td class="patient-name">Sable Quinn</td>
+              <td class="appt">7/30/26</td>
+              <td class="followup"><span class="pill miss">None</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps">Eligibility</td>
+              <td class="notes">Waiting on insurance response</td>
+            </tr>
+            <tr class="has-gaps" data-appt="2026-08-03">
+              <td class="patient-name">Trent Oswald</td>
+              <td class="appt">8/03/26</td>
+              <td class="appt">9/20/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill miss">No</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps">HMO referral</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="complete" data-appt="2026-08-06">
+              <td class="patient-name">Una Bergstrom</td>
+              <td class="appt">8/06/26</td>
+              <td class="appt">9/24/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+            <tr class="complete" data-appt="2026-08-11">
+              <td class="patient-name">Ximena Rojas</td>
+              <td class="appt">8/11/26</td>
+              <td class="appt">10/06/26</td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill na">N/A</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="field"><span class="pill ok">Yes</span></td>
+              <td class="gaps none">All collected</td>
+              <td class="notes">—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="wire-label">
+        One patient ↔ one provider in this demo set. Filter by Appt Date; Follow-up Appt is informational.
       </p>
       </div>
     </section>
