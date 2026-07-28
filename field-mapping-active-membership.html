@@ -570,7 +570,7 @@
             <td>Zenoti</td>
             <td class="mono">Memberships → Inactive → Suspended | Cancelled</td>
             <td>Inactive reason label</td>
-            <td>On cancel, Active loses 1; membership appears under Suspended or Cancelled</td>
+            <td>On cancel, Active loses 1; membership appears under Inactive → <strong>Cancelled</strong> (hub never writes Suspended)</td>
           </tr>
           <tr>
             <td>Membership cancelled?</td>
@@ -650,10 +650,10 @@
       Do not create an endless loop — hub should stamp cancel source and skip echo writes.
     </p>
 
-    <p class="callout block">
-      <strong>Open assumption (Zenoti Inactive reason):</strong>
-      Phone/form cancel maps Zenoti Inactive label to <em>Cancelled</em> by default
-      (not Suspended), unless ops specifies otherwise. Confirm before build.
+    <p class="callout ok">
+      <strong>Zenoti Inactive reason (confirmed):</strong>
+      Automated cancels map to <em>Cancelled</em> only.
+      <em>Suspended</em> is manual-only in Zenoti — the hub must never write Suspended.
     </p>
 
     <p class="callout block">
@@ -668,9 +668,10 @@
       Derive <code>membership_active_athena</code>, <code>membership_active_zenoti</code>,
       <code>ghl_membership_cancelled</code>, <code>ghl_membership_cancellation_date</code>.
       On Path A (GHL cancel True): set Athena Membership Status out of Active; move Zenoti
-      membership Active→Inactive/Cancelled; preserve admin email as backup notification.
-      On Path B (Athena leaves Active): set Zenoti Inactive/Cancelled; set GHL
+      membership Active→Inactive/<strong>Cancelled</strong>; preserve admin email as backup notification.
+      On Path B (Athena leaves Active): set Zenoti Inactive/<strong>Cancelled</strong>; set GHL
       Membership Cancelled=True and copy cancellation date from Athena.
+      Never auto-write Zenoti <em>Suspended</em> — suspensions are manual only.
       Admin Check List <code>membership</code> = yes only when Athena shows Active and Zenoti
       Active count includes the membership (surface Conflict if they disagree).
     </p>
