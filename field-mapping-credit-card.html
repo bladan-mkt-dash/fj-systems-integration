@@ -461,6 +461,28 @@
       text-transform: uppercase;
     }
 
+    .nav-fields {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 0 0 1.25rem;
+    }
+    .nav-fields a {
+      background: var(--white);
+      border: 1px solid var(--wire);
+      border-radius: 4px;
+      color: var(--hub);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.35rem 0.55rem;
+      text-decoration: none;
+    }
+    .nav-fields a.active {
+      background: var(--hub);
+      border-color: var(--hub);
+      color: var(--white);
+    }
+
     @media (max-width: 800px) {
       .systems,
       .rules {
@@ -484,15 +506,15 @@
   <div class="page">
     <a class="back" href="index.html">← Back to systems integration</a>
 
-    <nav class="nav-fields" aria-label="Field maps" style="display:flex;flex-wrap:wrap;gap:0.5rem;margin:0 0 1.25rem">
-      <a href="field-mapping.html" style="background:#fff;border:1px solid #b8c9c3;border-radius:4px;color:#264540;font-size:0.75rem;font-weight:600;padding:0.35rem 0.55rem;text-decoration:none">All fields</a>
-      <a href="field-mapping-credit-card.html" style="background:#264540;border:1px solid #264540;border-radius:4px;color:#fff;font-size:0.75rem;font-weight:600;padding:0.35rem 0.55rem;text-decoration:none">Credit Card</a>
-      <a href="field-mapping-photo-id.html" style="background:#fff;border:1px solid #b8c9c3;border-radius:4px;color:#264540;font-size:0.75rem;font-weight:600;padding:0.35rem 0.55rem;text-decoration:none">Photo ID</a>
-      <a href="field-mapping-insurance-card.html" style="background:#fff;border:1px solid #b8c9c3;border-radius:4px;color:#264540;font-size:0.75rem;font-weight:600;padding:0.35rem 0.55rem;text-decoration:none">Insurance Card</a>
-      <a href="field-mapping-insurance-eligibility.html" style="background:#fff;border:1px solid #b8c9c3;border-radius:4px;color:#264540;font-size:0.75rem;font-weight:600;padding:0.35rem 0.55rem;text-decoration:none">Eligibility</a>
-      <a href="field-mapping-hmo-referral.html" style="background:#fff;border:1px solid #b8c9c3;border-radius:4px;color:#264540;font-size:0.75rem;font-weight:600;padding:0.35rem 0.55rem;text-decoration:none">HMO Referral</a>
-      <a href="field-mapping-active-membership.html" style="background:#fff;border:1px solid #b8c9c3;border-radius:4px;color:#264540;font-size:0.75rem;font-weight:600;padding:0.35rem 0.55rem;text-decoration:none">Active Membership</a>
-      <a href="field-mapping-follow-up-appt.html" style="background:#fff;border:1px solid #b8c9c3;border-radius:4px;color:#264540;font-size:0.75rem;font-weight:600;padding:0.35rem 0.55rem;text-decoration:none">Follow-up Appt</a>
+    <nav class="nav-fields" aria-label="Field maps">
+      <a href="field-mapping.html">All fields</a>
+      <a class="active" href="field-mapping-credit-card.html">Credit Card</a>
+      <a href="field-mapping-photo-id.html">Photo ID</a>
+      <a href="field-mapping-insurance-card.html">Insurance Card</a>
+      <a href="field-mapping-insurance-eligibility.html">Eligibility</a>
+      <a href="field-mapping-hmo-referral.html">HMO Referral</a>
+      <a href="field-mapping-active-membership.html">Active Membership</a>
+      <a href="field-mapping-follow-up-appt.html">Follow-up Appt</a>
     </nav>
 
     <header>
