@@ -117,14 +117,9 @@
       <ul>
         <li>
           <strong>Goal 2a — Zenoti membership-renewal declines (Path D).</strong>
-          Zenoti already Suspends the membership on renewal-day card miss / decline.
-          Hub does <em>not</em> write Zenoti — it immediately reflects that state in BigQuery
-          (Ledger + Missing Demographics Executive Roll Up) and GHL
-          (Membership Suspended + Credit Card Zenoti = No). Real-time / on refresh.
-          Athena stays unchanged by the hub (manual ops follow-up — no auto-timer).
-          v1 Ledger: <strong>CC Zenoti</strong>, <strong>Membership Zenoti</strong> (Yes/Cancelled/Suspended),
-          <strong>Active Athena</strong> (Yes/No). Path D window: Suspended + Active Athena Yes + CC Zenoti No.
-          Future: auto Athena inactive 7 business days after Zenoti Suspend — not v1.
+          On renewal-day card miss/decline, Zenoti Suspends the membership.
+          The hub does not write Zenoti; it immediately mirrors Suspended + Credit Card Zenoti = No
+          into BigQuery (Ledger + Roll Up) and GHL. Athena stays unchanged by the hub.
           Detail:
           <a href="field-mapping-active-membership.html">Active Membership Path D</a>
           ·
