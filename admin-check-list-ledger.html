@@ -45,7 +45,7 @@
 
     .page {
       margin: 0 auto;
-      max-width: 1180px;
+      max-width: 1520px;
     }
 
     .back {
@@ -441,7 +441,10 @@
       <h1>Admin Check List — Record Ledger</h1>
       <p class="subtitle">
         Provider-scoped completeness ledger across the practice panel: each patient appears once
-        under a single provider, with collected vs missing chart / payment / membership fields. Credit Card Zenoti is <em>operable</em> presence — a Zenoti membership-renewal decline (Goal 2a) must show CC Zenoti as No and membership not Active (Suspended)
+        under a single provider, with collected vs missing chart / payment / membership fields.
+        <strong>CC Zenoti</strong> = Zenoti operable card. <strong>Membership Zenoti</strong> = Yes / Cancelled / Suspended (Zenoti status).
+        <strong>Active Athena</strong> = Yes / No (Athena Membership Status). Goal 2a Path D window often shows
+        CC Zenoti No + Membership Zenoti Suspended + Active Athena Yes during the 7-day card-collect period.
         drawn from AthenaNet &amp; Zenoti — plus Follow-up Appt after each visit.
       </p>
       <p class="meta">
@@ -493,9 +496,11 @@
     </form>
 
     <div class="legend" aria-label="Status legend">
-      <span><span class="pill ok">Yes</span> Collected</span>
-      <span><span class="pill miss">No</span> Missing</span>
+      <span><span class="pill ok">Yes</span> Collected / Active</span>
+      <span><span class="pill miss">No</span> Missing / Inactive</span>
       <span><span class="pill na">N/A</span> Not applicable</span>
+      <span><span class="pill" style="background:#f7f0e8;color:#8a5a2b">Suspended</span> Membership Zenoti (Path D)</span>
+      <span><span class="pill miss">Cancelled</span> Membership Zenoti</span>
       <span><span class="pill miss">None</span> No follow-up booked</span>
       <span><span class="pill" style="background:#f7f0e8;color:#8a5a2b">Expiring Soon</span> CC Agreement</span>
       <span><span class="pill miss">Expired</span> CC Agreement</span>
@@ -556,7 +561,8 @@
         { key: "cc_athena", short: "CC Athena" },
         { key: "cc_agreement", short: "CC Agreement", kind: "agreement" },
         { key: "cc_zenoti", short: "CC Zenoti" },
-        { key: "membership", short: "Membership" },
+        { key: "membership_zenoti", short: "Membership Zenoti", kind: "membership_zenoti" },
+        { key: "membership_athena", short: "Active Athena", kind: "membership_athena" },
       ];
 
       function esc(s) {
@@ -611,6 +617,10 @@
         const v = String(val || "").toLowerCase();
         if (v === "yes") return '<span class="pill ok">Yes</span>';
         if (v === "no") return '<span class="pill miss">No</span>';
+        if (v === "suspended")
+          return '<span class="pill" style="background:#f7f0e8;color:#8a5a2b">Suspended</span>';
+        if (v === "cancelled")
+          return '<span class="pill miss">Cancelled</span>';
         return '<span class="pill na">N/A</span>';
       }
 
@@ -630,6 +640,15 @@
             const v = String(p[f.key] || "").toLowerCase();
             if (v === "expired") gaps.push("CC Agreement Expired");
             else if (v === "expiring_soon") gaps.push("CC Agreement Expiring Soon");
+            return;
+          }
+          if (f.kind === "membership_zenoti") {
+            const v = String(p[f.key] || "").toLowerCase();
+            if (v === "suspended") gaps.push("Membership Zenoti Suspended");
+            return;
+          }
+          if (f.kind === "membership_athena") {
+            // Active Athena No is status (e.g. after cancel / post-window), not a missing-doc gap
             return;
           }
           if (String(p[f.key]).toLowerCase() === "no") gaps.push(f.short);
@@ -698,11 +717,12 @@
             '<th class="field">Insurance<br />Card Pic</th>' +
             '<th class="field">Insurance<br />(eligibility / active)</th>' +
             '<th class="field">Referral on File<br />(if HMO)</th>' +
-            '<th class="field">Credit Card<br />Athena</th>' +
+            '<th class="field">CC Athena</th>' +
             '<th class="field">CC Agreement<br />(Athena)</th>' +
-            '<th class="field">Credit Card<br />Zenoti</th>' +
-            '<th class="field">Active<br />Membership</th>' +
-            "<th>Still missing</th>" +
+            '<th class="field">CC Zenoti</th>' +
+            '<th class="field">Membership<br />Zenoti</th>' +
+            '<th class="field">Active<br />Athena</th>' +
+            "<th>Still missing / action</th>" +
             "<th>Checkout notes</th>" +
             "</tr></thead><tbody>" +
             rows +

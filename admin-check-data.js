@@ -15,10 +15,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
           "notes": "Follow-up already completed",
           "copay": null,
-          "cc_agreement": "expiring_soon"
+          "cc_agreement": "expiring_soon",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Avery Soto",
@@ -30,10 +31,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
           "notes": "No return visit booked after June visit",
           "copay": null,
-          "cc_agreement": "expiring_soon"
+          "cc_agreement": "expiring_soon",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Morgan Pell",
@@ -44,11 +46,12 @@ window.FJ_ADMIN_DATA = {
           "eligibility": "yes",
           "referral": "na",
           "cc_athena": "yes",
-          "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "cc_zenoti": "no",
+          "notes": "Intentional cancel (Paths A–B): Membership Zenoti Cancelled; Active Athena No",
           "copay": null,
-          "cc_agreement": "expiring_soon"
+          "cc_agreement": "expiring_soon",
+          "membership_athena": "no",
+          "membership_zenoti": "cancelled"
         },
         {
           "name": "Quinn Adler",
@@ -60,10 +63,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
           "notes": "Follow-up already occurred (past)",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Casey Brink",
@@ -74,11 +78,12 @@ window.FJ_ADMIN_DATA = {
           "eligibility": "yes",
           "referral": "na",
           "cc_athena": "yes",
-          "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "Left without scheduling return",
+          "cc_zenoti": "no",
+          "notes": "Goal 2a Path D window: Zenoti Suspended + CC Zenoti No; Active Athena still Yes (7-day card collect)",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "suspended"
         },
         {
           "name": "Amelia Hart",
@@ -90,10 +95,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
           "notes": "Ask front desk for ID scan at check-in",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Noah Ellery",
@@ -105,10 +111,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Serena Vogt",
@@ -120,10 +127,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "Today visit \u2014 follow-up not booked at checkout",
+          "notes": "Today visit — follow-up not booked at checkout",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Jordan Blake",
@@ -135,10 +143,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Priya Nandakumar",
@@ -150,10 +159,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "LVM \u2014 upload request sent",
+          "notes": "LVM — upload request sent",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Marcus Ellison",
@@ -165,10 +175,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "no",
           "cc_zenoti": "yes",
-          "membership": "yes",
           "notes": "Verify before visit; Zenoti card OK",
           "copay": 35,
-          "cc_agreement": "n/a"
+          "cc_agreement": "n/a",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Helena Ortiz",
@@ -180,10 +191,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "yes",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
           "notes": "HMO referral confirmed",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Theo Langford",
@@ -195,10 +207,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "no",
           "cc_zenoti": "no",
-          "membership": "yes",
           "notes": "New patient packet incomplete",
           "copay": null,
-          "cc_agreement": "n/a"
+          "cc_agreement": "n/a",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Sloane Mercer",
@@ -210,10 +223,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Nadia Quintero",
@@ -225,10 +239,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "no",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
           "notes": "Awaiting PCP referral fax",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Evan Cho",
@@ -240,10 +255,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "no",
-          "membership": "no",
-          "notes": "Goal 3 sample: Zenoti renewal decline → Suspended; cc_zenoti=no",
+          "notes": "Path D post-window: still Suspended + CC Zenoti No; staff manually set Active Athena to No after 7 business days",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "no",
+          "membership_zenoti": "suspended"
         },
         {
           "name": "Iris Vanderbilt",
@@ -255,10 +271,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Clara Mendez",
@@ -270,10 +287,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Brett Okonkwo",
@@ -285,10 +303,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
           "notes": "Return already on books",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Yuna Park",
@@ -300,10 +319,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         }
       ]
     },
@@ -320,10 +340,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
           "notes": "Follow-up already completed",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Reese Alvarez",
@@ -335,10 +356,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
           "notes": "No return visit booked after June visit",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Taylor Kim",
@@ -350,10 +372,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Jamie Vos",
@@ -365,10 +388,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "no",
           "cc_zenoti": "yes",
-          "membership": "yes",
           "notes": "Checkout ended without booking follow-up",
           "copay": 75,
-          "cc_agreement": "n/a"
+          "cc_agreement": "n/a",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Camille Brooks",
@@ -379,11 +403,12 @@ window.FJ_ADMIN_DATA = {
           "eligibility": "yes",
           "referral": "na",
           "cc_athena": "no",
-          "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "Card declined in Athena \u2014 update needed",
+          "cc_zenoti": "no",
+          "notes": "Goal 2a Path D window: Zenoti Suspended + CC Zenoti No; Active Athena still Yes (7-day card collect)",
           "copay": 35,
-          "cc_agreement": "n/a"
+          "cc_agreement": "n/a",
+          "membership_athena": "yes",
+          "membership_zenoti": "suspended"
         },
         {
           "name": "Felix Romero",
@@ -395,10 +420,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Anika Shah",
@@ -410,10 +436,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "Today new consult \u2014 schedule return before leaving",
+          "notes": "Today new consult — schedule return before leaving",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Derek Fontaine",
@@ -425,10 +452,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Lila Nguyen",
@@ -440,10 +468,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "no",
           "notes": "Email reminder sent",
           "copay": 75,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "no",
+          "membership_zenoti": "cancelled"
         },
         {
           "name": "Owen Farrell",
@@ -455,10 +484,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
           "notes": "Eligibility re-check before visit",
           "copay": 35,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Beatrice Holm",
@@ -470,10 +500,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "yes",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "expiring_soon"
+          "cc_agreement": "expiring_soon",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Samir Haddad",
@@ -485,10 +516,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "no",
           "cc_zenoti": "no",
-          "membership": "yes",
           "notes": "No operable Zenoti card (and Athena missing) — same reporting signal as Goal 3 decline for cc_zenoti",
           "copay": null,
-          "cc_agreement": "n/a"
+          "cc_agreement": "n/a",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Grace Pettigrew",
@@ -500,10 +532,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "no",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
           "notes": "Referral request logged",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Noah Kessler",
@@ -515,10 +548,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "expiring_soon"
+          "cc_agreement": "expiring_soon",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Darius Bloom",
@@ -530,10 +564,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Elena Voss",
@@ -545,10 +580,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Micah Trent",
@@ -560,10 +596,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
           "notes": "Long-interval follow-up not yet scheduled",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Sofia Almeida",
@@ -575,10 +612,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
           "notes": "Series completed last week",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         }
       ]
     },
@@ -595,10 +633,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
           "notes": "Completed care cycle",
           "copay": null,
-          "cc_agreement": "expiring_soon"
+          "cc_agreement": "expiring_soon",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Omar Haddadin",
@@ -610,10 +649,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
           "notes": "No follow-up after June labs review",
           "copay": null,
-          "cc_agreement": "expiring_soon"
+          "cc_agreement": "expiring_soon",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Bianca Rowe",
@@ -625,10 +665,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Julian Vargas",
@@ -640,10 +681,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Mei Lin Zhou",
@@ -654,11 +696,12 @@ window.FJ_ADMIN_DATA = {
           "eligibility": "yes",
           "referral": "yes",
           "cc_athena": "yes",
-          "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "cc_zenoti": "no",
+          "notes": "Goal 2a Path D window: Zenoti Suspended + CC Zenoti No; Active Athena still Yes (7-day card collect)",
           "copay": null,
-          "cc_agreement": "expired"
+          "cc_agreement": "expired",
+          "membership_athena": "yes",
+          "membership_zenoti": "suspended"
         },
         {
           "name": "Cole Brennan",
@@ -670,10 +713,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "Today PE \u2014 still need insurance card image",
+          "notes": "Today PE — still need insurance card image",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Aisha Rahman",
@@ -685,10 +729,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Peter Lindholm",
@@ -700,10 +745,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "no",
-          "membership": "yes",
           "notes": "Zenoti card expired",
           "copay": 50,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Gia Conti",
@@ -715,10 +761,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Harvey Quinn",
@@ -730,10 +777,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Nora Eisenberg",
@@ -745,10 +793,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
           "notes": "Passport photo pending",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Luis Ortega",
@@ -760,10 +809,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "no",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "no",
+          "membership_zenoti": "cancelled"
         },
         {
           "name": "Tessa Byrne",
@@ -775,10 +825,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Willa Croft",
@@ -790,10 +841,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "no",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
           "notes": "HMO paperwork in progress",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Andre Silva",
@@ -805,10 +857,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Priya Desai",
@@ -820,10 +873,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
           "notes": "Missed checkout scheduling",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         }
       ]
     },
@@ -840,10 +894,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "expiring_soon"
+          "cc_agreement": "expiring_soon",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Leila Hassan",
@@ -855,10 +910,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
           "notes": "Labs reviewed; no return booked",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Curtis Boone",
@@ -870,10 +926,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Diana Kowalski",
@@ -885,10 +942,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Ethan Brooks",
@@ -900,10 +958,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "no",
           "cc_zenoti": "no",
-          "membership": "yes",
-          "notes": "Today \u2014 capture card before discharge",
+          "notes": "Goal 2a Path D window: Zenoti Suspended + CC Zenoti No; Active Athena still Yes (7-day card collect)",
           "copay": null,
-          "cc_agreement": "n/a"
+          "cc_agreement": "n/a",
+          "membership_athena": "yes",
+          "membership_zenoti": "suspended"
         },
         {
           "name": "Fatima Alvi",
@@ -915,10 +974,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "yes",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "expiring_soon"
+          "cc_agreement": "expiring_soon",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Gabe Steiner",
@@ -930,10 +990,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Hannah Okafor",
@@ -945,10 +1006,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
           "notes": "Eligibility hold",
           "copay": null,
-          "cc_agreement": "expiring_soon"
+          "cc_agreement": "expiring_soon",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Ivan Petrovic",
@@ -960,10 +1022,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Jade Nguyen",
@@ -975,10 +1038,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Kyle Morrison",
@@ -990,10 +1054,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
           "notes": "Patient asked to call back to schedule",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Lana Esposito",
@@ -1005,10 +1070,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Mateo Cruz",
@@ -1020,10 +1086,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Nina Volkov",
@@ -1035,10 +1102,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Oscar Delgado",
@@ -1050,10 +1118,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Paula Rinaldi",
@@ -1065,10 +1134,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
           "notes": "Yesterday visit; follow-up booked",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Quentin Marsh",
@@ -1080,10 +1150,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "no",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         }
       ]
     },
@@ -1100,10 +1171,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Simone Patel",
@@ -1115,10 +1187,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
           "notes": "PA visit without return plan",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Troy Nakamura",
@@ -1130,10 +1203,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Uma Sundaram",
@@ -1145,10 +1219,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "expired"
+          "cc_agreement": "expired",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Victor Hale",
@@ -1159,11 +1234,12 @@ window.FJ_ADMIN_DATA = {
           "eligibility": "yes",
           "referral": "na",
           "cc_athena": "yes",
-          "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "Today PA follow-through \u2014 need Photo ID",
+          "cc_zenoti": "no",
+          "notes": "Goal 2a Path D window: Zenoti Suspended + CC Zenoti No; Active Athena still Yes (7-day card collect)",
           "copay": null,
-          "cc_agreement": "expiring_soon"
+          "cc_agreement": "expiring_soon",
+          "membership_athena": "yes",
+          "membership_zenoti": "suspended"
         },
         {
           "name": "Wendy Cho",
@@ -1175,10 +1251,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "Today acute visit \u2014 book chronic follow-up",
+          "notes": "Today acute visit — book chronic follow-up",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Xavier Boyle",
@@ -1190,10 +1267,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "expiring_soon"
+          "cc_agreement": "expiring_soon",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Yasmine Farouk",
@@ -1205,10 +1283,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "no",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "no",
+          "membership_zenoti": "cancelled"
         },
         {
           "name": "Zane Cooper",
@@ -1220,10 +1299,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "no",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": 40,
-          "cc_agreement": "n/a"
+          "cc_agreement": "n/a",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Alice Moreau",
@@ -1235,10 +1315,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "yes",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Benjamin Moss",
@@ -1250,10 +1331,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Cora Jennings",
@@ -1265,10 +1347,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Dev Kapoor",
@@ -1280,10 +1363,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Eva Lindstrom",
@@ -1295,10 +1379,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "expiring_soon"
+          "cc_agreement": "expiring_soon",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Frank Osei",
@@ -1310,10 +1395,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "expired"
+          "cc_agreement": "expired",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Gina Russo",
@@ -1325,10 +1411,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
           "notes": "No show follow-up never rebooked",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         }
       ]
     },
@@ -1345,10 +1432,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Ivy Chandler",
@@ -1360,10 +1448,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "NP consult \u2014 no return scheduled",
+          "notes": "NP consult — no return scheduled",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Jonas Weber",
@@ -1375,10 +1464,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "expired"
+          "cc_agreement": "expired",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Kara Bingham",
@@ -1390,10 +1480,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Leo Ashford",
@@ -1404,11 +1495,12 @@ window.FJ_ADMIN_DATA = {
           "eligibility": "yes",
           "referral": "na",
           "cc_athena": "yes",
-          "cc_zenoti": "yes",
-          "membership": "no",
-          "notes": "Today NP visit \u2014 membership discussion open",
+          "cc_zenoti": "no",
+          "notes": "Goal 2a Path D window: Zenoti Suspended + CC Zenoti No; Active Athena still Yes (7-day card collect)",
           "copay": null,
-          "cc_agreement": "expiring_soon"
+          "cc_agreement": "expiring_soon",
+          "membership_athena": "yes",
+          "membership_zenoti": "suspended"
         },
         {
           "name": "Mira Solano",
@@ -1420,10 +1512,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Nate Feldman",
@@ -1435,10 +1528,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Olive Parkes",
@@ -1450,10 +1544,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
           "notes": "Intake incomplete",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Paige Whitaker",
@@ -1465,10 +1560,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "no",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": 55,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Ronin Steele",
@@ -1480,10 +1576,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "expired"
+          "cc_agreement": "expired",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Sable Quinn",
@@ -1495,10 +1592,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
           "notes": "Waiting on insurance response",
           "copay": null,
-          "cc_agreement": "expiring_soon"
+          "cc_agreement": "expiring_soon",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Trent Oswald",
@@ -1510,10 +1608,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "no",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Una Bergstrom",
@@ -1525,10 +1624,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Vera Santos",
@@ -1540,10 +1640,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "expiring_soon"
+          "cc_agreement": "expiring_soon",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Wade Kline",
@@ -1555,10 +1656,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Ximena Rojas",
@@ -1570,10 +1672,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
-          "notes": "\u2014",
+          "notes": "—",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Yuri Antonov",
@@ -1585,10 +1688,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "yes",
           "cc_zenoti": "yes",
-          "membership": "yes",
           "notes": "Urgent visit; follow-up owed",
           "copay": null,
-          "cc_agreement": "ok"
+          "cc_agreement": "ok",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         },
         {
           "name": "Zelda Marks",
@@ -1600,10 +1704,11 @@ window.FJ_ADMIN_DATA = {
           "referral": "na",
           "cc_athena": "no",
           "cc_zenoti": "yes",
-          "membership": "yes",
           "notes": "Update Athena card on file",
           "copay": 45,
-          "cc_agreement": "n/a"
+          "cc_agreement": "n/a",
+          "membership_athena": "yes",
+          "membership_zenoti": "yes"
         }
       ]
     }

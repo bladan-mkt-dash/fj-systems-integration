@@ -405,7 +405,9 @@
       <h1>Golden Record — Identity Resolution Flow</h1>
       <p>
         <strong>Core path for easier data entry:</strong> when any team updates a patient or lead,
-        webhooks hit the GCP Middleware Hub. The hub matches identity, updates the master record in BigQuery,
+        vendor webhooks <em>or</em> short API polls (AthenaNet / Zenoti / GHL — use what each vendor supports)
+        hit the GCP Middleware Hub, with a nightly reconcile so missed cycles self-heal.
+        The hub matches identity, updates the master record in BigQuery,
         then applies the correct <em>sync class</em> per field — not fill-if-empty for everything.
         Hub sync classes (SoT: <a href="field-mapping.html#sync-classes">field mapping registry</a>): <code>fill_if_empty</code> (eligible demographics only) · <code>isolated_vault</code> (payment firewall) · <code>forced_presence_mirror</code> (Call Outcomes set/clear) · <code>athena_only_read</code> · <code>two_path_cancel</code> (allowed Athena write) · <code>zenoti_renewal_decline</code> (Goal 2a Suspended + cc_zenoti=no). Fill-if-empty is <strong>not</strong> the only outbound pattern.
         Existing AthenaNet demographic values are never overwritten by <code>fill_if_empty</code> —
@@ -478,7 +480,7 @@
                 <span class="step-num">3</span>
                 <div class="step-body">
                   <strong>Queues outbound synchronization by sync class</strong>
-                  <span><code>fill_if_empty</code> for eligible demographics; <code>forced_presence_mirror</code> set/clear into GHL Call Outcomes; <code>isolated_vault</code> never copies payment tokens; <code>two_path_cancel</code> may write Athena when product-allowed; <code>zenoti_renewal_decline</code> suspends Zenoti/GHL and forces cc_zenoti=no. Never overwrites populated Athena demographics via fill-if-empty. Conflicts are not auto-fixed (operations reporting).</span>
+                  <span><code>fill_if_empty</code> for eligible demographics; <code>forced_presence_mirror</code> set/clear into GHL Call Outcomes; <code>isolated_vault</code> never copies payment tokens; <code>two_path_cancel</code> may write Athena when product-allowed; <code>zenoti_renewal_decline</code> reads Zenoti Suspended and fans out to GHL + BQ (cc_zenoti=no); no Zenoti write. Never overwrites populated Athena demographics via fill-if-empty. Conflicts are not auto-fixed (operations reporting).</span>
                 </div>
               </li>
             </ol>
@@ -555,12 +557,13 @@
       <p class="athena-rule">
         <strong>Class <code>zenoti_renewal_decline</code> — Goal 2a:</strong>
         Zenoti membership renewals charge the Zenoti Saved Card only. On payment failure
-        (missing / expired / invalid card), ensure Zenoti membership <em>Suspended</em>,
-        set GHL Membership Suspended, and force <code>cc_zenoti=no</code> (clear GHL Credit Card Zenoti)
-        immediately. Leave Athena Membership Status unchanged (no auto-timer) — staff may collect a
-        working Zenoti card within 7 business days, then manually deactivate Athena; that follow-up is
-        ops process, not hub automation (confirmed for now; may revisit). Never charge Athena Card On File
-        for a Zenoti renewal.
+        (missing / expired / invalid card), Zenoti itself Suspends the membership — hub does
+        <strong>not</strong> write Zenoti. Hub immediately fans out to BigQuery (Ledger / Rollup:
+        Suspended + <code>cc_zenoti=no</code>, real-time / on refresh) and GHL
+        (Membership Suspended + clear Credit Card Zenoti). Leave Athena Membership Status unchanged
+        (no auto-timer) — staff may collect a working Zenoti card within 7 business days, then manually
+        deactivate Athena; that follow-up is ops process, not hub automation (confirmed for now; may revisit).
+        Never charge Athena Card On File for a Zenoti renewal.
       </p>
       <p class="athena-rule">
         <strong>Class <code>forced_presence_mirror</code>:</strong>

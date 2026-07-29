@@ -23,7 +23,7 @@
       --zenoti: #4a6741;
       --ghl: #6b4c8a;
       --woo: #9a7344;
-      --max-width: 920px;
+      --max-width: 1040px;
     }
 
     *,
@@ -409,22 +409,28 @@
               <td>Missing / Conflict</td>
             </tr>
             <tr>
-              <td>Credit card — Athena vault</td>
+              <td>CC Athena</td>
               <td><span class="sys athena">AthenaNet</span> Card On File</td>
               <td>GHL Call Outcomes → Credit Card → Credit Card Athena (presence mirror only)</td>
               <td><span class="tag">Missing</span> if Athena Card On File absent — independent of Zenoti</td>
             </tr>
             <tr>
-              <td>Credit card — Zenoti vault</td>
+              <td>CC Zenoti</td>
               <td><span class="sys zenoti">Zenoti</span> Saved Card → Payments (operable)</td>
               <td>GHL Call Outcomes → Credit Card → Credit Card Zenoti (operable mirror)</td>
-              <td><span class="tag">Missing</span> if Saved Card absent <em>or not operable</em> (expired / invalid / <strong>membership-renewal declined — Goal 2a</strong>) — independent of Athena</td>
+              <td><span class="tag">Missing</span> if Saved Card absent <em>or not operable</em> (expired / invalid / <strong>membership-renewal declined — Goal 2a</strong>) — independent of Athena. Historical truth as far as Zenoti API allows.</td>
             </tr>
             <tr>
-              <td>Active membership (Zenoti Suspended)</td>
-              <td><span class="sys zenoti">Zenoti</span> Inactive → Suspended</td>
-              <td>GHL Membership Suspended (set/clear)</td>
-              <td>After Goal 2a renewal decline: Suspended in Zenoti + GHL (<em>Membership Cancellation Data → Membership Suspended</em>); <code>membership</code> not Active; expected <span class="tag">Conflict</span> while Athena still Active. Manual ops (not hub): staff attempt Zenoti card collection within <strong>7 business days</strong>, then may manually deactivate Athena if unresolved</td>
+              <td>Membership Zenoti</td>
+              <td><span class="sys zenoti">Zenoti</span> Active / Cancelled / Suspended</td>
+              <td>GHL Membership Cancellation Data → Membership Suspended (set when Suspended)</td>
+              <td>Ledger values: <strong>Yes</strong> | <strong>Cancelled</strong> | <strong>Suspended</strong> from Zenoti status (do not invent from CC alone). Goal 2a: Suspended is legitimate after decline. Actionable when Suspended during card-collect window.</td>
+            </tr>
+            <tr>
+              <td>Active Athena</td>
+              <td><span class="sys athena">AthenaNet</span> Membership Status</td>
+              <td>—</td>
+              <td>Ledger <strong>Yes / No</strong> from Athena only (v1). Path D window often <strong>Yes</strong> while Membership Zenoti is Suspended. Staff manually set No after ~7 business days if unresolved. Future auto-flip out of v1.</td>
             </tr>
             <tr>
               <td>Credit card agreement</td>
@@ -462,12 +468,6 @@
               <td>—</td>
               <td><code>athena_only_read</code>. <span class="tag">Missing</span> if <em>None</em> (no return visit booked). No sync to Zenoti or GHL.</td>
             </tr>
-            <tr>
-              <td>Active membership (cross-system)</td>
-              <td><span class="sys athena">AthenaNet</span> Membership Status · <span class="sys zenoti">Zenoti</span> Active / Cancelled / Suspended</td>
-              <td>GHL Membership Cancellation Data + Membership Suspended</td>
-              <td>Ledger <code>membership</code> = yes only when Athena Active <em>and</em> Zenoti Active (not Suspended/Cancelled). Path A cancel may write Athena (<code>two_path_cancel</code>, stamped source). See also Suspended row above for Goal 2a.</td>
-            </tr>
           </tbody>
         </table>
         <p class="lead" style="margin:0.75rem 0 0;">
@@ -479,9 +479,9 @@
         </p>
         <p class="lead" style="margin:0.75rem 0 0;">
           Output table: <strong>demographics_gap_fact</strong> —
-          patient_id, field (<code>photo</code> | <code>ins_card</code> | <code>eligibility</code> | <code>referral</code> | <code>follow_up</code> | <code>cc_athena</code> | <code>cc_zenoti</code> | <code>cc_agreement</code> | <code>membership</code>),
-          status (missing|conflict|expiring_soon|expired|suspended|declined|n_a), systems_checked, priority, detected_at.
-          Goal 2a decline events should publish <code>cc_zenoti</code> missing/declined and membership suspended without waiting for a later poll if webhooks allow.
+          patient_id, field (<code>photo</code> | <code>ins_card</code> | <code>eligibility</code> | <code>referral</code> | <code>follow_up</code> | <code>cc_athena</code> | <code>cc_zenoti</code> | <code>cc_agreement</code> | <code>membership_zenoti</code> | <code>membership_athena</code>),
+          status (missing|conflict|expiring_soon|expired|suspended|cancelled|declined|n_a|yes|no), systems_checked, priority, detected_at.
+          Goal 2a: Zenoti is source of Suspended; hub publishes <code>cc_zenoti</code> missing/declined and membership suspended to BigQuery on a minutes-scale freshness SLA (visible on refresh; history as far as Zenoti API allows) and mirrors to GHL. Same ingest rule as AthenaNet and other sources: prefer webhooks when the vendor offers them; otherwise short API polling is acceptable. Always run a <strong>nightly reconcile</strong> so missed cycles self-heal; GHL writes must be idempotent.
         </p>
       </section>
 
@@ -564,7 +564,12 @@
           </div>
           <div class="card">
             <h3>Freshness SLA</h3>
-            <p>Document max lag from source webhook → gap visible on Admin Check List.</p>
+            <p>
+              Document max lag from source event → gap visible on Admin Check List.
+              Ingest may be webhook <em>or</em> API poll (AthenaNet / Zenoti / GHL — use whatever
+              the vendor supports); always pair with nightly reconcile so missed cycles self-heal.
+              Target: minutes (visible on refresh), not multi-hour lag.
+            </p>
           </div>
         </div>
       </section>

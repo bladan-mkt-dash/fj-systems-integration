@@ -339,7 +339,7 @@
                 <li><code>forced_presence_mirror</code>: GHL Call Outcomes options are system set/clear from source presence (absence clears); hidden/unclickable after go-live.</li>
                 <li><code>athena_only_read</code>: no outbound sync; Admin Check List reads Athena via BigQuery (e.g. eligibility, follow-up, CC agreement).</li>
                 <li><code>two_path_cancel</code>: when online-form cancel is authoritative in GHL, the hub may update Athena Membership Status out of Active (stamped source). See <a href="field-mapping-active-membership.html">Active Membership map</a>.</li>
-                <li><code>zenoti_renewal_decline</code> (Goal 2a): Zenoti membership renewal charge fails (no Saved Card / expired / invalid) → ensure Zenoti <em>Suspended</em> + GHL <em>Membership Cancellation Data → Membership Suspended</em> + force <code>cc_zenoti=no</code> (clear GHL Credit Card Zenoti). Leave Athena Membership Status unchanged (no hub timer); staff manual follow-up (card collection within 7 business days, then optional Athena deactivate) is ops-only — see Active Membership Path D. Do not charge Athena Card On File for Zenoti renewals.</li>
+                <li><code>zenoti_renewal_decline</code> (Goal 2a): Zenoti membership renewal charge fails → Zenoti already <em>Suspended</em>. Hub does not write Zenoti. Hub immediately: BigQuery Ledger/Rollup (Suspended + <code>cc_zenoti=no</code>, real-time, history as far as Zenoti API allows) + GHL <em>Membership Cancellation Data → Membership Suspended</em> + clear GHL Credit Card Zenoti. Leave Athena unchanged (no hub timer); staff 7-business-day card collect then optional Athena deactivate is ops-only — see Active Membership Path D. Do not charge Athena Card On File for Zenoti renewals.</li>
                 <li>Conflicting non-empty values across systems are not auto-“fixed”; they surface as Conflicts on the Admin Check List.</li>
                 <li>Architecture pages must not invent field behavior — the <a href="field-mapping.html">field mapping registry</a> wins.</li>
               </ul>
@@ -357,7 +357,7 @@
               <strong>Core — cancellations, terminations &amp; Zenoti renewal declines</strong>
               <ul class="sub">
                 <li>Patient cancellations and terminations must stay synchronized across connected systems (Goal 2).</li>
-                <li><strong>Goal 2a — Zenoti membership-renewal declines:</strong> Zenoti renews memberships by charging the Zenoti Saved Card. On failure (card missing, expired, or invalid/declined): Suspend membership in Zenoti and GHL; Admin Check List / ledger must show Credit Card Zenoti = No immediately; membership is not Active while Suspended. Athena Membership Status stays unchanged by the hub (no auto-timer) — collecting a card and deactivating Athena remain manual ops (7 business days collection window on Path D). Expect Admin Check List Conflict while Athena still Active. Never use Athena Card On File for Zenoti renewals.</li>
+                <li><strong>Goal 2a — Zenoti membership-renewal declines:</strong> Zenoti renews memberships by charging the Zenoti Saved Card. On failure, Zenoti Suspends the membership. Hub does not write Zenoti — it immediately reflects <code>membership_zenoti = Suspended</code> + <code>cc_zenoti = no</code> in BigQuery (Ledger + Rollup, real-time / on refresh, historical ranges as far as Zenoti API allows) and pushes Membership Suspended + CC Zenoti clear to GHL. Active Athena (<code>membership_athena</code>) often stays Yes during the manual 7-business-day card-collect window (dual columns; not a Conflict). Never use Athena Card On File for Zenoti renewals. <strong>Day 0 gate</strong> (full Path D fan-out live at Admin Check List launch).</li>
               </ul>
             </li>
             <li>
@@ -428,8 +428,9 @@
         <li>
           <span class="title">Name open questions you are still deciding</span>
           <ul class="sub">
-            <li>Woo identity in v1 vs later.</li>
-            <li>Cancel/termination and Goal 2a Zenoti renewal-decline timing relative to Admin Check List v1 (decline → Suspended + cc_zenoti=no should not lag past the freshness SLA).</li>
+            <li>~~Woo identity in v1 vs later~~ — decided: out of Admin Check List / ledger field contracts; identity match only.</li>
+            <li>~~Goal 2a timing vs Day 0~~ — decided: Path D fan-out (Zenoti → BQ + GHL, no Zenoti write) is Day 0; webhook <em>or</em> short API poll + nightly reconcile; freshness SLA minutes.</li>
+            <li>Vendor webhook availability (AthenaNet / Zenoti / GHL) — confirm at build; product rule is already set: webhook when offered, else short poll + nightly reconcile (do not block Day 0).</li>
             <li>Any fields that must never appear on a GHL calendar or contact note.</li>
           </ul>
           <p class="dod"><strong>Done when</strong> open questions are listed with “decide by” dates so they don’t silently block build.</p>
@@ -489,10 +490,10 @@
             </li>
             <li>
               Goal 2a: after a Zenoti membership-renewal payment failure, ledger/Admin Check List show
-              membership not Active (Suspended path) and <code>cc_zenoti = no</code>; GHL
-              <em>Membership Cancellation Data → Membership Suspended</em> is set; Athena Membership Status
-              stays unchanged by the hub (Conflict while Athena still Active is expected during the
-              manual 7-business-day card-collection window — see Active Membership Path D).
+              <code>cc_zenoti = no</code> and <code>membership_zenoti = Suspended</code> (Zenoti history as far as API allows);
+              GHL <em>Membership Cancellation Data → Membership Suspended</em>; v1 <code>membership_athena</code> / Active Athena
+              often remains Yes during the manual 7-business-day card-collection window — see Active Membership Path D.
+              Future auto Athena-inactive is out of v1.
             </li>
             <li>Provider lists: Follow-ups, Outstanding Copays, Upcoming Appointment Issues.</li>
             <li>Appointment Date Range filter semantics (what is in/out of scope).</li>
@@ -545,7 +546,7 @@
           <span class="title">Accept phased delivery plan</span>
           <span class="depends">Depends on 11–12</span>
           <ul class="sub">
-            <li>Review Contractor phases A–F below; adjust scope for v1 if needed (e.g. defer full Path D decline automation — but ledger must still be able to show cc_zenoti=no / Suspended once events exist).</li>
+            <li>Review Contractor phases A–F below. Goal 2a Path D fan-out (Zenoti → BQ Ledger/Rollup + GHL) is a Day 0 gate — real-time; no Zenoti write.</li>
             <li>Define go-live gate: Admin Check List usable for daily ops on agreed date range.</li>
           </ul>
           <p class="dod"><strong>Done when</strong> phase list and go-live gate are approved by 5 Journeys.</p>
@@ -600,9 +601,13 @@
           <ul class="sub">
             <li>Stand up middleware + BigQuery project per GCP schematic (HIPAA posture as agreed).</li>
             <li>Ingest AthenaNet, Zenoti, GHL (± Woo identity) into raw/normalized landing zones.</li>
+            <li><strong>Ingest pattern (AthenaNet, Zenoti, GHL):</strong> use webhooks when the vendor offers them;
+              if a system only exposes API pulls (common for AthenaNet and possibly Zenoti), use a short polling
+              cadence that meets the freshness SLA, plus a <strong>nightly reconcile</strong> so missed cycles self-heal.
+              Do not block Day 0 on webhook availability.</li>
             <li>Reporting app can run a trivial authenticated query against BQ.</li>
           </ul>
-          <p class="dod"><strong>Done when</strong> sandbox end-to-end “source → BQ → app query” works for at least one entity type per in-scope system.</p>
+          <p class="dod"><strong>Done when</strong> sandbox end-to-end “source → BQ → app query” works for at least one entity type per in-scope system, and each source has a documented ingest mode (webhook and/or poll) + reconcile path.</p>
         </li>
 
         <li>
@@ -639,7 +644,7 @@
           <span class="title">Phase D — Operations reporting / Admin Check List v1</span>
           <span class="depends">Depends on 20, 11, 3–4</span>
           <ul class="sub">
-            <li>Implement demographics gap detection (Missing / Conflict) from completeness contract — including independent <code>cc_athena</code>, operable <code>cc_zenoti</code> (Goal 2a decline ⇒ no), <code>cc_agreement</code>, and membership Suspended / Conflict when Athena Active vs Zenoti Suspended.</li>
+            <li>Implement demographics gap detection (Missing / Conflict / Suspended) from completeness contract — including independent <code>cc_athena</code>, operable <code>cc_zenoti</code> (Goal 2a decline ⇒ no), <code>cc_agreement</code>, <code>membership_zenoti</code> (Yes|Cancelled|Suspended), and <code>membership_athena</code> (Active Athena Yes/No).</li>
             <li>Appointment-issue pipeline joined to upcoming visits + provider.</li>
             <li>Follow-up and copay facts per business rules.</li>
             <li>Daily (or agreed cadence) snapshot; Appointment Date Range filter.</li>
@@ -657,16 +662,20 @@
             <li>Membership cancel Paths A–B follow
               <a href="field-mapping-active-membership.html">Active Membership field map</a>
               (form path may write Athena; phone path Athena→Zenoti/GHL; cancels land as Zenoti <em>Cancelled</em>).</li>
-            <li><strong>Goal 2a / Path D:</strong> ingest Zenoti membership-renewal payment failures (no card / expired / invalid);
-              ensure Zenoti <em>Suspended</em>; set GHL <em>Membership Cancellation Data → Membership Suspended</em>;
-              force <code>cc_zenoti=no</code> + clear GHL Credit Card Zenoti;
-              leave Athena Membership Status unchanged (no hub timer; stamp decline source).
-              Staff manual follow-up (ops, not automation): attempt Zenoti card collection within 7 business days,
+            <li><strong>Goal 2a / Path D (Day 0):</strong> ingest Zenoti Suspended + card-not-operable after renewal failure
+              (Zenoti already Suspended — <strong>no Zenoti write</strong>). Immediately fan out to BigQuery
+              (Ledger + Rollup: <code>membership_zenoti=Suspended</code> + <code>cc_zenoti=no</code>; Active Athena often still Yes, real-time / on refresh; history as far as Zenoti API allows)
+              and GHL (<em>Membership Cancellation Data → Membership Suspended</em> + clear Credit Card Zenoti).
+              Prefer Zenoti <strong>webhooks</strong> when available; if Zenoti (like AthenaNet) only exposes API pulls,
+              use a short polling cadence (e.g. every few minutes) plus a <strong>nightly reconcile</strong>
+              so gaps self-heal — same platform ingest pattern as Phase A. GHL writes must be <strong>idempotent</strong> (safe to retry).
+              Target freshness SLA on the order of minutes (visible on browser refresh), not multi-hour lag.
+              Leave Athena unchanged (stamp decline source). Staff manual follow-up: 7-business-day card collect,
               then manually deactivate Athena if unresolved — see Active Membership Path D.</li>
             <li>Path C manual Zenoti suspend still mirrors to GHL Membership Suspended.</li>
             <li>Ensure BQ membership + card operable state stays consistent with Admin Check List.</li>
           </ul>
-          <p class="dod"><strong>Done when</strong> a test Zenoti renewal decline suspends membership in Zenoti + GHL, shows Credit Card Zenoti = No on the Admin Check List immediately, and cancelled/suspended members no longer appear as Active incorrectly.</p>
+          <p class="dod"><strong>Done when</strong> a test Zenoti renewal decline (Zenoti-native Suspend) fans out to GHL + Admin Check List / Ledger with Credit Card Zenoti = No within the freshness SLA (webhook <em>or</em> short poll), a simulated missed/skipped cycle is corrected by nightly reconcile, and cancelled/suspended members no longer appear as Active incorrectly.</p>
         </li>
 
         <li>

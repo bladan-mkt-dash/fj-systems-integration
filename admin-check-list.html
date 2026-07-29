@@ -21,7 +21,7 @@
       --drill: #2d5a7b;
       --drill-bg: #eef4f8;
       --miss: #8a3b2b;
-      --max-width: 880px;
+      --max-width: 1280px;
     }
 
     *,
@@ -83,7 +83,7 @@
       color: var(--ink-muted);
       font-size: 0.875rem;
       margin: 0 auto 0.75rem;
-      max-width: 58ch;
+      max-width: 72ch;
     }
 
     header .meta {
@@ -517,7 +517,7 @@
           <ul>
             <li>Clear all <strong>High</strong> demographic gaps before next business day for patients with visits in 7 days.</li>
             <li>Book follow-ups before checkout — drive down Follow-up Appt = <strong>None</strong>.</li>
-            <li>Reduce recurring “Missing Credit Card” issues week over week.</li>
+            <li>Reduce recurring “Missing CC Athena / CC Zenoti” and Membership Zenoti Suspended issues week over week.</li>
           </ul>
         </div>
       </div>
@@ -570,10 +570,11 @@
         { key: "ins_card", label: "Insurance card pic", systems: "AthenaNet (Front + Back)", priority: "High — upcoming visit" },
         { key: "eligibility", label: "Insurance eligibility", systems: "AthenaNet", priority: "High" },
         { key: "referral", label: "HMO referral", systems: "AthenaNet → GHL", priority: "High" },
-        { key: "cc_athena", label: "Credit card (Athena)", systems: "AthenaNet → GHL Credit Card Athena", priority: "High — upcoming visit" },
-        { key: "cc_agreement", label: "Credit card agreement", systems: "AthenaNet", priority: "High — upcoming visit" },
-        { key: "cc_zenoti", label: "Credit card (Zenoti)", systems: "Zenoti operable Saved Card → GHL Credit Card Zenoti (Goal 2a decline ⇒ No)", priority: "High — upcoming visit / renewal" },
-        { key: "membership", label: "Active membership", systems: "AthenaNet · Zenoti · GHL (Suspended on Goal 2a decline)", priority: "High — renewal" },
+        { key: "cc_athena", label: "CC Athena", systems: "AthenaNet → GHL Credit Card Athena", priority: "High — upcoming visit" },
+        { key: "cc_agreement", label: "CC Agreement", systems: "AthenaNet", priority: "High — upcoming visit" },
+        { key: "cc_zenoti", label: "CC Zenoti", systems: "Zenoti operable Saved Card → GHL Credit Card Zenoti (Goal 2a ⇒ No)", priority: "High — upcoming visit / renewal" },
+        { key: "membership_zenoti", label: "Membership Zenoti", systems: "Zenoti Active / Cancelled / Suspended → GHL Membership Suspended", priority: "High — renewal" },
+        { key: "membership_athena", label: "Active Athena", systems: "AthenaNet Membership Status (v1 Ledger source)", priority: "High — renewal" },
       ];
 
       function iso(d) {
@@ -625,9 +626,18 @@
         FIELD_META.forEach(function (f) {
           if (f.key === "cc_agreement") {
             const v = String(p.cc_agreement || "").toLowerCase();
-            if (v === "expired") gaps.push("Credit card agreement (Expired)");
+            if (v === "expired") gaps.push("CC Agreement (Expired)");
             else if (v === "expiring_soon")
-              gaps.push("Credit card agreement (Expiring Soon)");
+              gaps.push("CC Agreement (Expiring Soon)");
+            return;
+          }
+          if (f.key === "membership_zenoti") {
+            if (String(p.membership_zenoti || "").toLowerCase() === "suspended")
+              gaps.push("Membership Zenoti Suspended");
+            return;
+          }
+          if (f.key === "membership_athena") {
+            // Active Athena No is status, not a missing-doc gap in the rollup mix
             return;
           }
           if (String(p[f.key]).toLowerCase() === "no") gaps.push(f.label);
@@ -645,6 +655,8 @@
       function issueTags(gaps) {
         return gaps
           .map(function (g) {
+            if (/Suspended/i.test(g))
+              return '<span class="issue-tag">' + g + "</span>";
             return '<span class="issue-tag">Missing ' + g + "</span>";
           })
           .join(" ");
@@ -709,6 +721,12 @@
                 if (v === "expired" || v === "expiring_soon") gapCounts[f.key] += 1;
                 return;
               }
+              if (f.key === "membership_zenoti") {
+                if (String(p.membership_zenoti || "").toLowerCase() === "suspended")
+                  gapCounts[f.key] += 1;
+                return;
+              }
+              if (f.key === "membership_athena") return;
               if (String(p[f.key]).toLowerCase() === "no") gapCounts[f.key] += 1;
             });
           });

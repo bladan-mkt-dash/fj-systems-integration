@@ -571,8 +571,9 @@
     </div>
 
     <p class="footnote">
-      Schematic for architecture review. External systems push or are polled by
-      the Middleware Hub; normalized data lands in BigQuery; the Custom Reporting App queries
+      Schematic for architecture review. External systems push via webhook <em>or</em> are polled by
+      the Middleware Hub (AthenaNet and Zenoti may be API-poll-only — do not assume webhooks);
+      pair either mode with nightly reconcile. Normalized data lands in BigQuery; the Custom Reporting App queries
       BigQuery for analytics and operations reports; IAP and Cloud Logging govern staff access.
       <strong>Core:</strong> identity sync + outbound by sync class
       (<code>fill_if_empty</code>, <code>isolated_vault</code>, <code>forced_presence_mirror</code>,

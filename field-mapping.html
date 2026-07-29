@@ -192,6 +192,14 @@
         <a href="#sync-classes">hub sync class</a> applies.
         Fill-if-empty is only one class — not the default for every field.
       </p>
+      <p class="note" style="margin-top:0.65rem;">
+        <strong>WooCommerce (v1):</strong>
+        Out of
+        <a href="admin-check-list.html">Missing Demographics Executive Roll Up</a>
+        / Record Ledger field contracts. Woo may participate in golden-record
+        <em>identity match</em> only when unifying store customers — it does not drive ledger
+        columns or gap classification for Admin Check List v1.
+      </p>
     </header>
 
     <section id="sync-classes" class="taxonomy" aria-labelledby="sync-classes-title">
@@ -240,7 +248,7 @@
           </tr>
           <tr>
             <td><code>zenoti_renewal_decline</code><br /><span class="tax-name">Zenoti renewal decline (Goal 2a)</span></td>
-            <td>On Zenoti membership-renewal payment failure (no Saved Card, expired, or invalid/declined): ensure Zenoti membership <em>Suspended</em>; set GHL <em>Membership Cancellation Data → Membership Suspended</em>; force <code>cc_zenoti = no</code> and clear GHL Credit Card Zenoti. Leaves Athena Membership Status unchanged (no auto-timer). Staff manual follow-up — card collection within 7 business days, then optional Athena deactivate — is ops process, not hub automation (confirmed for now; may revisit).</td>
+            <td>Zenoti already Suspends membership on renewal-day payment failure (no Saved Card, expired, or invalid/declined). Hub does <strong>not</strong> write Zenoti. Hub immediately: (1) publish <code>membership_zenoti = Suspended</code> + <code>cc_zenoti = no</code> to BigQuery for Ledger / Missing Demographics Executive Roll Up (Active Athena often still Yes — dual columns; real-time / on refresh; history as far as Zenoti API allows); (2) set GHL <em>Membership Cancellation Data → Membership Suspended</em>; (3) clear GHL Credit Card Zenoti. Leaves Athena Membership Status unchanged (no auto-timer). Staff manual follow-up — card collection within 7 business days, then optional Athena deactivate — is ops process, not hub automation (confirmed for now; may revisit).</td>
             <td><a href="field-mapping-active-membership.html">Active Membership · Path D</a> · <a href="field-mapping-credit-card.html">Credit Card Zenoti</a></td>
           </tr>
         </tbody>
@@ -261,8 +269,8 @@
       <tbody>
         <tr>
           <td><a href="field-mapping-credit-card.html">Credit Card</a></td>
-          <td class="mono">Card On File + Agreement (Expiring Soon|Expired)</td>
-          <td class="mono">Saved Card → Payments (operable for membership billing)</td>
+          <td class="mono">Card On File + Agreement → Ledger <strong>CC Athena</strong> / CC Agreement</td>
+          <td class="mono">Saved Card → Payments → Ledger <strong>CC Zenoti</strong> (operable)</td>
           <td class="mono">Credit Card → Credit Card Athena | Credit Card Zenoti</td>
           <td><code>isolated_vault</code> + dual <code>forced_presence_mirror</code> + <code>zenoti_renewal_decline</code> ⇒ <code>cc_zenoti=no</code></td>
           <td><span class="chip done">Mapped</span></td>
@@ -301,10 +309,10 @@
         </tr>
         <tr>
           <td><a href="field-mapping-active-membership.html">Active membership</a></td>
-          <td class="mono">Membership Status = Active</td>
-          <td class="mono">Active / Inactive → Cancelled | Suspended</td>
+          <td class="mono">Membership Status = Active → Ledger <strong>Active Athena</strong> Yes/No</td>
+          <td class="mono">Active / Inactive → Cancelled | Suspended → Ledger <strong>Membership Zenoti</strong></td>
           <td class="mono">Membership Cancellation Data + Membership Suspended</td>
-          <td><code>two_path_cancel</code> + <code>zenoti_renewal_decline</code> (Suspended)</td>
+          <td><code>two_path_cancel</code> + <code>zenoti_renewal_decline</code> (Suspended); v1 Ledger splits Athena vs Zenoti columns</td>
           <td><span class="chip done">Mapped</span></td>
         </tr>
         <tr>

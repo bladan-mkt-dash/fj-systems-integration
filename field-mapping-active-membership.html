@@ -581,7 +581,7 @@
             <td>Zenoti</td>
             <td class="mono">Memberships → Inactive → Suspended</td>
             <td>Inactive reason label</td>
-            <td><span class="chip oneway">Source</span> Goal 2a renewal decline (hub ensures) <em>or</em> manual staff suspend → mirrors to GHL</td>
+            <td><span class="chip oneway">Source</span> Zenoti Suspended (Goal 2a renewal decline — Zenoti-native) <em>or</em> manual staff suspend → hub mirrors to GHL + BQ</td>
           </tr>
           <tr>
             <td>Membership renewal charge (Zenoti)</td>
@@ -612,11 +612,18 @@
             <td><span class="chip oneway">Sink</span> check/select when Zenoti Suspended (Goal 2a renewal-day decline or manual Path C); clear when no longer Suspended</td>
           </tr>
           <tr>
-            <td>Admin Check List · Active membership</td>
+            <td>Admin Check List · Membership Zenoti</td>
             <td>Reporting app</td>
-            <td class="mono">membership</td>
-            <td>yes / no</td>
-            <td>yes only when Athena Active <em>and</em> Zenoti Active (not Suspended/Cancelled). Zenoti Suspended ⇒ membership no; Conflict if Athena still Active</td>
+            <td class="mono">membership_zenoti</td>
+            <td>Yes | Cancelled | Suspended</td>
+            <td>Read Zenoti membership status (not inferred from CC alone)</td>
+          </tr>
+          <tr>
+            <td>Admin Check List · Active Athena</td>
+            <td>Reporting app</td>
+            <td class="mono">membership_athena</td>
+            <td>Yes | No</td>
+            <td>Read Athena Membership Status only (v1). Path D window: often Yes while Membership Zenoti is Suspended</td>
           </tr>
         </tbody>
       </table>
@@ -691,7 +698,7 @@
         </div>
         <div class="flow-node">
           <strong>Zenoti Suspended + GHL Suspended + CC Zenoti No</strong>
-          <span>Ensure Suspended in Zenoti; set GHL Membership Cancellation Data → Membership Suspended; force cc_zenoti=no. Athena unchanged by hub — staff collect card (7 business days) then may manually deactivate Athena.</span>
+          <span>Zenoti already Suspended. Hub: BQ Ledger/Rollup (Suspended + cc_zenoti=no, real-time) + GHL Membership Suspended + clear Credit Card Zenoti. No Zenoti write. Athena unchanged by hub — staff collect card (7 business days) then may manually deactivate Athena.</span>
         </div>
       </div>
     </div>
@@ -701,29 +708,33 @@
       Zenoti membership renewals are paid by the Zenoti Saved Card only (payment vault firewall —
       never use Athena Card On File for this charge).
       On payment failure on the membership renewal day (card missing, expired, or invalid/declined):
-      (1) membership must be <em>Suspended</em> in Zenoti (hub ensures if Zenoti did not already);
-      (2) push into GHL by checking/selecting
-      <em>Membership Cancellation Data → Membership Suspended</em> (dropdown radio option
-      <em>Membership Suspended</em>);
-      (3) Admin Check List / ledger <code>cc_zenoti = no</code> immediately and clear GHL
-      <em>Credit Card Zenoti</em>;
-      (4) Admin Check List <code>membership = no</code> (not active while Suspended).
+      Zenoti itself Suspends the membership (guest / user / membership) — hub does
+      <strong>not</strong> write Zenoti.
+      Hub immediately (real-time / visible on browser refresh):
+      (1) publish to BigQuery so Ledger + Missing Demographics Executive Roll Up show
+      <code>cc_zenoti = no</code> (historically accurate as far as Zenoti API allows),
+      <code>membership_zenoti = Suspended</code>, and <code>membership_athena</code> / Active Athena
+      still <strong>Yes</strong> while Athena remains Active (expected Path D window — not a Conflict);
+      (2) set GHL <em>Membership Cancellation Data → Membership Suspended</em>
+      (dropdown radio option <em>Membership Suspended</em>);
+      (3) clear GHL <em>Credit Card Zenoti</em> / force <code>cc_zenoti = no</code> in reporting.
       <strong>Athena decision (confirmed for now — may revisit):</strong>
       Do <strong>not</strong> auto-write Athena Membership Status on Path D.
       Athena stays as-is (typically still Active) until staff <em>manually</em> set Membership Status
-      out of Active / inactive. Until then, Admin Check List surfaces a <em>Conflict</em>
-      (Athena Active vs Zenoti Suspended) so ops can reconcile.
+      out of Active / inactive. Dual ledger columns make that window visible without inventing a Conflict.
       This is <strong>not</strong> a cancel (Paths A–B stay Cancelled).
     </p>
 
     <p class="callout ok">
-      <strong>Manual ops after Path D (confirmed — not hub automation):</strong>
+      <strong>Manual ops after Path D (confirmed — not hub automation in v1):</strong>
       Within <strong>7 business days</strong> of the renewal-day decline, admin staff attempt to
       collect a working Zenoti Saved Card. If the situation is still unresolved after that window,
-      staff then <em>manually</em> deactivate membership in Athena.
-      The hub must <strong>not</strong> auto-deactivate Athena, invent a countdown job, or charge
-      Athena Card On File. The Admin Check List Conflict (Athena Active vs Zenoti Suspended) is the
-      expected prompt during the collection window.
+      staff then <em>manually</em> deactivate membership in Athena (human error accepted in this iteration).
+      The hub must <strong>not</strong> auto-deactivate Athena in v1, invent a countdown job, or charge
+      Athena Card On File. During the collection window, Ledger shows Membership Zenoti Suspended +
+      Active Athena Yes + CC Zenoti No — the expected ops prompt.
+      <strong>Future (after confidence in real-time + history):</strong> automation may flip Athena
+      inactive 7 business days after Zenoti Suspend — explicitly out of v1 / Day 0.
     </p>
 
     <p class="callout ok">
@@ -731,8 +742,8 @@
       <em>Path D</em> (renewal decline, Goal 2a) and <em>Path C</em> (manual staff suspend in Zenoti).
       Both end in Zenoti Inactive → Suspended and the same GHL Membership Suspended mirror
       (set when Suspended; clear when no longer Suspended).
-      The older rule “hub never writes Suspended” is <strong>withdrawn for Path D</strong> —
-      the hub may ensure Zenoti Suspended on decline.
+      Path D does <strong>not</strong> write Zenoti Suspended — Zenoti is already the source.
+      Hub fans out Suspended + card-not-operable to BigQuery (Ledger/Rollup) and GHL only.
     </p>
 
     <p class="callout warn">
@@ -745,8 +756,8 @@
     <p class="callout ok">
       <strong>Zenoti Inactive reason (confirmed):</strong>
       Automated <em>cancels</em> (Paths A–B) map to <em>Cancelled</em> only.
-      <em>Suspended</em> is used for Path D renewal declines (hub may write/ensure) and Path C manual suspend —
-      never use Suspended for intentional cancels.
+      <em>Suspended</em> is used for Path D renewal declines (Zenoti-native) and Path C manual suspend —
+      never use Suspended for intentional cancels. Hub never writes Suspended <em>into</em> Zenoti.
     </p>
 
     <p class="callout block">
@@ -770,15 +781,20 @@
       On Path B (Athena leaves Active): set Zenoti Inactive/<strong>Cancelled</strong>; set GHL
       Membership Cancelled=True and copy cancellation date from Athena.
       On Path C (manual Zenoti Suspended): set/clear GHL Membership Suspended.
-      On Path D (Goal 2a renewal decline): ensure Zenoti Inactive/<strong>Suspended</strong>; set GHL
-      <em>Membership Cancellation Data → Membership Suspended</em>; force <code>cc_zenoti=no</code> + clear GHL Credit Card Zenoti;
-      leave Athena Membership Status unchanged (no hub timer). Staff manual follow-up: attempt Zenoti card
+      On Path D (Goal 2a renewal decline): ingest Zenoti Inactive/<strong>Suspended</strong> (Zenoti already
+      did this) — no Zenoti write. Immediately: publish Suspended + <code>cc_zenoti=no</code> to BigQuery
+      (Ledger/Rollup, real-time / on refresh, history as far as Zenoti API allows); set GHL
+      <em>Membership Cancellation Data → Membership Suspended</em>; clear GHL Credit Card Zenoti
+      (idempotent writes). Prefer Zenoti webhooks when available; otherwise short API polling
+      (same rule as AthenaNet ingest — do not assume either vendor has webhooks).
+      Nightly reconcile self-heals missed cycles.
+      Leave Athena Membership Status unchanged (no hub timer). Staff manual follow-up: attempt Zenoti card
       collection within 7 business days, then manually deactivate Athena if still unresolved;
       stamp decline source.
-      Admin Check List <code>membership</code> = yes only when Athena shows Active and Zenoti
-      Active count includes the membership (not Suspended/Cancelled). Surface Conflict if Athena
-      Active while Zenoti Suspended/Cancelled — that Conflict is expected after Path D during the
-      manual collection window until Athena is manually updated.
+      <strong>v1 Ledger columns:</strong> <code>membership_zenoti</code> = Yes | Cancelled | Suspended (Zenoti status);
+      <code>membership_athena</code> / Active Athena = Yes | No (Athena only). Path D window often shows
+      Suspended + Active Athena Yes + <code>cc_zenoti=no</code> during the manual collection window.
+      Future automation may flip Athena inactive 7 business days after Zenoti Suspend — not in v1.
     </p>
   </div>
 </body>
