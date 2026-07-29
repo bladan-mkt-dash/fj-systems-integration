@@ -534,7 +534,7 @@
       <p class="subtitle">
         Highest-priority ops field. Cancellation can start from the online form (GHL already
         receives that sink) or from a phone request entered in Athena. Separately,
-        <strong>Goal 3 — Zenoti membership-renewal declines:</strong> when Zenoti cannot charge
+        <strong>Goal 2a — Zenoti membership-renewal declines:</strong> when Zenoti cannot charge
         the Zenoti Saved Card at renewal (missing, expired, or invalid/declined), membership
         must become <em>Suspended</em> in Zenoti and GHL, and Credit Card Zenoti must read
         <strong>No</strong> on the Admin Check List / ledger immediately.
@@ -581,14 +581,14 @@
             <td>Zenoti</td>
             <td class="mono">Memberships → Inactive → Suspended</td>
             <td>Inactive reason label</td>
-            <td><span class="chip oneway">Source</span> Goal 3 renewal decline (hub ensures) <em>or</em> manual staff suspend → mirrors to GHL</td>
+            <td><span class="chip oneway">Source</span> Goal 2a renewal decline (hub ensures) <em>or</em> manual staff suspend → mirrors to GHL</td>
           </tr>
           <tr>
             <td>Membership renewal charge (Zenoti)</td>
             <td>Zenoti</td>
             <td class="mono">Membership renewal → charge Saved Card → Payments</td>
             <td>Payment attempt / decline event</td>
-            <td><span class="chip oneway">Trigger · Goal 3</span> failure (no card / expired / invalid) starts Path D</td>
+            <td><span class="chip oneway">Trigger · Goal 2a</span> failure (no card / expired / invalid) starts Path D</td>
           </tr>
           <tr>
             <td>Membership cancelled?</td>
@@ -609,7 +609,7 @@
             <td>GoHighLevel</td>
             <td class="mono">Membership Cancellation Data → Membership Suspended</td>
             <td>Dropdown radio (option: Membership Suspended)</td>
-            <td><span class="chip oneway">Sink</span> check/select when Zenoti Suspended (Goal 3 renewal-day decline or manual Path C); clear when no longer Suspended</td>
+            <td><span class="chip oneway">Sink</span> check/select when Zenoti Suspended (Goal 2a renewal-day decline or manual Path C); clear when no longer Suspended</td>
           </tr>
           <tr>
             <td>Admin Check List · Active membership</td>
@@ -682,7 +682,7 @@
       </div>
       <div class="flow-row sync">
         <div class="flow-node">
-          <strong>Path D · Zenoti renewal decline (Goal 3)</strong>
+          <strong>Path D · Zenoti renewal decline (Goal 2a)</strong>
           <span>Renewal charge fails: no Saved Card, expired, or invalid/declined</span>
         </div>
         <div class="flow-edge">
@@ -697,7 +697,7 @@
     </div>
 
     <p class="callout warn">
-      <strong>Goal 3 — Zenoti renewal decline (confirmed):</strong>
+      <strong>Goal 2a — Zenoti renewal decline (confirmed):</strong>
       Zenoti membership renewals are paid by the Zenoti Saved Card only (payment vault firewall —
       never use Athena Card On File for this charge).
       On payment failure on the membership renewal day (card missing, expired, or invalid/declined):
@@ -728,7 +728,7 @@
 
     <p class="callout ok">
       <strong>Suspended — two entry points:</strong>
-      <em>Path D</em> (renewal decline, Goal 3) and <em>Path C</em> (manual staff suspend in Zenoti).
+      <em>Path D</em> (renewal decline, Goal 2a) and <em>Path C</em> (manual staff suspend in Zenoti).
       Both end in Zenoti Inactive → Suspended and the same GHL Membership Suspended mirror
       (set when Suspended; clear when no longer Suspended).
       The older rule “hub never writes Suspended” is <strong>withdrawn for Path D</strong> —
@@ -770,7 +770,7 @@
       On Path B (Athena leaves Active): set Zenoti Inactive/<strong>Cancelled</strong>; set GHL
       Membership Cancelled=True and copy cancellation date from Athena.
       On Path C (manual Zenoti Suspended): set/clear GHL Membership Suspended.
-      On Path D (Goal 3 renewal decline): ensure Zenoti Inactive/<strong>Suspended</strong>; set GHL
+      On Path D (Goal 2a renewal decline): ensure Zenoti Inactive/<strong>Suspended</strong>; set GHL
       <em>Membership Cancellation Data → Membership Suspended</em>; force <code>cc_zenoti=no</code> + clear GHL Credit Card Zenoti;
       leave Athena Membership Status unchanged (no hub timer). Staff manual follow-up: attempt Zenoti card
       collection within 7 business days, then manually deactivate Athena if still unresolved;

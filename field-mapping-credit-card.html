@@ -527,7 +527,7 @@
         <em>Credit Card Athena</em> and <em>Credit Card Zenoti</em> — that mirror
         <em>operable</em> vault presence one-way and cannot be checked manually. Athena also surfaces
         <strong>Credit Card Agreement</strong> flags (<em>Expiring Soon</em> / <em>Expired</em>) for the ledger.
-        <strong>Goal 3:</strong> a Zenoti membership-renewal decline forces
+        <strong>Goal 2a:</strong> a Zenoti membership-renewal decline forces
         <code>cc_zenoti = no</code> immediately (and clears GHL Credit Card Zenoti).
       </p>
     </header>
@@ -560,7 +560,7 @@
     </p>
 
     <p class="callout block">
-      <strong>Goal 3 — Zenoti renewal decline ⇒ CC Zenoti No (hard rule):</strong>
+      <strong>Goal 2a — Zenoti renewal decline ⇒ CC Zenoti No (hard rule):</strong>
       Zenoti membership renewals charge the Zenoti Saved Card only (never Athena Card On File).
       If renewal fails because the Zenoti card is <em>missing</em>, <em>expired</em>, or
       <em>invalid/declined</em>, then as soon as that decline is known:
@@ -604,7 +604,7 @@
             <ul>
               <li>Stores a chargeable payment method for Zenoti POS / <strong>membership renewals</strong></li>
               <li>Drives GHL option <em>Credit Card Zenoti</em> only when <em>operable</em></li>
-              <li>Renewal decline ⇒ clear GHL option + <code>cc_zenoti=no</code> (Goal 3)</li>
+              <li>Renewal decline ⇒ clear GHL option + <code>cc_zenoti=no</code> (Goal 2a)</li>
               <li>Never receives Athena card tokens</li>
             </ul>
             <span class="payload vault">Payment vault · tokenized card</span>
@@ -692,7 +692,7 @@
             </div>
             <div class="flow-edge">
               <div class="dir" aria-hidden="true">→</div>
-              <div class="kind" style="color: var(--block)">Goal 3 · immediate</div>
+              <div class="kind" style="color: var(--block)">Goal 2a · immediate</div>
             </div>
             <div class="flow-node">
               <strong>cc_zenoti = no (+ clear GHL Credit Card Zenoti)</strong>
@@ -712,7 +712,7 @@
             set/clear option <code>Credit Card Athena</code> from Athena presence;
             set/clear option <code>Credit Card Zenoti</code> from Zenoti <em>operable</em> presence.
             On Zenoti membership-renewal decline event: force operable=false,
-            <code>cc_zenoti=no</code>, clear GHL Credit Card Zenoti (Goal 3).
+            <code>cc_zenoti=no</code>, clear GHL Credit Card Zenoti (Goal 2a).
             Options may be blank/checked independently. Lock or overwrite manual edits —
             these options are integration-owned. Never move PAN/token between vaults or into GHL.
             Never charge Zenoti renewal from Athena Card On File.
@@ -747,7 +747,7 @@
             <td>Zenoti</td>
             <td class="mono">Saved Card → Payments</td>
             <td>Payment method / token</td>
-            <td><span class="chip oneway">Source</span> → GHL Credit Card Zenoti when operable; vault isolated; Goal 3 decline ⇒ not operable</td>
+            <td><span class="chip oneway">Source</span> → GHL Credit Card Zenoti when operable; vault isolated; Goal 2a decline ⇒ not operable</td>
           </tr>
           <tr>
             <td>Credit card on file in Athena? (CRM)</td>
@@ -789,7 +789,7 @@
             <td>Reporting app</td>
             <td class="mono">cc_zenoti</td>
             <td>yes / no</td>
-            <td>yes only if Zenoti Saved Card <em>operable</em>; no if missing, expired, invalid, or renewal-declined (Goal 3) — independent of Athena</td>
+            <td>yes only if Zenoti Saved Card <em>operable</em>; no if missing, expired, invalid, or renewal-declined (Goal 2a) — independent of Athena</td>
           </tr>
         </tbody>
       </table>
@@ -822,7 +822,7 @@
           <p>
             Athena present ⇔ select <em>Credit Card Athena</em>; Athena absent ⇔ clear it.
             Zenoti <em>operable</em> ⇔ select <em>Credit Card Zenoti</em>; missing/expired/declined ⇔ clear it.
-            On renewal decline, clear immediately (Goal 3). Keep writes idempotent.
+            On renewal decline, clear immediately (Goal 2a). Keep writes idempotent.
             Do not store last4 / brand / token in GHL.
           </p>
         </article>
@@ -852,7 +852,7 @@
           </p>
         </article>
         <article class="rule">
-          <span class="tag" style="color: var(--block)">Goal 3</span>
+          <span class="tag" style="color: var(--block)">Goal 2a</span>
           <h3>Renewal decline forces CC Zenoti No</h3>
           <p>
             Do not wait for staff to delete the Saved Card token. As soon as Zenoti reports a

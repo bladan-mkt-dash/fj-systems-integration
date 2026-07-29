@@ -423,7 +423,7 @@
         <strong>Core:</strong> AthenaNet, Zenoti, and GoHighLevel feed a GCP HIPAA-aligned hub;
         BigQuery holds the golden record and ops history; the staff reporting app (Admin Check List)
         reads BigQuery only — enter once, then apply the declared sync class per field.
-        Hub sync classes (SoT: <a href="field-mapping.html#sync-classes">field mapping registry</a>): <code>fill_if_empty</code> (eligible demographics only) · <code>isolated_vault</code> (payment firewall) · <code>forced_presence_mirror</code> (Call Outcomes set/clear) · <code>athena_only_read</code> · <code>two_path_cancel</code> (allowed Athena write) · <code>zenoti_renewal_decline</code> (Goal 3 Suspended + cc_zenoti=no). Fill-if-empty is <strong>not</strong> the only outbound pattern.
+        Hub sync classes (SoT: <a href="field-mapping.html#sync-classes">field mapping registry</a>): <code>fill_if_empty</code> (eligible demographics only) · <code>isolated_vault</code> (payment firewall) · <code>forced_presence_mirror</code> (Call Outcomes set/clear) · <code>athena_only_read</code> · <code>two_path_cancel</code> (allowed Athena write) · <code>zenoti_renewal_decline</code> (Goal 2a Suspended + cc_zenoti=no). Fill-if-empty is <strong>not</strong> the only outbound pattern.
         Never overwrite AthenaNet demographics once set via <code>fill_if_empty</code>.
         <strong>Supporting:</strong> Woo identity + eComm sales (POS vs eComm kept distinct);
         Zenoti↔Woo inventory sync stays outside GCP.
@@ -583,7 +583,7 @@
       <strong>Supporting — Woo:</strong> inventory Zenoti↔Woo outside GCP; Woo identity when unifying store customers;
       Zenoti POS and Woo eComm under one roof, kept distinguishable.
       <strong>Product rules (not drawn as boxes here):</strong> Goals 2–3 / Phase E —
-      cancel Paths A–B and Goal 3 Zenoti renewal decline (Suspended + cc_zenoti=no) live in
+      cancel Paths A–B and Goal 2a Zenoti renewal decline (Suspended + cc_zenoti=no) live in
       <a href="field-mapping-active-membership.html">Active Membership</a>,
       <a href="field-mapping-credit-card.html">Credit Card</a>, and the
       <a href="operations-reporting-layer.html">Operations reporting layer</a>.

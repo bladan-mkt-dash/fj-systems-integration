@@ -407,7 +407,7 @@
         <strong>Core path for easier data entry:</strong> when any team updates a patient or lead,
         webhooks hit the GCP Middleware Hub. The hub matches identity, updates the master record in BigQuery,
         then applies the correct <em>sync class</em> per field — not fill-if-empty for everything.
-        Hub sync classes (SoT: <a href="field-mapping.html#sync-classes">field mapping registry</a>): <code>fill_if_empty</code> (eligible demographics only) · <code>isolated_vault</code> (payment firewall) · <code>forced_presence_mirror</code> (Call Outcomes set/clear) · <code>athena_only_read</code> · <code>two_path_cancel</code> (allowed Athena write) · <code>zenoti_renewal_decline</code> (Goal 3 Suspended + cc_zenoti=no). Fill-if-empty is <strong>not</strong> the only outbound pattern.
+        Hub sync classes (SoT: <a href="field-mapping.html#sync-classes">field mapping registry</a>): <code>fill_if_empty</code> (eligible demographics only) · <code>isolated_vault</code> (payment firewall) · <code>forced_presence_mirror</code> (Call Outcomes set/clear) · <code>athena_only_read</code> · <code>two_path_cancel</code> (allowed Athena write) · <code>zenoti_renewal_decline</code> (Goal 2a Suspended + cc_zenoti=no). Fill-if-empty is <strong>not</strong> the only outbound pattern.
         Existing AthenaNet demographic values are never overwritten by <code>fill_if_empty</code> —
         only by an explicit product-allowed write (e.g. <code>two_path_cancel</code>) or a manual Athena edit.
         <strong>This flow remediates blanks where the class allows — it does not publish the Admin Check List.</strong>
@@ -553,7 +553,7 @@
         This is not fill-if-empty; it is an explicit product-allowed write.
       </p>
       <p class="athena-rule">
-        <strong>Class <code>zenoti_renewal_decline</code> — Goal 3:</strong>
+        <strong>Class <code>zenoti_renewal_decline</code> — Goal 2a:</strong>
         Zenoti membership renewals charge the Zenoti Saved Card only. On payment failure
         (missing / expired / invalid card), ensure Zenoti membership <em>Suspended</em>,
         set GHL Membership Suspended, and force <code>cc_zenoti=no</code> (clear GHL Credit Card Zenoti)

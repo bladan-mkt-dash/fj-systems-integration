@@ -21,6 +21,13 @@
     }
     p { color: #3d524c; font-size: 0.9375rem; }
     ul { padding-left: 1.25rem; }
+    ol.goals { padding-left: 1.35rem; }
+    ol.goals > li { margin-bottom: 0.85rem; }
+    ol.goals ul {
+      margin: 0.45rem 0 0.15rem;
+      padding-left: 1.15rem;
+    }
+    ol.goals ul li { margin-bottom: 0.45rem; }
     li { margin-bottom: 0.65rem; }
     a { color: #264540; font-weight: 600; }
     .authority {
@@ -91,36 +98,36 @@
   </section>
 
   <h2>Goals</h2>
-  <ul>
+  <ol class="goals">
     <li>
-      Unify patient records across AthenaNet, Zenoti, GoHighLevel, and WooCommerce,
+      <strong>Goal 1 — Unify patient records.</strong>
+      Enter once and keep identity consistent across AthenaNet, Zenoti, GoHighLevel, and WooCommerce,
       with AthenaNet as the golden source of truth.
     </li>
     <li>
-      Keep patient cancellations and terminations synchronized across every connected system.
+      <strong>Goal 2 — Keep membership status outcomes synchronized</strong>
+      across every connected system (cancels, terminations, and suspensions).
+      <ul>
+        <li>
+          <strong>Goal 2a — Zenoti membership-renewal declines (Path D).</strong>
+          On renewal-day card miss / decline: Suspend Zenoti + GHL, force Credit Card Zenoti = No;
+          Athena stays unchanged by the hub (manual ops follow-up — no auto-timer).
+          Detail:
+          <a href="field-mapping-active-membership.html">Active Membership Path D</a>
+          ·
+          <a href="field-mapping-credit-card.html">Credit Card</a>.
+        </li>
+      </ul>
     </li>
     <li>
-      <strong>Zenoti membership-renewal declines (Goal 3):</strong>
-      Zenoti renews memberships by charging the patient’s
-      <em>Zenoti Saved Card</em>. If renewal fails because that card is missing,
-      expired, or invalid/declined, the membership must be
-      <em>Suspended</em> in Zenoti and in GoHighLevel, and the Admin Check List /
-      ledger must show <strong>Credit Card Zenoti = No</strong> as soon as the
-      decline is known. Athena Membership Status stays unchanged until staff manually
-      set it inactive — collecting a working Zenoti card and any Athena deactivation
-      remain a <strong>manual</strong> ops follow-up (no auto-timer; confirmed for now;
-      may revisit). Detail:
-      <a href="field-mapping-active-membership.html">Active Membership Path D</a> and
-      <a href="field-mapping-credit-card.html">Credit Card</a>.
-    </li>
-    <li>
-      Deliver a live, internal-only, HIPAA-conscious
+      <strong>Goal 3 — Deliver the Admin Check List.</strong>
+      A live, internal-only, HIPAA-conscious
       <a href="admin-check-list.html">Admin Check List</a>
-      dashboard for the 5 Journeys Practice — staff access only —
-      so missing demographics and daily operational exceptions surface automatically from integrated systems
+      for the 5 Journeys Practice (staff access only) so missing demographics and daily
+      operational exceptions surface automatically
       (see also the <a href="admin-check-list-ledger.html">record ledger</a> variant).
     </li>
-  </ul>
+  </ol>
 
   <h2>Operations Report</h2>
   <ul>

@@ -380,7 +380,7 @@
         <strong>Core:</strong> staff enter shared patient data once (AthenaNet, Zenoti, or GHL);
         the Middleware Hub matches identity, updates BigQuery, and applies the declared
         <em>sync class</em> per field.
-        Hub sync classes (SoT: <a href="field-mapping.html#sync-classes">field mapping registry</a>): <code>fill_if_empty</code> (eligible demographics only) · <code>isolated_vault</code> (payment firewall) · <code>forced_presence_mirror</code> (Call Outcomes set/clear) · <code>athena_only_read</code> · <code>two_path_cancel</code> (allowed Athena write) · <code>zenoti_renewal_decline</code> (Goal 3 Suspended + cc_zenoti=no). Fill-if-empty is <strong>not</strong> the only outbound pattern.
+        Hub sync classes (SoT: <a href="field-mapping.html#sync-classes">field mapping registry</a>): <code>fill_if_empty</code> (eligible demographics only) · <code>isolated_vault</code> (payment firewall) · <code>forced_presence_mirror</code> (Call Outcomes set/clear) · <code>athena_only_read</code> · <code>two_path_cancel</code> (allowed Athena write) · <code>zenoti_renewal_decline</code> (Goal 2a Suspended + cc_zenoti=no). Fill-if-empty is <strong>not</strong> the only outbound pattern.
         AthenaNet demographics are never overwritten once populated by <code>fill_if_empty</code>.
         The Custom Reporting App reads BigQuery only — including the Admin Check List.
         <strong>Supporting:</strong> Woo identity / POS–eComm sales when needed; inventory Zenoti↔Woo
@@ -472,7 +472,7 @@
       <strong>Core on this map:</strong> enter once → hub → BigQuery golden record → fill empty
       <em>eligible demographic</em> fields across systems;
       staff ops dashboards (Admin Check List) read BigQuery only.
-      Payment card tokens do not fill across AthenaNet ↔ Zenoti; membership cancel (Paths A–B) and Goal 3 renewal decline (Path D: Suspended + cc_zenoti=no)
+      Payment card tokens do not fill across AthenaNet ↔ Zenoti; membership cancel (Paths A–B) and Goal 2a renewal decline (Path D: Suspended + cc_zenoti=no)
       use dedicated field-map rules (Path A may write Athena; Path D leaves Athena unchanged by the hub —
       staff manual card collection within 7 business days, then optional Athena deactivate; confirmed for now, may revisit).
       <strong>Supporting — Woo:</strong> inventory Zenoti↔Woo stays outside GCP; Woo identity when a shopper is also a patient;
@@ -482,7 +482,7 @@
       <a href="field-mapping.html">Field mapping registry</a> ·
       <a href="field-mapping-credit-card.html">Credit Card</a> ·
       <a href="field-mapping-active-membership.html">Active Membership</a>.
-      Goal 2 cancel/termination and Goal 3 Zenoti renewal-decline delivery land in Phase E;
+      Goal 2 cancel/termination and Goal 2a Zenoti renewal-decline delivery land in Phase E;
       membership Paths A–D (including renewal decline → Suspended + cc_zenoti=no) are specified on the
       Active Membership and Credit Card field maps — do not invent field behavior from this hub diagram alone.
       This hub alone does not guarantee the Admin Check List — see

@@ -418,13 +418,13 @@
               <td>Credit card — Zenoti vault</td>
               <td><span class="sys zenoti">Zenoti</span> Saved Card → Payments (operable)</td>
               <td>GHL Call Outcomes → Credit Card → Credit Card Zenoti (operable mirror)</td>
-              <td><span class="tag">Missing</span> if Saved Card absent <em>or not operable</em> (expired / invalid / <strong>membership-renewal declined — Goal 3</strong>) — independent of Athena</td>
+              <td><span class="tag">Missing</span> if Saved Card absent <em>or not operable</em> (expired / invalid / <strong>membership-renewal declined — Goal 2a</strong>) — independent of Athena</td>
             </tr>
             <tr>
               <td>Active membership (Zenoti Suspended)</td>
               <td><span class="sys zenoti">Zenoti</span> Inactive → Suspended</td>
               <td>GHL Membership Suspended (set/clear)</td>
-              <td>After Goal 3 renewal decline: Suspended in Zenoti + GHL (<em>Membership Cancellation Data → Membership Suspended</em>); <code>membership</code> not Active; expected <span class="tag">Conflict</span> while Athena still Active. Manual ops (not hub): staff attempt Zenoti card collection within <strong>7 business days</strong>, then may manually deactivate Athena if unresolved</td>
+              <td>After Goal 2a renewal decline: Suspended in Zenoti + GHL (<em>Membership Cancellation Data → Membership Suspended</em>); <code>membership</code> not Active; expected <span class="tag">Conflict</span> while Athena still Active. Manual ops (not hub): staff attempt Zenoti card collection within <strong>7 business days</strong>, then may manually deactivate Athena if unresolved</td>
             </tr>
             <tr>
               <td>Credit card agreement</td>
@@ -466,7 +466,7 @@
               <td>Active membership (cross-system)</td>
               <td><span class="sys athena">AthenaNet</span> Membership Status · <span class="sys zenoti">Zenoti</span> Active / Cancelled / Suspended</td>
               <td>GHL Membership Cancellation Data + Membership Suspended</td>
-              <td>Ledger <code>membership</code> = yes only when Athena Active <em>and</em> Zenoti Active (not Suspended/Cancelled). Path A cancel may write Athena (<code>two_path_cancel</code>, stamped source). See also Suspended row above for Goal 3.</td>
+              <td>Ledger <code>membership</code> = yes only when Athena Active <em>and</em> Zenoti Active (not Suspended/Cancelled). Path A cancel may write Athena (<code>two_path_cancel</code>, stamped source). See also Suspended row above for Goal 2a.</td>
             </tr>
           </tbody>
         </table>
@@ -481,7 +481,7 @@
           Output table: <strong>demographics_gap_fact</strong> —
           patient_id, field (<code>photo</code> | <code>ins_card</code> | <code>eligibility</code> | <code>referral</code> | <code>follow_up</code> | <code>cc_athena</code> | <code>cc_zenoti</code> | <code>cc_agreement</code> | <code>membership</code>),
           status (missing|conflict|expiring_soon|expired|suspended|declined|n_a), systems_checked, priority, detected_at.
-          Goal 3 decline events should publish <code>cc_zenoti</code> missing/declined and membership suspended without waiting for a later poll if webhooks allow.
+          Goal 2a decline events should publish <code>cc_zenoti</code> missing/declined and membership suspended without waiting for a later poll if webhooks allow.
         </p>
       </section>
 
