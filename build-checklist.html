@@ -430,6 +430,7 @@
           <ul class="sub">
             <li>~~Woo identity in v1 vs later~~ — decided: out of Admin Check List / ledger field contracts; identity match only.</li>
             <li>~~Goal 2a timing vs Day 0~~ — decided: Path D fan-out (Zenoti → BQ + GHL, no Zenoti write) is Day 0; webhook <em>or</em> short API poll + nightly reconcile; freshness SLA minutes.</li>
+            <li>~~Machine-readable field registry (JSON + Given/When/Then)~~ — <strong>deferred (do later)</strong>: not required for product handoff. HTML field maps remain SoT; JSON export + stubs can follow once a contractor is building. YAML not in v1.</li>
             <li>Vendor webhook availability (AthenaNet / Zenoti / GHL) — confirm at build; product rule is already set: webhook when offered, else short poll + nightly reconcile (do not block Day 0).</li>
             <li>Any fields that must never appear on a GHL calendar or contact note.</li>
           </ul>
