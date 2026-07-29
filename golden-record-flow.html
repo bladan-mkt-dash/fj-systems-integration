@@ -557,8 +557,10 @@
         Zenoti membership renewals charge the Zenoti Saved Card only. On payment failure
         (missing / expired / invalid card), ensure Zenoti membership <em>Suspended</em>,
         set GHL Membership Suspended, and force <code>cc_zenoti=no</code> (clear GHL Credit Card Zenoti)
-        immediately. Leave Athena Membership Status unchanged until staff manually set it inactive
-        (confirmed for now; may revisit), and never charge Athena Card On File for a Zenoti renewal.
+        immediately. Leave Athena Membership Status unchanged (no auto-timer) — staff may collect a
+        working Zenoti card within 7 business days, then manually deactivate Athena; that follow-up is
+        ops process, not hub automation (confirmed for now; may revisit). Never charge Athena Card On File
+        for a Zenoti renewal.
       </p>
       <p class="athena-rule">
         <strong>Class <code>forced_presence_mirror</code>:</strong>

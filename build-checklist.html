@@ -339,7 +339,7 @@
                 <li><code>forced_presence_mirror</code>: GHL Call Outcomes options are system set/clear from source presence (absence clears); hidden/unclickable after go-live.</li>
                 <li><code>athena_only_read</code>: no outbound sync; Admin Check List reads Athena via BigQuery (e.g. eligibility, follow-up, CC agreement).</li>
                 <li><code>two_path_cancel</code>: when online-form cancel is authoritative in GHL, the hub may update Athena Membership Status out of Active (stamped source). See <a href="field-mapping-active-membership.html">Active Membership map</a>.</li>
-                <li><code>zenoti_renewal_decline</code> (Goal 3): Zenoti membership renewal charge fails (no Saved Card / expired / invalid) → ensure Zenoti <em>Suspended</em> + GHL Membership Suspended + force <code>cc_zenoti=no</code> (clear GHL Credit Card Zenoti). Leave Athena Membership Status unchanged until staff manually set inactive (confirmed for now; may revisit); do not charge Athena Card On File for Zenoti renewals. See Active Membership Path D + Credit Card map.</li>
+                <li><code>zenoti_renewal_decline</code> (Goal 3): Zenoti membership renewal charge fails (no Saved Card / expired / invalid) → ensure Zenoti <em>Suspended</em> + GHL <em>Membership Cancellation Data → Membership Suspended</em> + force <code>cc_zenoti=no</code> (clear GHL Credit Card Zenoti). Leave Athena Membership Status unchanged (no hub timer); staff manual follow-up (card collection within 7 business days, then optional Athena deactivate) is ops-only — see Active Membership Path D. Do not charge Athena Card On File for Zenoti renewals.</li>
                 <li>Conflicting non-empty values across systems are not auto-“fixed”; they surface as Conflicts on the Admin Check List.</li>
                 <li>Architecture pages must not invent field behavior — the <a href="field-mapping.html">field mapping registry</a> wins.</li>
               </ul>
@@ -357,7 +357,7 @@
               <strong>Core — cancellations, terminations &amp; Zenoti renewal declines</strong>
               <ul class="sub">
                 <li>Patient cancellations and terminations must stay synchronized across connected systems (Goal 2).</li>
-                <li><strong>Goal 3 — Zenoti membership-renewal declines:</strong> Zenoti renews memberships by charging the Zenoti Saved Card. On failure (card missing, expired, or invalid/declined): Suspend membership in Zenoti and GHL; Admin Check List / ledger must show Credit Card Zenoti = No immediately; membership is not Active while Suspended. Athena Membership Status stays unchanged until staff manually set it inactive (confirmed for now; may revisit) — expect Admin Check List Conflict while Athena still Active. Never use Athena Card On File for Zenoti renewals.</li>
+                <li><strong>Goal 3 — Zenoti membership-renewal declines:</strong> Zenoti renews memberships by charging the Zenoti Saved Card. On failure (card missing, expired, or invalid/declined): Suspend membership in Zenoti and GHL; Admin Check List / ledger must show Credit Card Zenoti = No immediately; membership is not Active while Suspended. Athena Membership Status stays unchanged by the hub (no auto-timer) — collecting a card and deactivating Athena remain manual ops (7 business days collection window on Path D). Expect Admin Check List Conflict while Athena still Active. Never use Athena Card On File for Zenoti renewals.</li>
               </ul>
             </li>
             <li>
@@ -489,8 +489,10 @@
             </li>
             <li>
               Goal 3: after a Zenoti membership-renewal payment failure, ledger/Admin Check List show
-              membership not Active (Suspended path) and <code>cc_zenoti = no</code>; GHL Membership
-              Suspended is set; Athena Membership Status stays unchanged until staff manually set inactive (Conflict while Athena still Active is expected).
+              membership not Active (Suspended path) and <code>cc_zenoti = no</code>; GHL
+              <em>Membership Cancellation Data → Membership Suspended</em> is set; Athena Membership Status
+              stays unchanged by the hub (Conflict while Athena still Active is expected during the
+              manual 7-business-day card-collection window — see Active Membership Path D).
             </li>
             <li>Provider lists: Follow-ups, Outstanding Copays, Upcoming Appointment Issues.</li>
             <li>Appointment Date Range filter semantics (what is in/out of scope).</li>
@@ -656,8 +658,11 @@
               <a href="field-mapping-active-membership.html">Active Membership field map</a>
               (form path may write Athena; phone path Athena→Zenoti/GHL; cancels land as Zenoti <em>Cancelled</em>).</li>
             <li><strong>Goal 3 / Path D:</strong> ingest Zenoti membership-renewal payment failures (no card / expired / invalid);
-              ensure Zenoti <em>Suspended</em>; set GHL Membership Suspended; force <code>cc_zenoti=no</code> + clear GHL Credit Card Zenoti;
-              leave Athena Membership Status unchanged until staff manually set inactive (confirmed for now; may revisit); stamp decline source.</li>
+              ensure Zenoti <em>Suspended</em>; set GHL <em>Membership Cancellation Data → Membership Suspended</em>;
+              force <code>cc_zenoti=no</code> + clear GHL Credit Card Zenoti;
+              leave Athena Membership Status unchanged (no hub timer; stamp decline source).
+              Staff manual follow-up (ops, not automation): attempt Zenoti card collection within 7 business days,
+              then manually deactivate Athena if unresolved — see Active Membership Path D.</li>
             <li>Path C manual Zenoti suspend still mirrors to GHL Membership Suspended.</li>
             <li>Ensure BQ membership + card operable state stays consistent with Admin Check List.</li>
           </ul>

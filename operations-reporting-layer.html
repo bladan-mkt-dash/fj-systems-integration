@@ -424,7 +424,7 @@
               <td>Active membership (Zenoti Suspended)</td>
               <td><span class="sys zenoti">Zenoti</span> Inactive → Suspended</td>
               <td>GHL Membership Suspended (set/clear)</td>
-              <td>After Goal 3 renewal decline: Suspended in Zenoti + GHL; <code>membership</code> not Active; expected <span class="tag">Conflict</span> while Athena still Active until staff manually set Athena inactive</td>
+              <td>After Goal 3 renewal decline: Suspended in Zenoti + GHL (<em>Membership Cancellation Data → Membership Suspended</em>); <code>membership</code> not Active; expected <span class="tag">Conflict</span> while Athena still Active. Manual ops (not hub): staff attempt Zenoti card collection within <strong>7 business days</strong>, then may manually deactivate Athena if unresolved</td>
             </tr>
             <tr>
               <td>Credit card agreement</td>
@@ -432,16 +432,55 @@
               <td>—</td>
               <td><span class="tag">Missing</span> / action if <em>Expiring Soon</em> or <em>Expired</em>; N/A if no Athena Card On File. Not the same as card exp date.</td>
             </tr>
+            <tr>
+              <td>Photo ID</td>
+              <td><span class="sys athena">AthenaNet</span> Drivers License Image</td>
+              <td>GHL Call Outcomes → Other Important Documentation → Pt. Picture ID (presence mirror only)</td>
+              <td><span class="tag">Missing</span> if Athena document absent. Admin Check List <code>photo</code> reads Athena only — do not expect Zenoti. <span class="tag">Conflict</span> if GHL mirror disagrees with Athena presence.</td>
+            </tr>
+            <tr>
+              <td>Insurance card pic</td>
+              <td><span class="sys athena">AthenaNet</span> Policy Information → Front + Back images</td>
+              <td>GHL Insurance Card Front / Back → Insurance ID Front / Back (dual presence mirrors)</td>
+              <td><span class="tag">Missing</span> if a policy exists and Front <em>or</em> Back image is absent (<code>ins_card</code> yes only when both present). N/A when Self Pay / no policy (force-clear GHL options). Never copy image bytes.</td>
+            </tr>
+            <tr>
+              <td>Insurance eligibility</td>
+              <td><span class="sys athena">AthenaNet</span> Eligible | Unverified</td>
+              <td>—</td>
+              <td>Only when an insurance card/policy is on file (<code>athena_only_read</code>). <span class="tag">Missing</span> if <em>Unverified</em>; complete if <em>Eligible</em>. N/A for Self Pay — do not treat as Eligible.</td>
+            </tr>
+            <tr>
+              <td>HMO referral</td>
+              <td><span class="sys athena">AthenaNet</span> Authorization → Incoming Authorizations</td>
+              <td>GHL Call Outcomes → Incoming Referral Required → Submitted? (If Required) (presence mirror)</td>
+              <td><span class="tag">Missing</span> when a referral is required and Athena has no incoming authorization. N/A when referral not required. <span class="tag">Conflict</span> if GHL mirror disagrees. Zenoti out of scope.</td>
+            </tr>
+            <tr>
+              <td>Follow-up Appt</td>
+              <td><span class="sys athena">AthenaNet</span> Follow-up Appt (date or None)</td>
+              <td>—</td>
+              <td><code>athena_only_read</code>. <span class="tag">Missing</span> if <em>None</em> (no return visit booked). No sync to Zenoti or GHL.</td>
+            </tr>
+            <tr>
+              <td>Active membership (cross-system)</td>
+              <td><span class="sys athena">AthenaNet</span> Membership Status · <span class="sys zenoti">Zenoti</span> Active / Cancelled / Suspended</td>
+              <td>GHL Membership Cancellation Data + Membership Suspended</td>
+              <td>Ledger <code>membership</code> = yes only when Athena Active <em>and</em> Zenoti Active (not Suspended/Cancelled). Path A cancel may write Athena (<code>two_path_cancel</code>, stamped source). See also Suspended row above for Goal 3.</td>
+            </tr>
           </tbody>
         </table>
         <p class="lead" style="margin:0.75rem 0 0;">
           Payment vaults are firewalled — do <strong>not</strong> classify “has a card in either system” as complete.
           See <a href="field-mapping-credit-card.html">Credit Card field map</a>.
+          Remaining ledger rules follow the
+          <a href="field-mapping.html">field mapping registry</a>
+          (Photo ID, Insurance Card Pic, Eligibility, HMO referral, Follow-up Appt, Active Membership).
         </p>
         <p class="lead" style="margin:0.75rem 0 0;">
           Output table: <strong>demographics_gap_fact</strong> —
-          patient_id, field (<code>cc_athena</code> | <code>cc_zenoti</code> | <code>cc_agreement</code> | <code>membership</code> | …),
-          status (missing|conflict|expiring_soon|expired|suspended|declined), systems_checked, priority, detected_at.
+          patient_id, field (<code>photo</code> | <code>ins_card</code> | <code>eligibility</code> | <code>referral</code> | <code>follow_up</code> | <code>cc_athena</code> | <code>cc_zenoti</code> | <code>cc_agreement</code> | <code>membership</code>),
+          status (missing|conflict|expiring_soon|expired|suspended|declined|n_a), systems_checked, priority, detected_at.
           Goal 3 decline events should publish <code>cc_zenoti</code> missing/declined and membership suspended without waiting for a later poll if webhooks allow.
         </p>
       </section>
