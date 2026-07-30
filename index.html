@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+         <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -88,18 +88,17 @@
       </li>
     </ol>
     <p class="note">
-      For builders and AI coding agents: treat the field maps as the source of truth for sync.
-      Do not invent credit-card, membership, or Call Outcomes behavior from the architecture
-      pictures alone. Later, the registry should also exist as a machine-readable file (JSON)
-      with short Given / When / Then acceptance checks per field — plain-language test scripts
-      such as “Given no Athena card, When the report runs, Then show a Missing CC Athena gap.”
-      You do not need to write those yourself; they are derived from the field maps at build time.
+      Field maps are the product source of truth for sync; do not invent field behavior from
+      architecture diagrams alone.
     </p>
     <p class="note">
-      <strong>WooCommerce (Admin Check List v1):</strong>
-      Out of Missing Demographics Executive Roll Up / Record Ledger field contracts.
-      Woo may be used for golden-record identity match only when unifying store customers —
-      it does not own ledger columns or gap rules. See
+      <strong>WooCommerce (v1):</strong>
+      Out of
+      <a href="admin-check-list.html">Missing Demographics Executive Roll Up</a>
+      /
+      <a href="admin-check-list-ledger.html">Record Ledger</a>
+      field contracts; identity match only when unifying store customers.
+      See
       <a href="field-mapping.html">field mapping registry</a>.
     </p>
   </section>
